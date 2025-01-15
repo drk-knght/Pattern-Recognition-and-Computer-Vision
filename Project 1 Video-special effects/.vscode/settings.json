@@ -1,0 +1,14 @@
+{
+  "files.associations": {
+    "array": "cpp",
+    "string_view": "cpp",
+    "__node_handle": "cpp",
+    "__split_buffer": "cpp",
+    "deque": "cpp",
+    "queue": "cpp",
+    "stack": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "vector": "cpp"
+  }
+}
