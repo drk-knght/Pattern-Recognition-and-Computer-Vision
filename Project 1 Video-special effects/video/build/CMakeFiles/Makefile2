@@ -63,11 +63,11 @@ CMAKE_BINARY_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/vidDisplay.cpp.dir/all
+all: CMakeFiles/vidDisplay.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/vidDisplay.cpp.dir/codegen
+codegen: CMakeFiles/vidDisplay.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -75,40 +75,40 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/vidDisplay.cpp.dir/clean
+clean: CMakeFiles/vidDisplay.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/vidDisplay.cpp.dir
+# Target rules for target CMakeFiles/vidDisplay.dir
 
 # All Build rule for target.
-CMakeFiles/vidDisplay.cpp.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=1,2,3,4 "Built target vidDisplay.cpp"
-.PHONY : CMakeFiles/vidDisplay.cpp.dir/all
+CMakeFiles/vidDisplay.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=1,2,3,4 "Built target vidDisplay"
+.PHONY : CMakeFiles/vidDisplay.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/vidDisplay.cpp.dir/rule: cmake_check_build_system
+CMakeFiles/vidDisplay.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/vidDisplay.cpp.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/vidDisplay.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" 0
-.PHONY : CMakeFiles/vidDisplay.cpp.dir/rule
+.PHONY : CMakeFiles/vidDisplay.dir/rule
 
 # Convenience name for target.
-vidDisplay.cpp: CMakeFiles/vidDisplay.cpp.dir/rule
-.PHONY : vidDisplay.cpp
+vidDisplay: CMakeFiles/vidDisplay.dir/rule
+.PHONY : vidDisplay
 
 # codegen rule for target.
-CMakeFiles/vidDisplay.cpp.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=1,2,3,4 "Finished codegen for target vidDisplay.cpp"
-.PHONY : CMakeFiles/vidDisplay.cpp.dir/codegen
+CMakeFiles/vidDisplay.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=1,2,3,4 "Finished codegen for target vidDisplay"
+.PHONY : CMakeFiles/vidDisplay.dir/codegen
 
 # clean rule for target.
-CMakeFiles/vidDisplay.cpp.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/clean
-.PHONY : CMakeFiles/vidDisplay.cpp.dir/clean
+CMakeFiles/vidDisplay.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/clean
+.PHONY : CMakeFiles/vidDisplay.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

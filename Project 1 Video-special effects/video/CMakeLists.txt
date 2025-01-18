@@ -23,8 +23,8 @@ set(MY_SOURCE_FILES
     src/faceDetect.cpp
     src/DA2Network.hpp)
 
-# Create executable
-add_executable(vidDisplay.cpp ${MY_SOURCE_FILES})
+# Create executable (removed .cpp extension)
+add_executable(vidDisplay ${MY_SOURCE_FILES})
 
 # Set link directories
 link_directories(
@@ -33,20 +33,25 @@ link_directories(
 )
 
 # Link libraries with full path to ONNX Runtime
-target_link_libraries(vidDisplay.cpp 
+target_link_libraries(vidDisplay 
     PRIVATE
     ${OpenCV_LIBS}
+    opencv_core
+    opencv_highgui
+    opencv_imgproc
+    opencv_videoio
+    opencv_objdetect
     /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib
 )
 
 # Add compile definitions
-target_compile_definitions(vidDisplay.cpp 
+target_compile_definitions(vidDisplay 
     PRIVATE
     ENABLE_PRECOMPILED_HEADERS=OFF
 )
 
 # Set C++ standard
-set_target_properties(vidDisplay.cpp 
+set_target_properties(vidDisplay 
     PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON

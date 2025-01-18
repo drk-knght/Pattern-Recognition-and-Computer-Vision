@@ -6,7 +6,7 @@ CXX_DEFINES = -DENABLE_PRECOMPILED_HEADERS=OFF
 
 CXX_INCLUDES = -I/opt/homebrew/Cellar/onnxruntime/1.20.1_2/include/onnxruntime -I/opt/homebrew/include -I/opt/homebrew/Cellar/onnxruntime/1.20.1_2/include -I/opt/homebrew/Cellar/onnxruntime/1.20.1_2/include/onnxruntime/core/session -isystem /opt/homebrew/Cellar/opencv/4.11.0/include/opencv4
 
-CXX_FLAGSarm64 = -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk
+CXX_FLAGSarm64 = -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
 
-CXX_FLAGS = -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk
+CXX_FLAGS = -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
 

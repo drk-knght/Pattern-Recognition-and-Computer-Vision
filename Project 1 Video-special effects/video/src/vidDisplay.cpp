@@ -50,6 +50,19 @@ int main(int argc, char *argv[])
     bool blur_outside_face = false;
     bool fog_effect = false;
 
+    // Add the filter keys from the second file
+    int opencv_grey_key = 0;
+    int custom_grey_key = 0;
+    int sepia_key = 0;
+    int blur_key = 0;
+    int sobel_x_key = 0;
+    int sobel_y_key = 0;
+    int blur_quantize_key = 0;
+
+    // Add new filter keys
+    bool isolate_red = false;
+    bool negative_filter = false;
+
     // Initialize face detector
     cv::CascadeClassifier face_cascade;
     face_cascade.load("../src/haarcascade_frontalface_alt2.xml");
@@ -73,19 +86,73 @@ int main(int argc, char *argv[])
         da_net.run_network(depth_frame, original_frame.size());
         cv::applyColorMap(depth_frame, depth_vis, cv::COLORMAP_INFERNO);
 
-        // Always show original video
-        cv::imshow("Original Video", original_frame);
-
-        // Handle depth visualization
-        if (show_depth)
-        {
-            cv::imshow("Depth", depth_vis);
-        }
-
         // Store original frame for face detection
         cv::Mat working_frame = filter_frame.clone();
         std::vector<cv::Rect> faces;
         face_cascade.detectMultiScale(working_frame, faces);
+
+        // Apply filters in sequence
+
+        // opencv default grayscale
+        if (opencv_grey_key)
+        {
+            cv::cvtColor(filter_frame, filter_frame, cv::COLOR_BGR2GRAY);
+            cv::cvtColor(filter_frame, filter_frame, cv::COLOR_GRAY2BGR); // Convert back to BGR for consistency
+        }
+        // custom grayscale
+        else if (custom_grey_key)
+        {
+            greyscale(original_frame, filter_frame);
+            cv::imshow("Filter Video", filter_frame);
+        }
+        // sepia
+        else if (sepia_key)
+        {
+            sepia(filter_frame, filter_frame);
+        }
+        // blur
+        else if (blur_key)
+        {
+            blur5x5_2(filter_frame, filter_frame);
+        }
+        // sobel x
+        else if (sobel_x_key)
+        {
+            sobelX3x3(filter_frame, filter_frame);
+            cv::convertScaleAbs(filter_frame, filter_frame);
+        }
+        // sobel y
+        else if (sobel_y_key)
+        {
+            sobelY3x3(filter_frame, filter_frame);
+            cv::convertScaleAbs(filter_frame, filter_frame);
+        }
+        // blur quantize
+        else if (blur_quantize_key)
+        {
+            blurQuantize(filter_frame, filter_frame, 10);
+        }
+
+        // Isolate red color
+        if (isolate_red)
+        {
+            cv::Mat hsv, mask, grey;
+            cv::cvtColor(filter_frame, hsv, cv::COLOR_BGR2HSV);
+            cv::inRange(hsv, cv::Scalar(160, 100, 100), cv::Scalar(180, 255, 255), mask);
+
+            cv::cvtColor(filter_frame, grey, cv::COLOR_BGR2GRAY);
+            cv::cvtColor(grey, filter_frame, cv::COLOR_GRAY2BGR);
+
+            cv::Mat colored;
+            original_frame.copyTo(colored, mask);
+            cv::add(filter_frame, colored, filter_frame);
+        }
+
+        // Negative filter
+        if (negative_filter)
+        {
+            filter_frame = cv::Scalar(255, 255, 255) - filter_frame;
+        }
 
         // Grey background with colorful faces
         if (grey_face && !faces.empty())
@@ -123,9 +190,8 @@ int main(int argc, char *argv[])
                 for (int j = 0; j < original_frame.cols; j++)
                 {
                     float depth_val = depth_frame.at<unsigned char>(i, j) / 255.0f;
-                    float fog_factor = std::exp(-depth_val * 2); // Adjust multiplier for fog density
+                    float fog_factor = std::exp(-depth_val * 2);
 
-                    // Blend with white based on depth
                     filter_frame.at<cv::Vec3b>(i, j)[0] = cv::saturate_cast<uchar>(
                         filter_frame.at<cv::Vec3b>(i, j)[0] * fog_factor + 255 * (1 - fog_factor));
                     filter_frame.at<cv::Vec3b>(i, j)[1] = cv::saturate_cast<uchar>(
@@ -136,8 +202,20 @@ int main(int argc, char *argv[])
             }
         }
 
+        // Always show original video
+        cv::imshow("Original Video", original_frame);
+
+        // Show depth if enabled
+        if (show_depth)
+        {
+            cv::imshow("Depth", depth_vis);
+        }
+
         // Show filtered frame if any filter is active
-        if (depth_filter || grey_face || blur_outside_face || fog_effect)
+        if (opencv_grey_key || custom_grey_key || sepia_key || blur_key ||
+            sobel_x_key || sobel_y_key || blur_quantize_key ||
+            depth_filter || grey_face || blur_outside_face || fog_effect ||
+            isolate_red || negative_filter)
         {
             cv::imshow("Filter Video", filter_frame);
         }
@@ -154,6 +232,31 @@ int main(int argc, char *argv[])
             show_depth = !show_depth;
             printf("Depth view %s\n", show_depth ? "enabled" : "disabled");
         }
+        else if (key == 'k')
+        {
+            grey_face = !grey_face;
+            printf("Grey background with colorful faces %s\n", grey_face ? "enabled" : "disabled");
+        }
+        else if (key == 'v')
+        {
+            fog_effect = !fog_effect;
+            printf("Fog effect %s\n", fog_effect ? "enabled" : "disabled");
+        }
+        else if (key == 'g')
+        {
+            opencv_grey_key += 1;
+            custom_grey_key = 0;
+            sepia_key = 0;
+            blur_key = 0;
+            sobel_x_key = 0;
+            sobel_y_key = 0;
+            blur_quantize_key = 0;
+        }
+        else if (key == 'b')
+        {
+            blur_outside_face = !blur_outside_face;
+            printf("Blur outside faces %s\n", blur_outside_face ? "enabled" : "disabled");
+        }
         else if (key == 'a')
         {
             depth_filter = !depth_filter;
@@ -168,20 +271,15 @@ int main(int argc, char *argv[])
             }
             printf("Images saved\n");
         }
-        else if (key == 'g')
+        else if (key == 'i')
         {
-            grey_face = !grey_face;
-            printf("Grey background with colorful faces %s\n", grey_face ? "enabled" : "disabled");
+            isolate_red = !isolate_red;
+            printf("Red isolation filter %s\n", isolate_red ? "enabled" : "disabled");
         }
-        else if (key == 'b')
+        else if (key == 'n')
         {
-            blur_outside_face = !blur_outside_face;
-            printf("Blur outside faces %s\n", blur_outside_face ? "enabled" : "disabled");
-        }
-        else if (key == 'f')
-        {
-            fog_effect = !fog_effect;
-            printf("Fog effect %s\n", fog_effect ? "enabled" : "disabled");
+            negative_filter = !negative_filter;
+            printf("Negative filter %s\n", negative_filter ? "enabled" : "disabled");
         }
     }
 

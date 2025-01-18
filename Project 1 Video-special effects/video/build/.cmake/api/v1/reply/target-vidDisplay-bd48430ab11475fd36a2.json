@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "vidDisplay.cpp"
+			"path" : "vidDisplay"
 		}
 	],
 	"backtrace" : 1,
@@ -39,7 +39,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 43,
+				"line" : 48,
 				"parent" : 0
 			},
 			{
@@ -56,7 +56,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk"
+					"fragment" : "-std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
 				}
 			],
 			"defines" : 
@@ -107,7 +107,7 @@
 			]
 		}
 	],
-	"id" : "vidDisplay.cpp::@6890427a1f51a3e7e1df",
+	"id" : "vidDisplay::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -302,17 +302,27 @@
 			},
 			{
 				"backtrace" : 2,
+				"fragment" : "/opt/homebrew/lib/libopencv_highgui.4.11.0.dylib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "/opt/homebrew/lib/libopencv_videoio.4.11.0.dylib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "/opt/homebrew/lib/libopencv_objdetect.4.11.0.dylib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
 				"fragment" : "/opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
 				"fragment" : "/opt/homebrew/lib/libopencv_shape.4.11.0.dylib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/opt/homebrew/lib/libopencv_highgui.4.11.0.dylib",
 				"role" : "libraries"
 			},
 			{
@@ -357,17 +367,7 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "/opt/homebrew/lib/libopencv_videoio.4.11.0.dylib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
 				"fragment" : "/opt/homebrew/lib/libopencv_imgcodecs.4.11.0.dylib",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "/opt/homebrew/lib/libopencv_objdetect.4.11.0.dylib",
 				"role" : "libraries"
 			},
 			{
@@ -408,8 +408,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "vidDisplay.cpp",
-	"nameOnDisk" : "vidDisplay.cpp",
+	"name" : "vidDisplay",
+	"nameOnDisk" : "vidDisplay",
 	"paths" : 
 	{
 		"build" : ".",

@@ -1,2 +1,2 @@
-# Empty dependencies file for vidDisplay.cpp.
+# Empty dependencies file for vidDisplay.
 # This may be replaced when dependencies are built.

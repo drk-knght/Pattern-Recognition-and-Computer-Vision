@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named vidDisplay.cpp
+# Target rules for targets named vidDisplay
 
 # Build rule for target.
-vidDisplay.cpp: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vidDisplay.cpp
-.PHONY : vidDisplay.cpp
+vidDisplay: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vidDisplay
+.PHONY : vidDisplay
 
 # fast build rule for target.
-vidDisplay.cpp/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/build
-.PHONY : vidDisplay.cpp/fast
+vidDisplay/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/build
+.PHONY : vidDisplay/fast
 
 src/faceDetect.o: src/faceDetect.cpp.o
 .PHONY : src/faceDetect.o
 
 # target to build an object file
 src/faceDetect.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o
 .PHONY : src/faceDetect.cpp.o
 
 src/faceDetect.i: src/faceDetect.cpp.i
@@ -142,7 +142,7 @@ src/faceDetect.i: src/faceDetect.cpp.i
 
 # target to preprocess a source file
 src/faceDetect.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.i
 .PHONY : src/faceDetect.cpp.i
 
 src/faceDetect.s: src/faceDetect.cpp.s
@@ -150,7 +150,7 @@ src/faceDetect.s: src/faceDetect.cpp.s
 
 # target to generate assembly for a file
 src/faceDetect.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.s
 .PHONY : src/faceDetect.cpp.s
 
 src/filter.o: src/filter.cpp.o
@@ -158,7 +158,7 @@ src/filter.o: src/filter.cpp.o
 
 # target to build an object file
 src/filter.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/src/filter.cpp.o
 .PHONY : src/filter.cpp.o
 
 src/filter.i: src/filter.cpp.i
@@ -166,7 +166,7 @@ src/filter.i: src/filter.cpp.i
 
 # target to preprocess a source file
 src/filter.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/src/filter.cpp.i
 .PHONY : src/filter.cpp.i
 
 src/filter.s: src/filter.cpp.s
@@ -174,7 +174,7 @@ src/filter.s: src/filter.cpp.s
 
 # target to generate assembly for a file
 src/filter.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/src/filter.cpp.s
 .PHONY : src/filter.cpp.s
 
 src/vidDisplay.o: src/vidDisplay.cpp.o
@@ -182,7 +182,7 @@ src/vidDisplay.o: src/vidDisplay.cpp.o
 
 # target to build an object file
 src/vidDisplay.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o
 .PHONY : src/vidDisplay.cpp.o
 
 src/vidDisplay.i: src/vidDisplay.cpp.i
@@ -190,7 +190,7 @@ src/vidDisplay.i: src/vidDisplay.cpp.i
 
 # target to preprocess a source file
 src/vidDisplay.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.i
 .PHONY : src/vidDisplay.cpp.i
 
 src/vidDisplay.s: src/vidDisplay.cpp.s
@@ -198,7 +198,7 @@ src/vidDisplay.s: src/vidDisplay.cpp.s
 
 # target to generate assembly for a file
 src/vidDisplay.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.s
 .PHONY : src/vidDisplay.cpp.s
 
 # Help Target
@@ -209,7 +209,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... vidDisplay.cpp"
+	@echo "... vidDisplay"
 	@echo "... src/faceDetect.o"
 	@echo "... src/faceDetect.i"
 	@echo "... src/faceDetect.s"

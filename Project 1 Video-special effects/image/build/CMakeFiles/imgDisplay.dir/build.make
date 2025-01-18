@@ -76,15 +76,15 @@ CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o: CMakeFiles/imgDisplay.dir/flags.
 CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/image/src/imgDisplay.cpp
 CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o: CMakeFiles/imgDisplay.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o -MF CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o.d -o CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/src/imgDisplay.cpp"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o -MF CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o.d -o CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/src/imgDisplay.cpp"
 
 CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/src/imgDisplay.cpp" > CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/src/imgDisplay.cpp" > CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.i
 
 CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/src/imgDisplay.cpp" -o CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/src/imgDisplay.cpp" -o CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.s
 
 # Object files for target imgDisplay
 imgDisplay_OBJECTS = \
