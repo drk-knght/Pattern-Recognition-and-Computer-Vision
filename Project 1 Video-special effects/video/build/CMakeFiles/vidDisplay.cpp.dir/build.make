@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video"
+CMAKE_SOURCE_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build"
+CMAKE_BINARY_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build"
 
 # Include any dependencies generated for this target.
 include CMakeFiles/vidDisplay.cpp.dir/depend.make
@@ -73,102 +73,118 @@ CMakeFiles/vidDisplay.cpp.dir/codegen:
 .PHONY : CMakeFiles/vidDisplay.cpp.dir/codegen
 
 CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o: CMakeFiles/vidDisplay.cpp.dir/flags.make
-CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o: /Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS\ 5330\ Computer\ Vision/Project\ 1\ Video-special\ effects/video/src/vidDisplay.cpp
+CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/vidDisplay.cpp
 CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o: CMakeFiles/vidDisplay.cpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o -c "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp"
 
 CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.i
 
 CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.s
 
 CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o: CMakeFiles/vidDisplay.cpp.dir/flags.make
-CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o: /Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS\ 5330\ Computer\ Vision/Project\ 1\ Video-special\ effects/video/src/filter.cpp
+CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/filter.cpp
 CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o: CMakeFiles/vidDisplay.cpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o -c "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/src/filter.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp"
 
 CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/src/filter.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.i
 
 CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/src/filter.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.s
+
+CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o: CMakeFiles/vidDisplay.cpp.dir/flags.make
+CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/faceDetect.cpp
+CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o: CMakeFiles/vidDisplay.cpp.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp"
+
+CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.i
+
+CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.s
 
 # Object files for target vidDisplay.cpp
 vidDisplay_cpp_OBJECTS = \
 "CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o" \
-"CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o"
+"CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o" \
+"CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o"
 
 # External object files for target vidDisplay.cpp
 vidDisplay_cpp_EXTERNAL_OBJECTS =
 
 vidDisplay.cpp: CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o
 vidDisplay.cpp: CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o
+vidDisplay.cpp: CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o
 vidDisplay.cpp: CMakeFiles/vidDisplay.cpp.dir/build.make
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_gapi.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_stitching.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_alphamat.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_aruco.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_bgsegm.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_bioinspired.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_ccalib.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_dnn_objdetect.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_dnn_superres.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_dpm.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_face.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_freetype.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_fuzzy.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_hfs.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_img_hash.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_intensity_transform.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_line_descriptor.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_mcc.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_quality.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_rapid.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_reg.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_rgbd.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_saliency.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_sfm.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_signal.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_stereo.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_structured_light.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_superres.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_surface_matching.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_tracking.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_videostab.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_viz.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_wechat_qrcode.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_xfeatures2d.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_xobjdetect.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_xphoto.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_shape.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_highgui.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_datasets.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_plot.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_text.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_ml.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_phase_unwrapping.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_optflow.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_ximgproc.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_video.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_videoio.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_imgcodecs.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_objdetect.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_calib3d.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_dnn.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_features2d.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_flann.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_photo.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_imgproc.4.10.0.dylib
-vidDisplay.cpp: /opt/homebrew/lib/libopencv_core.4.10.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_gapi.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_stitching.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_alphamat.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_aruco.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_bgsegm.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_bioinspired.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_ccalib.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_dnn_objdetect.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_dnn_superres.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_dpm.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_face.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_freetype.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_fuzzy.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_hfs.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_img_hash.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_intensity_transform.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_line_descriptor.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_mcc.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_quality.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_rapid.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_reg.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_rgbd.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_saliency.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_sfm.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_signal.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_stereo.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_structured_light.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_superres.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_surface_matching.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_tracking.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_videostab.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_viz.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_wechat_qrcode.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_xfeatures2d.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_xobjdetect.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_xphoto.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_shape.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_highgui.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_datasets.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_plot.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_text.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_ml.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_phase_unwrapping.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_optflow.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_ximgproc.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_video.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_videoio.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_imgcodecs.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_objdetect.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_calib3d.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_dnn.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_features2d.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_flann.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_photo.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_imgproc.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/lib/libopencv_core.4.11.0.dylib
 vidDisplay.cpp: CMakeFiles/vidDisplay.cpp.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable vidDisplay.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable vidDisplay.cpp"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/vidDisplay.cpp.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -180,6 +196,6 @@ CMakeFiles/vidDisplay.cpp.dir/clean:
 .PHONY : CMakeFiles/vidDisplay.cpp.dir/clean
 
 CMakeFiles/vidDisplay.cpp.dir/depend:
-	cd "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build/CMakeFiles/vidDisplay.cpp.dir/DependInfo.cmake" "--color=$(COLOR)"
+	cd "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles/vidDisplay.cpp.dir/DependInfo.cmake" "--color=$(COLOR)"
 .PHONY : CMakeFiles/vidDisplay.cpp.dir/depend
 

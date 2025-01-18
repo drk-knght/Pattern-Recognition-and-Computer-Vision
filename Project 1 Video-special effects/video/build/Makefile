@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video"
+CMAKE_SOURCE_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build"
+CMAKE_BINARY_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build/CMakeFiles" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build//CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build//CMakeFiles/progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
@@ -128,6 +128,30 @@ vidDisplay.cpp: cmake_check_build_system
 vidDisplay.cpp/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/build
 .PHONY : vidDisplay.cpp/fast
+
+src/faceDetect.o: src/faceDetect.cpp.o
+.PHONY : src/faceDetect.o
+
+# target to build an object file
+src/faceDetect.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o
+.PHONY : src/faceDetect.cpp.o
+
+src/faceDetect.i: src/faceDetect.cpp.i
+.PHONY : src/faceDetect.i
+
+# target to preprocess a source file
+src/faceDetect.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.i
+.PHONY : src/faceDetect.cpp.i
+
+src/faceDetect.s: src/faceDetect.cpp.s
+.PHONY : src/faceDetect.s
+
+# target to generate assembly for a file
+src/faceDetect.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.cpp.dir/build.make CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.s
+.PHONY : src/faceDetect.cpp.s
 
 src/filter.o: src/filter.cpp.o
 .PHONY : src/filter.o
@@ -186,6 +210,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... vidDisplay.cpp"
+	@echo "... src/faceDetect.o"
+	@echo "... src/faceDetect.i"
+	@echo "... src/faceDetect.s"
 	@echo "... src/filter.o"
 	@echo "... src/filter.i"
 	@echo "... src/filter.s"

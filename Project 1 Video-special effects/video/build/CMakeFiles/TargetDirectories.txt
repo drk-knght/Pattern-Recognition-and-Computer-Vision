@@ -1,3 +1,3 @@
-/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build/CMakeFiles/vidDisplay.cpp.dir
-/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build/CMakeFiles/edit_cache.dir
-/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/video/build/CMakeFiles/rebuild_cache.dir
+/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles/vidDisplay.cpp.dir
+/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles/edit_cache.dir
+/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles/rebuild_cache.dir

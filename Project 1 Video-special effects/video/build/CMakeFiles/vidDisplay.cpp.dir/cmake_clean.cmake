@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o"
+  "CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o.d"
   "CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o"
   "CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o.d"
   "CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o"
