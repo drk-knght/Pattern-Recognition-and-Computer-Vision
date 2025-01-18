@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects"
+CMAKE_SOURCE_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/build"
+CMAKE_BINARY_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/build"
 
 # Include any dependencies generated for this target.
 include CMakeFiles/imgDisplay.dir/depend.make
@@ -73,18 +73,18 @@ CMakeFiles/imgDisplay.dir/codegen:
 .PHONY : CMakeFiles/imgDisplay.dir/codegen
 
 CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o: CMakeFiles/imgDisplay.dir/flags.make
-CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o: /Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS\ 5330\ Computer\ Vision/Project\ 1\ Video-special\ effects/src/imgDisplay.cpp
+CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/image/src/imgDisplay.cpp
 CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o: CMakeFiles/imgDisplay.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o -MF CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o.d -o CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o -c "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/src/imgDisplay.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o -MF CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o.d -o CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/src/imgDisplay.cpp"
 
 CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/src/imgDisplay.cpp" > CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/src/imgDisplay.cpp" > CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.i
 
 CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/src/imgDisplay.cpp" -o CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/src/imgDisplay.cpp" -o CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.s
 
 # Object files for target imgDisplay
 imgDisplay_OBJECTS = \
@@ -95,64 +95,64 @@ imgDisplay_EXTERNAL_OBJECTS =
 
 imgDisplay: CMakeFiles/imgDisplay.dir/src/imgDisplay.cpp.o
 imgDisplay: CMakeFiles/imgDisplay.dir/build.make
-imgDisplay: /opt/homebrew/lib/libopencv_gapi.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_stitching.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_alphamat.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_aruco.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_bgsegm.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_bioinspired.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_ccalib.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_dnn_objdetect.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_dnn_superres.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_dpm.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_face.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_freetype.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_fuzzy.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_hfs.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_img_hash.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_intensity_transform.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_line_descriptor.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_mcc.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_quality.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_rapid.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_reg.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_rgbd.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_saliency.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_sfm.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_signal.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_stereo.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_structured_light.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_superres.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_surface_matching.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_tracking.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_videostab.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_viz.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_wechat_qrcode.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_xfeatures2d.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_xobjdetect.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_xphoto.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_shape.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_highgui.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_datasets.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_plot.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_text.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_ml.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_phase_unwrapping.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_optflow.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_ximgproc.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_video.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_videoio.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_imgcodecs.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_objdetect.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_calib3d.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_dnn.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_features2d.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_flann.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_photo.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_imgproc.4.10.0.dylib
-imgDisplay: /opt/homebrew/lib/libopencv_core.4.10.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_gapi.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_stitching.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_alphamat.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_aruco.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_bgsegm.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_bioinspired.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_ccalib.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_dnn_objdetect.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_dnn_superres.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_dpm.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_face.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_freetype.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_fuzzy.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_hfs.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_img_hash.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_intensity_transform.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_line_descriptor.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_mcc.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_quality.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_rapid.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_reg.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_rgbd.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_saliency.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_sfm.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_signal.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_stereo.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_structured_light.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_superres.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_surface_matching.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_tracking.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_videostab.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_viz.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_wechat_qrcode.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_xfeatures2d.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_xobjdetect.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_xphoto.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_shape.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_highgui.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_datasets.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_plot.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_text.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_ml.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_phase_unwrapping.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_optflow.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_ximgproc.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_video.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_videoio.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_imgcodecs.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_objdetect.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_calib3d.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_dnn.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_features2d.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_flann.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_photo.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_imgproc.4.11.0.dylib
+imgDisplay: /opt/homebrew/lib/libopencv_core.4.11.0.dylib
 imgDisplay: CMakeFiles/imgDisplay.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable imgDisplay"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable imgDisplay"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/imgDisplay.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -164,6 +164,6 @@ CMakeFiles/imgDisplay.dir/clean:
 .PHONY : CMakeFiles/imgDisplay.dir/clean
 
 CMakeFiles/imgDisplay.dir/depend:
-	cd "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/build" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/build" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/build/CMakeFiles/imgDisplay.dir/DependInfo.cmake" "--color=$(COLOR)"
+	cd "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/build" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/build" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/build/CMakeFiles/imgDisplay.dir/DependInfo.cmake" "--color=$(COLOR)"
 .PHONY : CMakeFiles/imgDisplay.dir/depend
 

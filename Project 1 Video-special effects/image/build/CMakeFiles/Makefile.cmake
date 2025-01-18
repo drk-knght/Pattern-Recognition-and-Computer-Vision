@@ -7,10 +7,10 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/Project 1 Video-special effects/CMakeLists.txt"
-  "CMakeFiles/3.31.3/CMakeCCompiler.cmake"
-  "CMakeFiles/3.31.3/CMakeCXXCompiler.cmake"
-  "CMakeFiles/3.31.3/CMakeSystem.cmake"
+  "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/CMakeLists.txt"
+  "CMakeFiles/3.31.4/CMakeCCompiler.cmake"
+  "CMakeFiles/3.31.4/CMakeCXXCompiler.cmake"
+  "CMakeFiles/3.31.4/CMakeSystem.cmake"
   "/opt/homebrew/lib/cmake/opencv4/OpenCVConfig-version.cmake"
   "/opt/homebrew/lib/cmake/opencv4/OpenCVConfig.cmake"
   "/opt/homebrew/lib/cmake/opencv4/OpenCVModules-release.cmake"
@@ -134,11 +134,11 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/3.31.3/CMakeSystem.cmake"
-  "CMakeFiles/3.31.3/CMakeCCompiler.cmake"
-  "CMakeFiles/3.31.3/CMakeCXXCompiler.cmake"
-  "CMakeFiles/3.31.3/CMakeCCompiler.cmake"
-  "CMakeFiles/3.31.3/CMakeCXXCompiler.cmake"
+  "CMakeFiles/3.31.4/CMakeSystem.cmake"
+  "CMakeFiles/3.31.4/CMakeCCompiler.cmake"
+  "CMakeFiles/3.31.4/CMakeCXXCompiler.cmake"
+  "CMakeFiles/3.31.4/CMakeCCompiler.cmake"
+  "CMakeFiles/3.31.4/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

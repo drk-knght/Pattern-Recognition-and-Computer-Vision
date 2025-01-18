@@ -4,6 +4,7 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 set(MY_SOURCE_FILES 
     src/vidDisplay.cpp
-    src/filter.cpp)
+    src/filter.cpp
+    src/faceDetect.cpp)
 add_executable(vidDisplay.cpp ${MY_SOURCE_FILES})
 target_link_libraries(vidDisplay.cpp ${OpenCV_LIBS})

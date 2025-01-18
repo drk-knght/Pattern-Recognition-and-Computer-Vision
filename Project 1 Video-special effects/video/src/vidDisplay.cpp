@@ -9,6 +9,8 @@
 #include <opencv2/imgproc.hpp>
 #include <cstdio>
 #include "filter.h"
+#include "faceDetect.h"
+#include <vector>
 
 int main(int argc, char *argv[]){
     cv::VideoCapture *capdev;
@@ -39,6 +41,7 @@ int main(int argc, char *argv[]){
     int sobel_x_key=0;
     int sobel_y_key=0;
     int blur_quantize_key=0;
+    int face_detect_key=0;
 
     for(;;){
         *capdev>>original_frame; //get a new frame from the camera, treat as a stream
@@ -178,6 +181,21 @@ int main(int argc, char *argv[]){
         // Quitting the program
         else if(key=='q'){
             break;
+        }
+
+        else if(key=='f'){
+            // convert to grayscale for face detection
+            cv::Mat grey;
+            cv::cvtColor(original_frame, grey, cv::COLOR_BGR2GRAY);
+            
+            // detect faces
+            std::vector<cv::Rect> faces;
+            detectFaces(grey, faces);
+            
+            // draw boxes around faces
+            drawBoxes(original_frame, faces);
+            
+            cv::imshow("Filter Video", original_frame);
         }
     }
 
