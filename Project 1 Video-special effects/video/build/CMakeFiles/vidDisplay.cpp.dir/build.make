@@ -76,43 +76,43 @@ CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o: CMakeFiles/vidDisplay.cpp.di
 CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/vidDisplay.cpp
 CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o: CMakeFiles/vidDisplay.cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp"
 
 CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.i
 
 CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/vidDisplay.cpp.s
 
 CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o: CMakeFiles/vidDisplay.cpp.dir/flags.make
 CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/filter.cpp
 CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o: CMakeFiles/vidDisplay.cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp"
 
 CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.i
 
 CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/filter.cpp.s
 
 CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o: CMakeFiles/vidDisplay.cpp.dir/flags.make
 CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/faceDetect.cpp
 CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o: CMakeFiles/vidDisplay.cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o -MF CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o.d -o CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp"
 
 CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp" > CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.i
 
 CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp" -o CMakeFiles/vidDisplay.cpp.dir/src/faceDetect.cpp.s
 
 # Object files for target vidDisplay.cpp
 vidDisplay_cpp_OBJECTS = \
@@ -163,6 +163,7 @@ vidDisplay.cpp: /opt/homebrew/lib/libopencv_wechat_qrcode.4.11.0.dylib
 vidDisplay.cpp: /opt/homebrew/lib/libopencv_xfeatures2d.4.11.0.dylib
 vidDisplay.cpp: /opt/homebrew/lib/libopencv_xobjdetect.4.11.0.dylib
 vidDisplay.cpp: /opt/homebrew/lib/libopencv_xphoto.4.11.0.dylib
+vidDisplay.cpp: /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib
 vidDisplay.cpp: /opt/homebrew/lib/libopencv_shape.4.11.0.dylib
 vidDisplay.cpp: /opt/homebrew/lib/libopencv_highgui.4.11.0.dylib
 vidDisplay.cpp: /opt/homebrew/lib/libopencv_datasets.4.11.0.dylib

@@ -1,5 +1,5 @@
 # MacOS compiler
-CC = /Applications/Xcode.app/Contents/Developer/usr/bin/g++
+CC = g++
 
 # Make it the C++ compiler too
 CXX = $(CC)
@@ -16,7 +16,7 @@ LDFLAGS = -L/opt/local/lib/opencv4/ -L/opt/local/lib  # opencv libraries are her
 
 # opencv libraries and MacOS frameworks
 # these settings work for macOS and macports
-LDLIBS = -ltiff -lpng -ljpeg -llapack -lblas -lz -ljasper -lwebp -lgs -framework AVFoundation -framework CoreMedia -framework CoreVideo -framework CoreServices -framework CoreGraphics -framework AppKit -framework OpenCL  -lopencv_core -lopencv_highgui -lopencv_video -lopencv_videoio -lopencv_imgcodecs -lopencv_imgproc -lopencv_objdetect -lonnxruntime
+LDLIBS = -ltiff -lpng -ljpeg -llapack -lblas -lz -ljasper -lwebp -framework AVFoundation -framework CoreMedia -framework CoreVideo -framework CoreServices -framework CoreGraphics -framework AppKit -framework OpenCL -lopencv_core -lopencv_highgui -lopencv_video -lopencv_videoio -lopencv_imgcodecs -lopencv_imgproc -lopencv_objdetect -lonnxruntime
 
 
 # Location to write the executables

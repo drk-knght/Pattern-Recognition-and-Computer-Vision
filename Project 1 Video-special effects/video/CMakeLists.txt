@@ -1,10 +1,58 @@
 cmake_minimum_required(VERSION 3.10)
 project(MyProject)
+
+# Find required packages
 find_package(OpenCV REQUIRED)
-include_directories(${OpenCV_INCLUDE_DIRS})
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(ONNXRUNTIME REQUIRED libonnxruntime)
+
+# Include directories
+include_directories(
+    ${OpenCV_INCLUDE_DIRS}
+    ${ONNXRUNTIME_INCLUDE_DIRS}
+    /opt/homebrew/include
+    /opt/homebrew/Cellar/onnxruntime/1.20.1_2/include
+    /opt/homebrew/Cellar/onnxruntime/1.20.1_2/include/onnxruntime
+    /opt/homebrew/Cellar/onnxruntime/1.20.1_2/include/onnxruntime/core/session
+)
+
+# Add source files
 set(MY_SOURCE_FILES 
     src/vidDisplay.cpp
     src/filter.cpp
-    src/faceDetect.cpp)
+    src/faceDetect.cpp
+    src/DA2Network.hpp)
+
+# Create executable
 add_executable(vidDisplay.cpp ${MY_SOURCE_FILES})
-target_link_libraries(vidDisplay.cpp ${OpenCV_LIBS})
+
+# Set link directories
+link_directories(
+    /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib
+    /opt/homebrew/lib
+)
+
+# Link libraries with full path to ONNX Runtime
+target_link_libraries(vidDisplay.cpp 
+    PRIVATE
+    ${OpenCV_LIBS}
+    /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib
+)
+
+# Add compile definitions
+target_compile_definitions(vidDisplay.cpp 
+    PRIVATE
+    ENABLE_PRECOMPILED_HEADERS=OFF
+)
+
+# Set C++ standard
+set_target_properties(vidDisplay.cpp 
+    PROPERTIES
+    CXX_STANDARD 14
+    CXX_STANDARD_REQUIRED ON
+)
+
+# Print debug information
+message(STATUS "OpenCV libraries: ${OpenCV_LIBS}")
+message(STATUS "ONNX Runtime libraries: ${ONNXRUNTIME_LIBRARIES}")
+message(STATUS "ONNX Runtime include dirs: ${ONNXRUNTIME_INCLUDE_DIRS}")

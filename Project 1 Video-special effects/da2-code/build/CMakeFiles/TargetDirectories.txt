@@ -1,0 +1,3 @@
+/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/da2-code/build/CMakeFiles/da2-video.dir
+/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/da2-code/build/CMakeFiles/edit_cache.dir
+/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/da2-code/build/CMakeFiles/rebuild_cache.dir
