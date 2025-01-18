@@ -46,6 +46,13 @@ int main(int argc, char *argv[])
     int key = 0;
     bool show_depth = false;
     bool depth_filter = false;
+    bool grey_face = false;
+    bool blur_outside_face = false;
+    bool fog_effect = false;
+
+    // Initialize face detector
+    cv::CascadeClassifier face_cascade;
+    face_cascade.load("../src/haarcascade_frontalface_alt2.xml");
 
     for (;;)
     {
@@ -75,35 +82,67 @@ int main(int argc, char *argv[])
             cv::imshow("Depth", depth_vis);
         }
 
-        // Apply depth-based filtering
-        if (depth_filter)
+        // Store original frame for face detection
+        cv::Mat working_frame = filter_frame.clone();
+        std::vector<cv::Rect> faces;
+        face_cascade.detectMultiScale(working_frame, faces);
+
+        // Grey background with colorful faces
+        if (grey_face && !faces.empty())
+        {
+            cv::Mat grey;
+            cv::cvtColor(filter_frame, grey, cv::COLOR_BGR2GRAY);
+            cv::cvtColor(grey, filter_frame, cv::COLOR_GRAY2BGR);
+
+            // Keep faces colorful
+            for (const auto &face : faces)
+            {
+                working_frame(face).copyTo(filter_frame(face));
+            }
+        }
+
+        // Blur outside faces
+        if (blur_outside_face && !faces.empty())
+        {
+            cv::Mat blurred;
+            cv::GaussianBlur(filter_frame, blurred, cv::Size(25, 25), 0);
+            blurred.copyTo(filter_frame);
+
+            // Restore unblurred faces
+            for (const auto &face : faces)
+            {
+                working_frame(face).copyTo(filter_frame(face));
+            }
+        }
+
+        // Fog effect using depth
+        if (fog_effect)
         {
             for (int i = 0; i < original_frame.rows; i++)
             {
                 for (int j = 0; j < original_frame.cols; j++)
                 {
-                    // Create artistic effect based on depth
-                    if (depth_frame.at<unsigned char>(i, j) < 85)
-                    {
-                        // Close objects - enhance red
-                        filter_frame.at<cv::Vec3b>(i, j)[2] = std::min(255, filter_frame.at<cv::Vec3b>(i, j)[2] + 50);
-                    }
-                    else if (depth_frame.at<unsigned char>(i, j) < 170)
-                    {
-                        // Mid-range objects - enhance green
-                        filter_frame.at<cv::Vec3b>(i, j)[1] = std::min(255, filter_frame.at<cv::Vec3b>(i, j)[1] + 50);
-                    }
-                    else
-                    {
-                        // Far objects - enhance blue
-                        filter_frame.at<cv::Vec3b>(i, j)[0] = std::min(255, filter_frame.at<cv::Vec3b>(i, j)[0] + 50);
-                    }
+                    float depth_val = depth_frame.at<unsigned char>(i, j) / 255.0f;
+                    float fog_factor = std::exp(-depth_val * 2); // Adjust multiplier for fog density
+
+                    // Blend with white based on depth
+                    filter_frame.at<cv::Vec3b>(i, j)[0] = cv::saturate_cast<uchar>(
+                        filter_frame.at<cv::Vec3b>(i, j)[0] * fog_factor + 255 * (1 - fog_factor));
+                    filter_frame.at<cv::Vec3b>(i, j)[1] = cv::saturate_cast<uchar>(
+                        filter_frame.at<cv::Vec3b>(i, j)[1] * fog_factor + 255 * (1 - fog_factor));
+                    filter_frame.at<cv::Vec3b>(i, j)[2] = cv::saturate_cast<uchar>(
+                        filter_frame.at<cv::Vec3b>(i, j)[2] * fog_factor + 255 * (1 - fog_factor));
                 }
             }
+        }
+
+        // Show filtered frame if any filter is active
+        if (depth_filter || grey_face || blur_outside_face || fog_effect)
+        {
             cv::imshow("Filter Video", filter_frame);
         }
 
-        // Handle existing filter keys (referenced from original vidDisplay.cpp)
+        // Handle key presses
         key = cv::waitKey(10);
 
         if (key == 'q')
@@ -128,6 +167,21 @@ int main(int argc, char *argv[])
                 cv::imwrite("depth_filtered.png", filter_frame);
             }
             printf("Images saved\n");
+        }
+        else if (key == 'g')
+        {
+            grey_face = !grey_face;
+            printf("Grey background with colorful faces %s\n", grey_face ? "enabled" : "disabled");
+        }
+        else if (key == 'b')
+        {
+            blur_outside_face = !blur_outside_face;
+            printf("Blur outside faces %s\n", blur_outside_face ? "enabled" : "disabled");
+        }
+        else if (key == 'f')
+        {
+            fog_effect = !fog_effect;
+            printf("Fog effect %s\n", fog_effect ? "enabled" : "disabled");
         }
     }
 
