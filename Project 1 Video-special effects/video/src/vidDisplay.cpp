@@ -9,6 +9,7 @@
 #include "faceDetect.h"
 #include "DA2Network.hpp"
 #include <vector>
+#include <ctime>
 
 int main(int argc, char *argv[])
 {
@@ -66,6 +67,20 @@ int main(int argc, char *argv[])
     // Initialize face detector
     cv::CascadeClassifier face_cascade;
     face_cascade.load("../src/haarcascade_frontalface_alt2.xml");
+
+    // Add these variables after other boolean flags
+    bool is_recording = false;
+    cv::VideoWriter video_writer;
+    int frame_width = refS.width * reduction;
+    int frame_height = refS.height * reduction;
+    double fps = 30.0; // Set a default fps
+    double device_fps = capdev->get(cv::CAP_PROP_FPS);
+    if (device_fps > 0 && device_fps <= 60.0)
+    { // Only use device fps if it's reasonable
+        fps = device_fps;
+    }
+    int frame_count = 0;
+    const int MAX_FRAMES = static_cast<int>(5.0 * fps); // 5 seconds worth of frames
 
     for (;;)
     {
@@ -220,11 +235,34 @@ int main(int argc, char *argv[])
             cv::imshow("Filter Video", filter_frame);
         }
 
+        // Handle recording logic
+        if (is_recording)
+        {
+            if (frame_count >= MAX_FRAMES)
+            {
+                // Stop recording after 5 seconds worth of frames
+                is_recording = false;
+                video_writer.release();
+                printf("Recording stopped - 5 second limit reached\n");
+            }
+            else
+            {
+                // Write the frame with applied filters
+                video_writer.write(filter_frame);
+                frame_count++;
+                printf("Recording frame %d/%d\n", frame_count, MAX_FRAMES); // Added progress indicator
+            }
+        }
+
         // Handle key presses
         key = cv::waitKey(10);
 
         if (key == 'q')
         {
+            if (is_recording)
+            {
+                video_writer.release();
+            }
             break;
         }
         else if (key == 'd')
@@ -280,6 +318,36 @@ int main(int argc, char *argv[])
         {
             negative_filter = !negative_filter;
             printf("Negative filter %s\n", negative_filter ? "enabled" : "disabled");
+        }
+        else if (key == 'r')
+        {
+            if (!is_recording)
+            {
+                // Start recording
+                std::string filename = "output_" + std::to_string(time(nullptr)) + ".avi";
+                video_writer.open(filename, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'),
+                                  fps, cv::Size(frame_width, frame_height));
+
+                if (!video_writer.isOpened())
+                {
+                    printf("Failed to create video file\n");
+                    continue;
+                }
+
+                is_recording = true;
+                frame_count = 0;
+                // Write the current frame immediately
+                video_writer.write(filter_frame);
+                frame_count++;
+                printf("Started recording to %s (FPS: %.2f)\n", filename.c_str(), fps);
+            }
+            else
+            {
+                // Stop recording
+                is_recording = false;
+                video_writer.release();
+                printf("Recording stopped after %d frames\n", frame_count);
+            }
         }
     }
 
