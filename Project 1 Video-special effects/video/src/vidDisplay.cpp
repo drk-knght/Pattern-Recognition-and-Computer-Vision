@@ -82,6 +82,13 @@ int main(int argc, char *argv[])
     int frame_count = 0;
     const int MAX_FRAMES = static_cast<int>(5.0 * fps); // 5 seconds worth of frames
 
+    // Add these variables after other declarations
+    std::string caption_text;
+    const int TEXT_MARGIN_TOP = 50; // Pixels from top of frame
+    const double FONT_SCALE = 1.0;
+    const int FONT_THICKNESS = 2;
+    const cv::Scalar TEXT_COLOR(255, 255, 255); // White text
+
     for (;;)
     {
         *capdev >> original_frame;
@@ -226,11 +233,33 @@ int main(int argc, char *argv[])
             cv::imshow("Depth", depth_vis);
         }
 
+        // Add text overlay to frame if caption exists
+        if (!caption_text.empty())
+        {
+            // Calculate text size to center it
+            int baseline = 0;
+            cv::Size text_size = cv::getTextSize(caption_text, cv::FONT_HERSHEY_DUPLEX,
+                                                 FONT_SCALE, FONT_THICKNESS, &baseline);
+
+            cv::Point text_org((filter_frame.cols - text_size.width) / 2, // Center horizontally
+                               TEXT_MARGIN_TOP + text_size.height);       // Top margin
+
+            // Draw black outline/border for better visibility
+            cv::putText(filter_frame, caption_text, text_org,
+                        cv::FONT_HERSHEY_DUPLEX, FONT_SCALE,
+                        cv::Scalar(0, 0, 0), FONT_THICKNESS + 1); // Thicker black outline
+
+            // Draw white text
+            cv::putText(filter_frame, caption_text, text_org,
+                        cv::FONT_HERSHEY_DUPLEX, FONT_SCALE,
+                        TEXT_COLOR, FONT_THICKNESS);
+        }
+
         // Show filtered frame if any filter is active
         if (opencv_grey_key || custom_grey_key || sepia_key || blur_key ||
             sobel_x_key || sobel_y_key || blur_quantize_key ||
             depth_filter || grey_face || blur_outside_face || fog_effect ||
-            isolate_red || negative_filter)
+            isolate_red || negative_filter || !caption_text.empty()) // Added condition for caption
         {
             cv::imshow("Filter Video", filter_frame);
         }
@@ -248,7 +277,7 @@ int main(int argc, char *argv[])
             else
             {
                 // Write the frame with applied filters
-                video_writer.write(filter_frame);
+                video_writer.write(filter_frame); // This will include the text overlay
                 frame_count++;
                 printf("Recording frame %d/%d\n", frame_count, MAX_FRAMES); // Added progress indicator
             }
@@ -334,11 +363,12 @@ int main(int argc, char *argv[])
                     continue;
                 }
 
+                // Get caption text from user
+                printf("Enter caption text (press Enter when done): ");
+                std::getline(std::cin, caption_text);
+
                 is_recording = true;
                 frame_count = 0;
-                // Write the current frame immediately
-                video_writer.write(filter_frame);
-                frame_count++;
                 printf("Started recording to %s (FPS: %.2f)\n", filename.c_str(), fps);
             }
             else
@@ -347,6 +377,7 @@ int main(int argc, char *argv[])
                 is_recording = false;
                 video_writer.release();
                 printf("Recording stopped after %d frames\n", frame_count);
+                caption_text.clear(); // Clear the caption for next recording
             }
         }
     }

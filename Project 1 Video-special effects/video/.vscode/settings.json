@@ -17,6 +17,7 @@
         "unordered_set": "cpp",
         "vector": "cpp",
         "*.ipp": "cpp",
-        "any": "cpp"
+        "any": "cpp",
+        "stop_token": "cpp"
     }
 }
