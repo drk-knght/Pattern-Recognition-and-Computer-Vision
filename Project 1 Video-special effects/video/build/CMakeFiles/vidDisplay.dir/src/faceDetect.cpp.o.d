@@ -1,5 +1,5 @@
 CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o: \
-  /Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS\ 5330\ Computer\ Vision/assign1/Project\ 1\ Video-special\ effects/video/src/faceDetect.cpp \
+  /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/faceDetect.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/cmath \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assertion_handler \
@@ -1099,4 +1099,4 @@ CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o: \
   /opt/homebrew/Cellar/opencv/4.11.0/include/opencv4/opencv2/video.hpp \
   /opt/homebrew/Cellar/opencv/4.11.0/include/opencv4/opencv2/video/tracking.hpp \
   /opt/homebrew/Cellar/opencv/4.11.0/include/opencv4/opencv2/video/background_segm.hpp \
-  /Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS\ 5330\ Computer\ Vision/assign1/Project\ 1\ Video-special\ effects/video/src/faceDetect.h
+  /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/faceDetect.h

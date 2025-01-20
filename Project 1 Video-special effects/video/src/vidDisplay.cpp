@@ -3,7 +3,7 @@
     Om Agarwal
     Jan 12 2024
     CS5330- Pattern Recognition & Computer Vision
-    This file is the entry 
+    This file is the entry
 */
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
         if (opencv_grey_key)
         {
             cv::cvtColor(original_frame, filter_frame, cv::COLOR_BGR2GRAY);
-            cv::imshow("Filter Video",filter_frame);
+            cv::imshow("Filter Video", filter_frame);
         }
 
         // custom grayscale filter for the video frames
@@ -143,46 +143,43 @@ int main(int argc, char *argv[])
         else if (blur_key)
         {
             blur5x5_2(original_frame, filter_frame);
-            cv::imshow("Filter Video",filter_frame);
+            cv::imshow("Filter Video", filter_frame);
         }
 
         // sobel x image filter to detect vertical edges
         else if (sobel_x_key)
         {
             sobelX3x3(original_frame, filter_frame);
-            
-            // converting the pixel values to abs values
-            cv::Mat abs_filter_frame;
-            cv::convertScaleAbs(filter_frame,abs_filter_frame);
-            cv::imshow("Filter Video",abs_filter_frame);
+
+            // Convert to CV_8U and scale for proper display
+            filter_frame.convertTo(filter_frame, CV_8U, 0.5, 128);
+            cv::imshow("Filter Video", filter_frame);
         }
 
         // sobel y image filter to detect horizontal edges
         else if (sobel_y_key)
         {
             sobelY3x3(original_frame, filter_frame);
-            
-            // converting the pixel values to abs values
-            cv::Mat abs_filter_frame;
-            cv::convertScaleAbs(filter_frame,abs_filter_frame);
 
-            cv::imshow("Filter Video",filter_frame);
+            // Convert to CV_8U and scale for proper display
+            filter_frame.convertTo(filter_frame, CV_8U, 0.5, 128);
+            cv::imshow("Filter Video", filter_frame);
         }
 
         // blur quantize filter
         else if (blur_quantize_key)
         {
             blurQuantize(original_frame, filter_frame, 10);
-            cv::imshow("Filter Video",filter_frame);
+            cv::imshow("Filter Video", filter_frame);
         }
 
         // Isolate red color to get only red pigments of the image
         else if (isolate_red)
         {
-            isolateRed(original_frame,filter_frame);
+            isolateRed(original_frame, filter_frame);
         }
 
-        // Negative filter to negate the image 
+        // Negative filter to negate the image
         else if (negative_filter)
         {
             filter_frame = cv::Scalar(255, 255, 255) - filter_frame;
@@ -331,51 +328,77 @@ int main(int argc, char *argv[])
             sobel_y_key = 0;
             blur_quantize_key = 0;
         }
-        else if(key=='h'){
-            custom_grey_key+=1;
-            opencv_grey_key=0; sepia_key=0;
-            blur_key=0; sobel_x_key=0;
-            sobel_y_key=0; blur_quantize_key=0;
+        else if (key == 'h')
+        {
+            custom_grey_key += 1;
+            opencv_grey_key = 0;
+            sepia_key = 0;
+            blur_key = 0;
+            sobel_x_key = 0;
+            sobel_y_key = 0;
+            blur_quantize_key = 0;
         }
-        
+
         // update the sepia filter key for the video frames
-        else if(key=='e'){
-            sepia_key+=1;
-            opencv_grey_key=0; custom_grey_key=0;
-            blur_key=0; sobel_x_key=0;
-            sobel_y_key=0; blur_quantize_key=0;
+        else if (key == 'e')
+        {
+            sepia_key += 1;
+            opencv_grey_key = 0;
+            custom_grey_key = 0;
+            blur_key = 0;
+            sobel_x_key = 0;
+            sobel_y_key = 0;
+            blur_quantize_key = 0;
         }
 
         // update the blur filter key for the video frames
-        else if(key=='b'){
-            blur_key+=1;
-            opencv_grey_key=0; custom_grey_key=0;
-            sepia_key=0; sobel_x_key=0;
-            sobel_y_key=0; blur_quantize_key=0;
+        else if (key == 'b')
+        {
+            blur_key += 1;
+            opencv_grey_key = 0;
+            custom_grey_key = 0;
+            sepia_key = 0;
+            sobel_x_key = 0;
+            sobel_y_key = 0;
+            blur_quantize_key = 0;
         }
 
         // update the sobel x filter key for the video frames
-        else if(key=='x'){
-            blur_key=0; opencv_grey_key=0;
-            custom_grey_key=0; sepia_key=0;
-            sobel_y_key=0; blur_quantize_key=0;
-            sobel_x_key+=1;
+        else if (key == 'x')
+        {
+            printf("Sobel x filter enabled\n");
+            blur_key = 0;
+            opencv_grey_key = 0;
+            custom_grey_key = 0;
+            sepia_key = 0;
+            sobel_y_key = 0;
+            blur_quantize_key = 0;
+            sobel_x_key += 1;
         }
-        
+
         // update the sobel y filter key for the video frames
-        else if(key=='y'){
-            blur_key=0; opencv_grey_key=0;
-            custom_grey_key=0; sepia_key=0;
-            sobel_x_key=0; blur_quantize_key=0;
-            sobel_y_key+=1;
+        else if (key == 'y')
+        {
+            printf("Sobel y filter enabled\n");
+            blur_key = 0;
+            opencv_grey_key = 0;
+            custom_grey_key = 0;
+            sepia_key = 0;
+            sobel_x_key = 0;
+            blur_quantize_key = 0;
+            sobel_y_key += 1;
         }
 
         // update the blur quantization filter key for the video frames
-        else if(key=='l'){
-            blur_quantize_key=1;
-            blur_key=0; opencv_grey_key=0;
-            custom_grey_key=0; sepia_key=0;
-            sobel_y_key=0; sobel_x_key=0;
+        else if (key == 'l')
+        {
+            blur_quantize_key = 1;
+            blur_key = 0;
+            opencv_grey_key = 0;
+            custom_grey_key = 0;
+            sepia_key = 0;
+            sobel_y_key = 0;
+            sobel_x_key = 0;
         }
 
         else if (key == 'z')

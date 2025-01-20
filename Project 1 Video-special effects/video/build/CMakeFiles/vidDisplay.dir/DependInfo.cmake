@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/faceDetect.cpp" "CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o" "gcc" "CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o.d"
-  "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/filter.cpp" "CMakeFiles/vidDisplay.dir/src/filter.cpp.o" "gcc" "CMakeFiles/vidDisplay.dir/src/filter.cpp.o.d"
-  "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/vidDisplay.cpp" "CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o" "gcc" "CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o.d"
+  "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp" "CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o" "gcc" "CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o.d"
+  "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp" "CMakeFiles/vidDisplay.dir/src/filter.cpp.o" "gcc" "CMakeFiles/vidDisplay.dir/src/filter.cpp.o.d"
+  "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" "CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o" "gcc" "CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
