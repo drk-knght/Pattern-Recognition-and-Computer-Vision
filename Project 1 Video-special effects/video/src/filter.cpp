@@ -168,8 +168,8 @@ int blur5x5_2( cv::Mat &src, cv::Mat &dst ){
 // Positive Right Sobel X Filter
 /*
     -1 0 1
-    0 0 0
     -2 0 2
+    -1 0 1
 */
 int sobelX3x3( cv::Mat &src, cv::Mat &dst ){
     if(src.empty() || src.type()!=CV_8UC3){
@@ -180,16 +180,24 @@ int sobelX3x3( cv::Mat &src, cv::Mat &dst ){
     for(int i=1;i+1<src.rows;i++){
         for(int j=1;j+1<src.cols;j++){
             for(int channel=0;channel<3;channel++){
-                temp.at<cv::Vec3s>(i,j)[channel]=-1*src.at<cv::Vec3b>(i,j-1)[channel]+1*src.at<cv::Vec3b>(i,j+1)[channel];
+                temp.at<cv::Vec3s>(i,j)[channel]=-1*src.at<cv::Vec3b>(i,j-1)[channel]
+                                                +0*src.at<cv::Vec3b>(i,j)[channel]
+                                                 +1*src.at<cv::Vec3b>(i,j+1)[channel];
             }
         }
     }
+    int mx=0;
     for(int i=1;i+1<src.rows;i++){
         for(int j=1;j+1<src.cols;j++){
             for(int channel=0;channel<3;channel++){
-                int temp_sobel_x_value=1*temp.at<cv::Vec3s>(i-1,j)[channel]+2*temp.at<cv::Vec3s>(i,j)[channel]+1*temp.at<cv::Vec3s>(i+1,j)[channel];
+                int temp_sobel_x_value=1*temp.at<cv::Vec3s>(i-1,j)[channel]
+                                        +2*temp.at<cv::Vec3s>(i,j)[channel]
+                                        +1*temp.at<cv::Vec3s>(i+1,j)[channel];
                 temp_sobel_x_value=temp_sobel_x_value/4;
                 dst.at<cv::Vec3s>(i,j)[channel]=temp_sobel_x_value;
+                if(temp_sobel_x_value>mx){
+                    mx=temp_sobel_x_value;
+                }
             }
         }
     }
@@ -218,7 +226,7 @@ int sobelY3x3( cv::Mat &src, cv::Mat &dst ){
     for(int i=1;i+1<src.rows;i++){
         for(int j=1;j+1<src.cols;j++){
             for(int channel=0;channel<3;channel++){
-                int16_t temp_sobel_x_value=1*temp.at<cv::Vec3s>(i,j-1)[channel]+2*temp.at<cv::Vec3s>(i,j)[channel]+1*temp.at<cv::Vec3s>(i,j+1)[channel];
+                int temp_sobel_x_value=1*temp.at<cv::Vec3s>(i,j-1)[channel]+2*temp.at<cv::Vec3s>(i,j)[channel]+1*temp.at<cv::Vec3s>(i,j+1)[channel];
                 temp_sobel_x_value=temp_sobel_x_value/4;
                 dst.at<cv::Vec3s>(i,j)[channel]=temp_sobel_x_value;
             }
@@ -272,5 +280,23 @@ int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ){
             }
         }
     }
+    return 0;
+}
+
+int isolateRed(cv:: Mat &src, cv::Mat dst){
+    if(src.empty() || src.type()!=CV_8UC3){
+        return -1;
+    }
+    cv::Mat hsv, mask, grey;
+    cv::cvtColor(dst, hsv, cv::COLOR_BGR2HSV);
+    cv::inRange(hsv, cv::Scalar(160, 100, 100), cv::Scalar(180, 255, 255), mask);
+
+    cv::cvtColor(dst, grey, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(grey, dst, cv::COLOR_GRAY2BGR);
+
+    cv::Mat colored;
+    src.copyTo(colored, mask);
+    cv::add(dst, colored, dst);
+    
     return 0;
 }

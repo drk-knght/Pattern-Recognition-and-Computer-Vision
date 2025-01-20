@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video"
+CMAKE_SOURCE_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build"
+CMAKE_BINARY_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build"
 
 # Include any dependencies generated for this target.
 include CMakeFiles/vidDisplay.dir/depend.make
@@ -73,46 +73,46 @@ CMakeFiles/vidDisplay.dir/codegen:
 .PHONY : CMakeFiles/vidDisplay.dir/codegen
 
 CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o: CMakeFiles/vidDisplay.dir/flags.make
-CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/vidDisplay.cpp
+CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o: /Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS\ 5330\ Computer\ Vision/assign1/Project\ 1\ Video-special\ effects/video/src/vidDisplay.cpp
 CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o: CMakeFiles/vidDisplay.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o -MF CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o.d -o CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o -MF CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o.d -o CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.o -c "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/vidDisplay.cpp"
 
 CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" > CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/vidDisplay.cpp" > CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.i
 
 CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/vidDisplay.cpp" -o CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/vidDisplay.cpp" -o CMakeFiles/vidDisplay.dir/src/vidDisplay.cpp.s
 
 CMakeFiles/vidDisplay.dir/src/filter.cpp.o: CMakeFiles/vidDisplay.dir/flags.make
-CMakeFiles/vidDisplay.dir/src/filter.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/filter.cpp
+CMakeFiles/vidDisplay.dir/src/filter.cpp.o: /Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS\ 5330\ Computer\ Vision/assign1/Project\ 1\ Video-special\ effects/video/src/filter.cpp
 CMakeFiles/vidDisplay.dir/src/filter.cpp.o: CMakeFiles/vidDisplay.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/vidDisplay.dir/src/filter.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.dir/src/filter.cpp.o -MF CMakeFiles/vidDisplay.dir/src/filter.cpp.o.d -o CMakeFiles/vidDisplay.dir/src/filter.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/vidDisplay.dir/src/filter.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.dir/src/filter.cpp.o -MF CMakeFiles/vidDisplay.dir/src/filter.cpp.o.d -o CMakeFiles/vidDisplay.dir/src/filter.cpp.o -c "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/filter.cpp"
 
 CMakeFiles/vidDisplay.dir/src/filter.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/vidDisplay.dir/src/filter.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp" > CMakeFiles/vidDisplay.dir/src/filter.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/filter.cpp" > CMakeFiles/vidDisplay.dir/src/filter.cpp.i
 
 CMakeFiles/vidDisplay.dir/src/filter.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/vidDisplay.dir/src/filter.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/filter.cpp" -o CMakeFiles/vidDisplay.dir/src/filter.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/filter.cpp" -o CMakeFiles/vidDisplay.dir/src/filter.cpp.s
 
 CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o: CMakeFiles/vidDisplay.dir/flags.make
-CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o: /Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project\ 1\ Video-special\ effects/video/src/faceDetect.cpp
+CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o: /Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS\ 5330\ Computer\ Vision/assign1/Project\ 1\ Video-special\ effects/video/src/faceDetect.cpp
 CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o: CMakeFiles/vidDisplay.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o -MF CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o.d -o CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o -c "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o -MF CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o.d -o CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.o -c "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/faceDetect.cpp"
 
 CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp" > CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/faceDetect.cpp" > CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.i
 
 CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/src/faceDetect.cpp" -o CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/src/faceDetect.cpp" -o CMakeFiles/vidDisplay.dir/src/faceDetect.cpp.s
 
 # Object files for target vidDisplay
 vidDisplay_OBJECTS = \
@@ -185,7 +185,7 @@ vidDisplay: /opt/homebrew/lib/libopencv_photo.4.11.0.dylib
 vidDisplay: /opt/homebrew/lib/libopencv_imgproc.4.11.0.dylib
 vidDisplay: /opt/homebrew/lib/libopencv_core.4.11.0.dylib
 vidDisplay: CMakeFiles/vidDisplay.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable vidDisplay"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable vidDisplay"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/vidDisplay.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -197,6 +197,6 @@ CMakeFiles/vidDisplay.dir/clean:
 .PHONY : CMakeFiles/vidDisplay.dir/clean
 
 CMakeFiles/vidDisplay.dir/depend:
-	cd "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build" "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles/vidDisplay.dir/DependInfo.cmake" "--color=$(COLOR)"
+	cd "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build" "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build/CMakeFiles/vidDisplay.dir/DependInfo.cmake" "--color=$(COLOR)"
 .PHONY : CMakeFiles/vidDisplay.dir/depend
 

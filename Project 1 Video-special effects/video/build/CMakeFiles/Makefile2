@@ -54,10 +54,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video"
+CMAKE_SOURCE_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build"
+CMAKE_BINARY_DIR = "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build"
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -85,14 +85,14 @@ clean: CMakeFiles/vidDisplay.dir/clean
 CMakeFiles/vidDisplay.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=1,2,3,4 "Built target vidDisplay"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=1,2,3,4 "Built target vidDisplay"
 .PHONY : CMakeFiles/vidDisplay.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/vidDisplay.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" 4
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build/CMakeFiles" 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/vidDisplay.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build/CMakeFiles" 0
 .PHONY : CMakeFiles/vidDisplay.dir/rule
 
 # Convenience name for target.
@@ -102,7 +102,7 @@ vidDisplay: CMakeFiles/vidDisplay.dir/rule
 # codegen rule for target.
 CMakeFiles/vidDisplay.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/vidDisplay.dir/build.make CMakeFiles/vidDisplay.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=1,2,3,4 "Finished codegen for target vidDisplay"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/omagarwal/Desktop/Grad/Acads/Sem-3/CS 5330 Computer Vision/assign1/Project 1 Video-special effects/video/build/CMakeFiles" --progress-num=1,2,3,4 "Finished codegen for target vidDisplay"
 .PHONY : CMakeFiles/vidDisplay.dir/codegen
 
 # clean rule for target.

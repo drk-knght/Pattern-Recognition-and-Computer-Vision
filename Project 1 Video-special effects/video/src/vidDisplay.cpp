@@ -1,6 +1,9 @@
 /*
-    Modified to include depth detection
-    CS5330 - Pattern Recognition & Computer Vision
+    Agnibha Chatterjee
+    Om Agarwal
+    Jan 12 2024
+    CS5330- Pattern Recognition & Computer Vision
+    This file is the entry 
 */
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
@@ -115,69 +118,78 @@ int main(int argc, char *argv[])
 
         // Apply filters in sequence
 
-        // opencv default grayscale
+        // opencv default grayscale image function for the video frames
         if (opencv_grey_key)
         {
-            cv::cvtColor(filter_frame, filter_frame, cv::COLOR_BGR2GRAY);
-            cv::cvtColor(filter_frame, filter_frame, cv::COLOR_GRAY2BGR); // Convert back to BGR for consistency
+            cv::cvtColor(original_frame, filter_frame, cv::COLOR_BGR2GRAY);
+            cv::imshow("Filter Video",filter_frame);
         }
-        // custom grayscale
+
+        // custom grayscale filter for the video frames
         else if (custom_grey_key)
         {
             greyscale(original_frame, filter_frame);
             cv::imshow("Filter Video", filter_frame);
         }
-        // sepia
+
+        // sepia image filter for the video frames
         else if (sepia_key)
         {
-            sepia(filter_frame, filter_frame);
+            sepia(original_frame, filter_frame);
+            cv::imshow("Filter Video", filter_frame);
         }
-        // blur
+
+        // blur image filter for the video frames
         else if (blur_key)
         {
-            blur5x5_2(filter_frame, filter_frame);
+            blur5x5_2(original_frame, filter_frame);
+            cv::imshow("Filter Video",filter_frame);
         }
-        // sobel x
+
+        // sobel x image filter to detect vertical edges
         else if (sobel_x_key)
         {
-            sobelX3x3(filter_frame, filter_frame);
-            cv::convertScaleAbs(filter_frame, filter_frame);
+            sobelX3x3(original_frame, filter_frame);
+            
+            // converting the pixel values to abs values
+            cv::Mat abs_filter_frame;
+            cv::convertScaleAbs(filter_frame,abs_filter_frame);
+            cv::imshow("Filter Video",abs_filter_frame);
         }
-        // sobel y
+
+        // sobel y image filter to detect horizontal edges
         else if (sobel_y_key)
         {
-            sobelY3x3(filter_frame, filter_frame);
-            cv::convertScaleAbs(filter_frame, filter_frame);
+            sobelY3x3(original_frame, filter_frame);
+            
+            // converting the pixel values to abs values
+            cv::Mat abs_filter_frame;
+            cv::convertScaleAbs(filter_frame,abs_filter_frame);
+
+            cv::imshow("Filter Video",filter_frame);
         }
-        // blur quantize
+
+        // blur quantize filter
         else if (blur_quantize_key)
         {
-            blurQuantize(filter_frame, filter_frame, 10);
+            blurQuantize(original_frame, filter_frame, 10);
+            cv::imshow("Filter Video",filter_frame);
         }
 
-        // Isolate red color
-        if (isolate_red)
+        // Isolate red color to get only red pigments of the image
+        else if (isolate_red)
         {
-            cv::Mat hsv, mask, grey;
-            cv::cvtColor(filter_frame, hsv, cv::COLOR_BGR2HSV);
-            cv::inRange(hsv, cv::Scalar(160, 100, 100), cv::Scalar(180, 255, 255), mask);
-
-            cv::cvtColor(filter_frame, grey, cv::COLOR_BGR2GRAY);
-            cv::cvtColor(grey, filter_frame, cv::COLOR_GRAY2BGR);
-
-            cv::Mat colored;
-            original_frame.copyTo(colored, mask);
-            cv::add(filter_frame, colored, filter_frame);
+            isolateRed(original_frame,filter_frame);
         }
 
-        // Negative filter
-        if (negative_filter)
+        // Negative filter to negate the image 
+        else if (negative_filter)
         {
             filter_frame = cv::Scalar(255, 255, 255) - filter_frame;
         }
 
         // Grey background with colorful faces
-        if (grey_face && !faces.empty())
+        else if (grey_face && !faces.empty())
         {
             cv::Mat grey;
             cv::cvtColor(filter_frame, grey, cv::COLOR_BGR2GRAY);
@@ -191,7 +203,7 @@ int main(int argc, char *argv[])
         }
 
         // Blur outside faces
-        if (blur_outside_face && !faces.empty())
+        else if (blur_outside_face && !faces.empty())
         {
             cv::Mat blurred;
             cv::GaussianBlur(filter_frame, blurred, cv::Size(25, 25), 0);
@@ -205,7 +217,7 @@ int main(int argc, char *argv[])
         }
 
         // Fog effect using depth
-        if (fog_effect)
+        else if (fog_effect)
         {
             for (int i = 0; i < original_frame.rows; i++)
             {
@@ -319,7 +331,54 @@ int main(int argc, char *argv[])
             sobel_y_key = 0;
             blur_quantize_key = 0;
         }
-        else if (key == 'b')
+        else if(key=='h'){
+            custom_grey_key+=1;
+            opencv_grey_key=0; sepia_key=0;
+            blur_key=0; sobel_x_key=0;
+            sobel_y_key=0; blur_quantize_key=0;
+        }
+        
+        // update the sepia filter key for the video frames
+        else if(key=='e'){
+            sepia_key+=1;
+            opencv_grey_key=0; custom_grey_key=0;
+            blur_key=0; sobel_x_key=0;
+            sobel_y_key=0; blur_quantize_key=0;
+        }
+
+        // update the blur filter key for the video frames
+        else if(key=='b'){
+            blur_key+=1;
+            opencv_grey_key=0; custom_grey_key=0;
+            sepia_key=0; sobel_x_key=0;
+            sobel_y_key=0; blur_quantize_key=0;
+        }
+
+        // update the sobel x filter key for the video frames
+        else if(key=='x'){
+            blur_key=0; opencv_grey_key=0;
+            custom_grey_key=0; sepia_key=0;
+            sobel_y_key=0; blur_quantize_key=0;
+            sobel_x_key+=1;
+        }
+        
+        // update the sobel y filter key for the video frames
+        else if(key=='y'){
+            blur_key=0; opencv_grey_key=0;
+            custom_grey_key=0; sepia_key=0;
+            sobel_x_key=0; blur_quantize_key=0;
+            sobel_y_key+=1;
+        }
+
+        // update the blur quantization filter key for the video frames
+        else if(key=='l'){
+            blur_quantize_key=1;
+            blur_key=0; opencv_grey_key=0;
+            custom_grey_key=0; sepia_key=0;
+            sobel_y_key=0; sobel_x_key=0;
+        }
+
+        else if (key == 'z')
         {
             blur_outside_face = !blur_outside_face;
             printf("Blur outside faces %s\n", blur_outside_face ? "enabled" : "disabled");
