@@ -3,7 +3,7 @@
     Om Agarwal
     Jan 12 2024
     CS5330- Pattern Recognition & Computer Vision
-    This file is the entry
+    This file is the entry point for the video related operations
 */
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
     // Initialize the DA2Network with the model file
     DA2Network da_net("../src/model_fp16.onnx");
 
-    // Open the video device (camera)
-    capdev = new cv::VideoCapture(0);
+    // open the video device
+    capdev = new cv::VideoCapture(1);
     if (!capdev->isOpened())
     {
         printf("Unable to open video device\n");
@@ -47,15 +47,17 @@ int main(int argc, char *argv[])
     cv::namedWindow("Filter Video", 1);
     cv::namedWindow("Depth", 1);
 
-    // Initialize key variables for filter options
-    int key = 0;
-    bool show_depth = false;        // Flag to show depth visualization
-    bool depth_filter = false;      // Flag for depth-based filtering
-    bool grey_face = false;         // Flag for grey background with colorful faces
-    bool blur_outside_face = false; // Flag to blur outside faces
-    bool fog_effect = false;        // Flag for fog effect
 
-    // Initialize filter keys
+    int key = 0;
+
+    // add some more keys for extension part like depth, fog effect, gray face,etc.  
+    bool show_depth = false;
+    bool depth_filter = false;
+    bool grey_face = false;
+    bool blur_outside_face = false;
+    bool fog_effect = false;
+
+    // Add the basic filter keys like grayscalem sepia, sobel, etc.
     int opencv_grey_key = 0;
     int custom_grey_key = 0;
     int sepia_key = 0;
@@ -63,6 +65,7 @@ int main(int argc, char *argv[])
     int sobel_x_key = 0;
     int sobel_y_key = 0;
     int blur_quantize_key = 0;
+    int magnitude_key=0;
 
     // New filter keys
     bool isolate_red = false;     // Flag for isolating red colors
@@ -72,13 +75,18 @@ int main(int argc, char *argv[])
     cv::CascadeClassifier face_cascade;
     face_cascade.load("../src/haarcascade_frontalface_alt2.xml");
 
-    // Initialize recording variables
-    bool is_recording = false;                         // Flag to indicate if recording is active
-    cv::VideoWriter video_writer;                      // Video writer object for saving video
-    int frame_width = refS.width * reduction;          // Width of the video frame
-    int frame_height = refS.height * reduction;        // Height of the video frame
-    double fps = 30.0;                                 // Default frames per second
-    double device_fps = capdev->get(cv::CAP_PROP_FPS); // Get device FPS
+    // Add these variables after other boolean flags
+    bool is_recording = false;
+    cv::VideoWriter video_writer;
+
+    // Reduced frame dimensions for display to for faster computations 
+    int frame_width = refS.width * reduction;
+    int frame_height = refS.height * reduction;
+
+    double fps = 30.0; // Set a default fps
+
+    double device_fps = capdev->get(cv::CAP_PROP_FPS);
+
     if (device_fps > 0 && device_fps <= 60.0)
     { // Use device FPS if it's reasonable
         fps = device_fps;
@@ -176,6 +184,15 @@ int main(int argc, char *argv[])
             cv::imshow("Filter Video", filter_frame);
         }
 
+        else if(magnitude_key){
+            cv::Mat sx=cv::Mat::zeros(original_frame.size(),CV_16SC3);
+            cv::Mat sy=cv::Mat::zeros(original_frame.size(),CV_16SC3);
+            sobelX3x3(original_frame,sx);
+            sobelY3x3(original_frame,sy);
+            magnitude(sx,sy,filter_frame);
+            cv::imshow("Filter Video",filter_frame);
+        }
+
         // Isolate red color to get only red pigments of the image
         else if (isolate_red)
         {
@@ -188,7 +205,7 @@ int main(int argc, char *argv[])
             filter_frame = cv::Scalar(255, 255, 255) - filter_frame;
         }
 
-        // Grey background with colorful faces
+        // Grey background with colorful faces filter 
         else if (grey_face && !faces.empty())
         {
             cv::Mat grey;
@@ -202,7 +219,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        // Blur outside faces
+        // This filter blurs outside faces
         else if (blur_outside_face && !faces.empty())
         {
             cv::Mat blurred;
@@ -216,7 +233,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        // Fog effect using depth
+        // Applies fog effect using depth
         else if (fog_effect)
         {
             for (int i = 0; i < original_frame.rows; i++)
@@ -245,7 +262,7 @@ int main(int argc, char *argv[])
             cv::imshow("Depth", depth_vis);
         }
 
-        // Add text overlay to the frame if caption exists
+        // Add text overlay to frame if caption exists similar to memes
         if (!caption_text.empty())
         {
             // Calculate text size to center it
@@ -298,7 +315,7 @@ int main(int argc, char *argv[])
         // Handle key presses for user input
         key = cv::waitKey(10); // Wait for a key press for 10 ms
 
-        // Check for specific key presses to control the application
+        // quit the process and save the if recording short videos
         if (key == 'q')
         {
             if (is_recording)
@@ -307,21 +324,29 @@ int main(int argc, char *argv[])
             }
             break;
         }
+
+        // display the depth of the image 
         else if (key == 'd')
         {
             show_depth = !show_depth;
             printf("Depth view %s\n", show_depth ? "enabled" : "disabled");
         }
+
+        // convert the background to greyscale and keep only the face with the original colors
         else if (key == 'k')
         {
             grey_face = !grey_face;
             printf("Grey background with colorful faces %s\n", grey_face ? "enabled" : "disabled");
         }
+
+        // Apply fog effect to the image using depth
         else if (key == 'v')
         {
             fog_effect = !fog_effect;
             printf("Fog effect %s\n", fog_effect ? "enabled" : "disabled");
         }
+
+        // checks if user pressed opencv greeyscale image hotkey
         else if (key == 'g')
         {
             opencv_grey_key += 1;
@@ -331,7 +356,10 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             sobel_y_key = 0;
             blur_quantize_key = 0;
+            magnitude_key=0;
         }
+
+        // checks if user pressed custom greeyscale image hotkey
         else if (key == 'h')
         {
             custom_grey_key += 1;
@@ -341,9 +369,10 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             sobel_y_key = 0;
             blur_quantize_key = 0;
+            magnitude_key=0;
         }
 
-        // update the sepia filter key for the video frames
+        // checks if user pressed sepia filter hotkey
         else if (key == 'e')
         {
             sepia_key += 1;
@@ -353,6 +382,7 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             sobel_y_key = 0;
             blur_quantize_key = 0;
+            magnitude_key=0;
         }
 
         // update the blur filter key for the video frames
@@ -365,6 +395,7 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             sobel_y_key = 0;
             blur_quantize_key = 0;
+            magnitude_key=0;
         }
 
         // update the sobel x filter key for the video frames
@@ -378,6 +409,7 @@ int main(int argc, char *argv[])
             sobel_y_key = 0;
             blur_quantize_key = 0;
             sobel_x_key += 1;
+            magnitude_key=0;
         }
 
         // update the sobel y filter key for the video frames
@@ -391,6 +423,7 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             blur_quantize_key = 0;
             sobel_y_key += 1;
+            magnitude_key=0;
         }
 
         // update the blur quantization filter key for the video frames
@@ -403,38 +436,58 @@ int main(int argc, char *argv[])
             sepia_key = 0;
             sobel_y_key = 0;
             sobel_x_key = 0;
+            magnitude_key=0;
+        }
+        else if(key=='m'){
+            magnitude_key+=1;
+            blur_quantize_key=0;
+            blur_key=0; opencv_grey_key=0;
+            custom_grey_key=0; sepia_key=0;
+            sobel_y_key=0; sobel_x_key=0;
         }
 
+        // check if user pressed hotkey to blur outside of faces
         else if (key == 'z')
         {
             blur_outside_face = !blur_outside_face;
             printf("Blur outside faces %s\n", blur_outside_face ? "enabled" : "disabled");
         }
+
+        // checks if the user requested for the depth filter on the image
         else if (key == 'a')
         {
             depth_filter = !depth_filter;
             printf("Depth-based artistic filter %s\n", depth_filter ? "enabled" : "disabled");
         }
+
+        // check if the user requested the save video frame for reference
         else if (key == 's')
         {
+            cv::imwrite("depth_image.png", depth_vis);
             cv::imwrite("../images/original.png", original_frame);
             cv::imwrite("../images/filter.png", filter_frame);
-            // if (depth_filter)
-            // {
-            //     cv::imwrite("depth_filtered.png", filter_frame);
-            // }
-            // printf("Images saved\n");
+            if (depth_filter)
+            {
+                cv::imwrite("depth_filtered.png", filter_frame);
+            }
+            printf("Images saved\n");
         }
+
+        // checks if the isolate red color filter key was pressed
         else if (key == 'i')
         {
             isolate_red = !isolate_red;
             printf("Red isolation filter %s\n", isolate_red ? "enabled" : "disabled");
         }
+
+        // checks if the negative color filter key was pressed
         else if (key == 'n')
         {
             negative_filter = !negative_filter;
             printf("Negative filter %s\n", negative_filter ? "enabled" : "disabled");
         }
+
+        // checks if the short video recording key was pressed
         else if (key == 'r')
         {
             if (!is_recording)

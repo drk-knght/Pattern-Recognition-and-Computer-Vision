@@ -330,17 +330,11 @@ int blurQuantize(cv::Mat &src, cv::Mat &dst, int levels)
         return -1; // Return error if blur fails
     }
 
-    int b = 255 / levels; // Calculate the step size for quantization
-    for (int i = 0; i < src.rows; i++)
-    {
-        for (int j = 0; j < src.cols; j++)
-        {
-            for (int channel = 0; channel < 3; channel++)
-            {
-                int xt = src.at<cv::Vec3b>(i, j)[channel];
-                xt = xt / b;                           // Quantize the pixel value
-                int xf = xt * b;                       // Scale back to the original range
-                dst.at<cv::Vec3b>(i, j)[channel] = xf; // Set the quantized value
+            for(int channel=0;channel<3;channel++){
+                int xt=temp.at<cv::Vec3b>(i,j)[channel];
+                xt=xt/b;
+                int xf=xt*b;
+                dst.at<cv::Vec3b>(i,j)[channel]=xf;
             }
         }
     }
