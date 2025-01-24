@@ -16,45 +16,46 @@
 
 int main(int argc, char *argv[])
 {
+    // Pointer to the video capture device
     cv::VideoCapture *capdev;
-    cv::Mat original_frame;
-    cv::Mat filter_frame;
-    cv::Mat dst;
-    cv::Mat depth_frame;
-    cv::Mat depth_vis;
-    const float reduction = 0.5;
+    // Matrices to hold frames
+    cv::Mat original_frame, filter_frame, dst, depth_frame, depth_vis;
+    const float reduction = 0.5; // Scale factor for frame resizing
 
-    // Initialize the DA2Network
+    // Initialize the DA2Network with the model file
     DA2Network da_net("../src/model_fp16.onnx");
 
-    // open the video device
+    // Open the video device (camera)
     capdev = new cv::VideoCapture(0);
     if (!capdev->isOpened())
     {
         printf("Unable to open video device\n");
-        return -1;
+        return -1; // Exit if the camera cannot be opened
     }
 
-    // get properties of the image
+    // Get properties of the video frame
     cv::Size refS((int)capdev->get(cv::CAP_PROP_FRAME_WIDTH),
                   (int)capdev->get(cv::CAP_PROP_FRAME_HEIGHT));
     printf("Expected size: %d %d\n", refS.width, refS.height);
 
+    // Calculate scale factor for resizing frames
     float scale_factor = 256.0 / (refS.height * reduction);
     printf("Using scale factor %.2f\n", scale_factor);
 
+    // Create windows to display video frames
     cv::namedWindow("Original Video", 1);
     cv::namedWindow("Filter Video", 1);
     cv::namedWindow("Depth", 1);
 
+    // Initialize key variables for filter options
     int key = 0;
-    bool show_depth = false;
-    bool depth_filter = false;
-    bool grey_face = false;
-    bool blur_outside_face = false;
-    bool fog_effect = false;
+    bool show_depth = false;        // Flag to show depth visualization
+    bool depth_filter = false;      // Flag for depth-based filtering
+    bool grey_face = false;         // Flag for grey background with colorful faces
+    bool blur_outside_face = false; // Flag to blur outside faces
+    bool fog_effect = false;        // Flag for fog effect
 
-    // Add the filter keys from the second file
+    // Initialize filter keys
     int opencv_grey_key = 0;
     int custom_grey_key = 0;
     int sepia_key = 0;
@@ -63,61 +64,63 @@ int main(int argc, char *argv[])
     int sobel_y_key = 0;
     int blur_quantize_key = 0;
 
-    // Add new filter keys
-    bool isolate_red = false;
-    bool negative_filter = false;
+    // New filter keys
+    bool isolate_red = false;     // Flag for isolating red colors
+    bool negative_filter = false; // Flag for negative filter
 
     // Initialize face detector
     cv::CascadeClassifier face_cascade;
     face_cascade.load("../src/haarcascade_frontalface_alt2.xml");
 
-    // Add these variables after other boolean flags
-    bool is_recording = false;
-    cv::VideoWriter video_writer;
-    int frame_width = refS.width * reduction;
-    int frame_height = refS.height * reduction;
-    double fps = 30.0; // Set a default fps
-    double device_fps = capdev->get(cv::CAP_PROP_FPS);
+    // Initialize recording variables
+    bool is_recording = false;                         // Flag to indicate if recording is active
+    cv::VideoWriter video_writer;                      // Video writer object for saving video
+    int frame_width = refS.width * reduction;          // Width of the video frame
+    int frame_height = refS.height * reduction;        // Height of the video frame
+    double fps = 30.0;                                 // Default frames per second
+    double device_fps = capdev->get(cv::CAP_PROP_FPS); // Get device FPS
     if (device_fps > 0 && device_fps <= 60.0)
-    { // Only use device fps if it's reasonable
+    { // Use device FPS if it's reasonable
         fps = device_fps;
     }
-    int frame_count = 0;
-    const int MAX_FRAMES = static_cast<int>(5.0 * fps); // 5 seconds worth of frames
+    int frame_count = 0;                                // Count of frames recorded
+    const int MAX_FRAMES = static_cast<int>(5.0 * fps); // Maximum frames for 5 seconds
 
-    // Add these variables after other declarations
+    // Initialize caption text and text display parameters
     std::string caption_text;
-    const int TEXT_MARGIN_TOP = 50; // Pixels from top of frame
-    const double FONT_SCALE = 1.0;
-    const int FONT_THICKNESS = 2;
-    const cv::Scalar TEXT_COLOR(255, 255, 255); // White text
+    const int TEXT_MARGIN_TOP = 50;             // Margin from the top for text
+    const double FONT_SCALE = 1.0;              // Scale for font size
+    const int FONT_THICKNESS = 2;               // Thickness of the font
+    const cv::Scalar TEXT_COLOR(255, 255, 255); // Color for text (white)
 
     for (;;)
     {
+        // Capture a new frame from the video device
         *capdev >> original_frame;
 
+        // Check if the frame is empty
         if (original_frame.empty())
         {
             printf("frame is empty\n");
-            break;
+            break; // Exit loop if no frame is captured
         }
 
-        // Resize frame for speed
+        // Resize the frame for processing speed
         cv::resize(original_frame, original_frame, cv::Size(), reduction, reduction);
-        original_frame.copyTo(filter_frame);
+        original_frame.copyTo(filter_frame); // Copy original frame to filter frame
 
-        // Get depth information
+        // Get depth information from the network
         da_net.set_input(original_frame, scale_factor);
         da_net.run_network(depth_frame, original_frame.size());
-        cv::applyColorMap(depth_frame, depth_vis, cv::COLORMAP_INFERNO);
+        cv::applyColorMap(depth_frame, depth_vis, cv::COLORMAP_INFERNO); // Apply color map to depth frame
 
         // Store original frame for face detection
         cv::Mat working_frame = filter_frame.clone();
-        std::vector<cv::Rect> faces;
-        face_cascade.detectMultiScale(working_frame, faces);
+        std::vector<cv::Rect> faces;                         // Vector to hold detected faces
+        face_cascade.detectMultiScale(working_frame, faces); // Detect faces in the frame
 
-        // Apply filters in sequence
-
+        // Apply filters based on user input
+        // Check for each filter key and apply the corresponding filter
         // opencv default grayscale image function for the video frames
         if (opencv_grey_key)
         {
@@ -233,16 +236,16 @@ int main(int argc, char *argv[])
             }
         }
 
-        // Always show original video
+        // Always show the original video
         cv::imshow("Original Video", original_frame);
 
-        // Show depth if enabled
+        // Show depth visualization if enabled
         if (show_depth)
         {
             cv::imshow("Depth", depth_vis);
         }
 
-        // Add text overlay to frame if caption exists
+        // Add text overlay to the frame if caption exists
         if (!caption_text.empty())
         {
             // Calculate text size to center it
@@ -253,7 +256,7 @@ int main(int argc, char *argv[])
             cv::Point text_org((filter_frame.cols - text_size.width) / 2, // Center horizontally
                                TEXT_MARGIN_TOP + text_size.height);       // Top margin
 
-            // Draw black outline/border for better visibility
+            // Draw black outline for better visibility
             cv::putText(filter_frame, caption_text, text_org,
                         cv::FONT_HERSHEY_DUPLEX, FONT_SCALE,
                         cv::Scalar(0, 0, 0), FONT_THICKNESS + 1); // Thicker black outline
@@ -280,21 +283,22 @@ int main(int argc, char *argv[])
             {
                 // Stop recording after 5 seconds worth of frames
                 is_recording = false;
-                video_writer.release();
+                video_writer.release(); // Release the video writer
                 printf("Recording stopped - 5 second limit reached\n");
             }
             else
             {
                 // Write the frame with applied filters
-                video_writer.write(filter_frame); // This will include the text overlay
-                frame_count++;
+                video_writer.write(filter_frame);                           // This will include the text overlay
+                frame_count++;                                              // Increment frame count
                 printf("Recording frame %d/%d\n", frame_count, MAX_FRAMES); // Added progress indicator
             }
         }
 
-        // Handle key presses
-        key = cv::waitKey(10);
+        // Handle key presses for user input
+        key = cv::waitKey(10); // Wait for a key press for 10 ms
 
+        // Check for specific key presses to control the application
         if (key == 'q')
         {
             if (is_recording)
@@ -413,12 +417,13 @@ int main(int argc, char *argv[])
         }
         else if (key == 's')
         {
-            cv::imwrite("depth_image.png", depth_vis);
-            if (depth_filter)
-            {
-                cv::imwrite("depth_filtered.png", filter_frame);
-            }
-            printf("Images saved\n");
+            cv::imwrite("../images/original.png", original_frame);
+            cv::imwrite("../images/filter.png", filter_frame);
+            // if (depth_filter)
+            // {
+            //     cv::imwrite("depth_filtered.png", filter_frame);
+            // }
+            // printf("Images saved\n");
         }
         else if (key == 'i')
         {
@@ -464,6 +469,6 @@ int main(int argc, char *argv[])
         }
     }
 
-    delete capdev;
-    return 0;
+    delete capdev; // Clean up the video capture device
+    return 0;      // Exit the program
 }
