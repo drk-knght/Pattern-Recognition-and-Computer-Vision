@@ -47,10 +47,9 @@ int main(int argc, char *argv[])
     cv::namedWindow("Filter Video", 1);
     cv::namedWindow("Depth", 1);
 
-
     int key = 0;
 
-    // add some more keys for extension part like depth, fog effect, gray face,etc.  
+    // add some more keys for extension part like depth, fog effect, gray face,etc.
     bool show_depth = false;
     bool depth_filter = false;
     bool grey_face = false;
@@ -65,7 +64,8 @@ int main(int argc, char *argv[])
     int sobel_x_key = 0;
     int sobel_y_key = 0;
     int blur_quantize_key = 0;
-    int magnitude_key=0;
+    int magnitude_key = 0;
+    int face_detect_key = 0;
 
     // New filter keys
     bool isolate_red = false;     // Flag for isolating red colors
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     bool is_recording = false;
     cv::VideoWriter video_writer;
 
-    // Reduced frame dimensions for display to for faster computations 
+    // Reduced frame dimensions for display to for faster computations
     int frame_width = refS.width * reduction;
     int frame_height = refS.height * reduction;
 
@@ -184,13 +184,14 @@ int main(int argc, char *argv[])
             cv::imshow("Filter Video", filter_frame);
         }
 
-        else if(magnitude_key){
-            cv::Mat sx=cv::Mat::zeros(original_frame.size(),CV_16SC3);
-            cv::Mat sy=cv::Mat::zeros(original_frame.size(),CV_16SC3);
-            sobelX3x3(original_frame,sx);
-            sobelY3x3(original_frame,sy);
-            magnitude(sx,sy,filter_frame);
-            cv::imshow("Filter Video",filter_frame);
+        else if (magnitude_key)
+        {
+            cv::Mat sx = cv::Mat::zeros(original_frame.size(), CV_16SC3);
+            cv::Mat sy = cv::Mat::zeros(original_frame.size(), CV_16SC3);
+            sobelX3x3(original_frame, sx);
+            sobelY3x3(original_frame, sy);
+            magnitude(sx, sy, filter_frame);
+            cv::imshow("Filter Video", filter_frame);
         }
 
         // Isolate red color to get only red pigments of the image
@@ -205,7 +206,7 @@ int main(int argc, char *argv[])
             filter_frame = cv::Scalar(255, 255, 255) - filter_frame;
         }
 
-        // Grey background with colorful faces filter 
+        // Grey background with colorful faces filter
         else if (grey_face && !faces.empty())
         {
             cv::Mat grey;
@@ -325,7 +326,7 @@ int main(int argc, char *argv[])
             break;
         }
 
-        // display the depth of the image 
+        // display the depth of the image
         else if (key == 'd')
         {
             show_depth = !show_depth;
@@ -356,7 +357,7 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             sobel_y_key = 0;
             blur_quantize_key = 0;
-            magnitude_key=0;
+            magnitude_key = 0;
         }
 
         // checks if user pressed custom greeyscale image hotkey
@@ -369,7 +370,7 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             sobel_y_key = 0;
             blur_quantize_key = 0;
-            magnitude_key=0;
+            magnitude_key = 0;
         }
 
         // checks if user pressed sepia filter hotkey
@@ -382,7 +383,7 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             sobel_y_key = 0;
             blur_quantize_key = 0;
-            magnitude_key=0;
+            magnitude_key = 0;
         }
 
         // update the blur filter key for the video frames
@@ -395,7 +396,7 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             sobel_y_key = 0;
             blur_quantize_key = 0;
-            magnitude_key=0;
+            magnitude_key = 0;
         }
 
         // update the sobel x filter key for the video frames
@@ -409,7 +410,7 @@ int main(int argc, char *argv[])
             sobel_y_key = 0;
             blur_quantize_key = 0;
             sobel_x_key += 1;
-            magnitude_key=0;
+            magnitude_key = 0;
         }
 
         // update the sobel y filter key for the video frames
@@ -423,7 +424,7 @@ int main(int argc, char *argv[])
             sobel_x_key = 0;
             blur_quantize_key = 0;
             sobel_y_key += 1;
-            magnitude_key=0;
+            magnitude_key = 0;
         }
 
         // update the blur quantization filter key for the video frames
@@ -436,14 +437,34 @@ int main(int argc, char *argv[])
             sepia_key = 0;
             sobel_y_key = 0;
             sobel_x_key = 0;
-            magnitude_key=0;
+            magnitude_key = 0;
         }
-        else if(key=='m'){
-            magnitude_key+=1;
-            blur_quantize_key=0;
-            blur_key=0; opencv_grey_key=0;
-            custom_grey_key=0; sepia_key=0;
-            sobel_y_key=0; sobel_x_key=0;
+        else if (key == 'm')
+        {
+            magnitude_key += 1;
+            blur_quantize_key = 0;
+            blur_key = 0;
+            opencv_grey_key = 0;
+            custom_grey_key = 0;
+            sepia_key = 0;
+            sobel_y_key = 0;
+            sobel_x_key = 0;
+        }
+
+        else if (key == 'f')
+        {
+            // convert to grayscale for face detection
+            cv::Mat grey;
+            cv::cvtColor(original_frame, grey, cv::COLOR_BGR2GRAY);
+
+            // detect faces
+            std::vector<cv::Rect> faces;
+            detectFaces(grey, faces);
+
+            // draw boxes around faces
+            drawBoxes(original_frame, faces);
+
+            cv::imshow("Filter Video", original_frame);
         }
 
         // check if user pressed hotkey to blur outside of faces
