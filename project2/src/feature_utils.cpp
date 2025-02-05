@@ -117,7 +117,6 @@ float calculateHistIntersection(const std::vector<float> &hist1, const std::vect
 // Spatial histogram implementation
 std::vector<float> extractSpatialColorHistogram(const cv::Mat &img)
 {
-
     // Parameters for histogram
     int histSize = 8;
     float range[] = {0, 256};
@@ -134,20 +133,32 @@ std::vector<float> extractSpatialColorHistogram(const cv::Mat &img)
 
     for (const cv::Mat &half : halves)
     {
-        std::vector<cv::Mat> channels;
-        cv::split(half, channels);
+        // Direct access to pixels using BGR order
+        std::vector<std::vector<float>> channel_hists(3, std::vector<float>(histSize, 0.0f));
+        float total_pixels = half.rows * half.cols;
 
-        // Calculate histogram for each channel
-        for (int i = 0; i < 3; i++)
+        // Count pixels for each channel directly
+        for (int y = 0; y < half.rows; y++)
         {
-            cv::Mat hist;
-            cv::calcHist(&channels[i], 1, 0, cv::Mat(), hist, 1, &histSize, &histRange);
-            cv::normalize(hist, hist, 0, 1, cv::NORM_MINMAX);
-
-            // Add to feature vector
-            for (int j = 0; j < histSize; j++)
+            for (int x = 0; x < half.cols; x++)
             {
-                combined_features.push_back(hist.at<float>(j));
+                cv::Vec3b pixel = half.at<cv::Vec3b>(y, x);
+
+                // Calculate bin for each channel (B,G,R)
+                for (int c = 0; c < 3; c++)
+                {
+                    int bin = (pixel[c] * histSize) / 256;
+                    channel_hists[c][bin]++;
+                }
+            }
+        }
+
+        // Normalize and add all channels to feature vector
+        for (auto &hist : channel_hists)
+        {
+            for (float bin_count : hist)
+            {
+                combined_features.push_back(bin_count / total_pixels);
             }
         }
     }
@@ -276,33 +287,48 @@ std::vector<float> extractTextureHistogram(const cv::Mat &img)
 
     // Calculate magnitude
     cv::Mat magnitude(img.size(), CV_32F);
-    for (int i = 0; i < img.rows; i++) {
-        for (int j = 0; j < img.cols; j++) {
+    for (int i = 0; i < img.rows; i++)
+    {
+        for (int j = 0; j < img.cols; j++)
+        {
             float sumSquares = 0.0f;
-            for (int c = 0; c < 3; c++) {
+            for (int c = 0; c < 3; c++)
+            {
                 float dx = sobelX_float.at<cv::Vec3f>(i, j)[c];
                 float dy = sobelY_float.at<cv::Vec3f>(i, j)[c];
-                sumSquares += dx*dx + dy*dy;
+                sumSquares += dx * dx + dy * dy;
             }
             magnitude.at<float>(i, j) = std::sqrt(sumSquares);
         }
     }
 
-    // Calculate histogram of gradient magnitudes
-    const int hist_size = 32; // Number of bins
-    float range[] = {0, 512}; // Range of magnitude values
-    const float *hist_range = {range};
+    // Calculate histogram of gradient magnitudes manually
+    std::vector<float> hist(32, 0.0f); // 32 bins initialized to 0
+    float bin_width = 512.0f / 32.0f;  // Width of each bin (512/32)
+    float total_pixels = 0.0f;
 
-    cv::Mat hist;
-    cv::calcHist(&magnitude, 1, 0, cv::Mat(), hist, 1, &hist_size, &hist_range);
+    // Count values into bins
+    for (int i = 0; i < magnitude.rows; i++)
+    {
+        for (int j = 0; j < magnitude.cols; j++)
+        {
+            float mag = magnitude.at<float>(i, j);
+            int bin = std::min(static_cast<int>(mag / bin_width), 31); // Clamp to last bin if exceeds range
+            hist[bin] += 1.0f;
+            total_pixels += 1.0f;
+        }
+    }
 
-    // Normalize histogram
-    cv::normalize(hist, hist, 1, 0, cv::NORM_L1);
+    // Normalize histogram (each bin value divided by total count)
+    if (total_pixels > 0)
+    {
+        for (float &bin : hist)
+        {
+            bin /= total_pixels;
+        }
+    }
 
-    // Convert to vector
-    std::vector<float> features;
-    hist.copyTo(features);
-    return features;
+    return hist;
 }
 
 std::vector<float> extractCombinedFeatures(const cv::Mat &img)
