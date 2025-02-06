@@ -24,4 +24,11 @@ std::vector<float> extractORBFeatures(const cv::Mat &img);
 std::vector<float> extractLBPFeatures(const cv::Mat &img);
 
 std::vector<float> extractSSIMFeatures(const cv::Mat &img);
+
+// Add this declaration
+std::vector<float> extractColorSpatialVariance(const cv::Mat &img);
+float calculateSpatialVarianceDistance(const std::vector<float> &feat1, const std::vector<float> &feat2);
+
+std::vector<float> extractCombinedDnnSpatialVarianceFeatures(const cv::Mat &img);
+
 #endif

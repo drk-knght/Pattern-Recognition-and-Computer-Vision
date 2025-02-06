@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     {
         std::cout << "Usage: " << argv[0]
                   << " <target_image> <database_directory> <method> <top_N>" << std::endl;
-        std::cout << "Methods: baseline, hist, spatialhist, combined, orb, lbp, ssim or '--compare-all'" << std::endl;
+        std::cout << "Methods: baseline, hist, spatialhist, combined, orb, lbp, ssim, spatialvar, dnndsv or '--compare-all'" << std::endl;
         return -1;
     }
 
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
     if (methodArg == "all" || methodArg == "--compare-all")
     {
         // List of supported methods (depth histogram removed).
-        std::vector<std::string> methods = {"baseline", "hist", "spatialhist", "combined", "orb", "lbp", "ssim"};
+        std::vector<std::string> methods = {"baseline", "hist", "spatialhist", "combined", "orb", "lbp", "ssim", "spatialvar", "dnndsv"};
 
         // Print table header.
         std::cout << std::left << std::setw(15) << "Method"
@@ -108,6 +108,10 @@ int main(int argc, char *argv[])
                 targetFeatures = extractLBPFeatures(targetImg);
             else if (m == "ssim")
                 targetFeatures = extractSSIMFeatures(targetImg);
+            else if (m == "spatialvar")
+                targetFeatures = extractColorSpatialVariance(targetImg);
+            else if (m == "dnndsv")
+                targetFeatures = extractCombinedDnnSpatialVarianceFeatures(targetImg);
 
             // Loop over all database images and compute features + distance.
             std::vector<Match> matches;
@@ -135,10 +139,16 @@ int main(int argc, char *argv[])
                     features = extractLBPFeatures(img);
                 else if (m == "ssim")
                     features = extractSSIMFeatures(img);
+                else if (m == "spatialvar")
+                    features = extractColorSpatialVariance(img);
+                else if (m == "dnndsv")
+                    features = extractCombinedDnnSpatialVarianceFeatures(img);
 
                 double d = 0.0;
-                if (m == "baseline" || m == "orb")
+                if (m == "baseline" || m == "orb" || m == "dnndsv")
                     d = computeSSD(targetFeatures, features);
+                else if (m == "spatialvar")
+                    d = calculateSpatialVarianceDistance(targetFeatures, features);
                 else
                     d = histogramIntersectionDistance(targetFeatures, features);
 
@@ -179,6 +189,10 @@ int main(int argc, char *argv[])
         targetFeatures = extractLBPFeatures(targetImg);
     else if (methodArg == "ssim")
         targetFeatures = extractSSIMFeatures(targetImg);
+    else if (methodArg == "spatialvar")
+        targetFeatures = extractColorSpatialVariance(targetImg);
+    else if (methodArg == "dnndsv")
+        targetFeatures = extractCombinedDnnSpatialVarianceFeatures(targetImg);
     else
     {
         std::cerr << "Unknown method: " << methodArg << std::endl;
@@ -210,10 +224,16 @@ int main(int argc, char *argv[])
             features = extractLBPFeatures(img);
         else if (methodArg == "ssim")
             features = extractSSIMFeatures(img);
+        else if (methodArg == "spatialvar")
+            features = extractColorSpatialVariance(img);
+        else if (methodArg == "dnndsv")
+            features = extractCombinedDnnSpatialVarianceFeatures(img);
 
         double d = 0.0;
-        if (methodArg == "baseline" || methodArg == "orb")
+        if (methodArg == "baseline" || methodArg == "orb" || methodArg == "dnndsv")
             d = computeSSD(targetFeatures, features);
+        else if (methodArg == "spatialvar")
+            d = calculateSpatialVarianceDistance(targetFeatures, features);
         else
             d = histogramIntersectionDistance(targetFeatures, features);
 

@@ -1,5 +1,13 @@
 #include "feature_utils.h"
 
+#include <opencv2/dnn.hpp> // New: for DNN support
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+#include <cmath>
+#include <algorithm>
+#include <limits>
+#include <iostream>
+
 std::vector<float> extractCenterPatch(const cv::Mat &img)
 {
     std::vector<float> features;
@@ -368,4 +376,164 @@ float calculateCombinedDistance(const std::vector<float> &feat1, const std::vect
 
     // Weight both equally and return combined similarity
     return (color_sim + texture_sim) / 2.0f;
+}
+
+std::vector<float> extractColorSpatialVariance(const cv::Mat &img)
+{
+    // Convert the image to the HSV colorspace.
+    cv::Mat hsv;
+    cv::cvtColor(img, hsv, cv::COLOR_BGR2HSV);
+
+    // Threshold for a yellow color range typical of bananas.
+    // (Adjust these values if your bananas vary in color.)
+    cv::Scalar lower_yellow(15, 100, 100);
+    cv::Scalar upper_yellow(35, 255, 255);
+    cv::Mat mask;
+    cv::inRange(hsv, lower_yellow, upper_yellow, mask);
+
+    // Find contours in the mask.
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+    // If a yellow region was detected, pick the largest one as the region of interest.
+    cv::Rect roi;
+    if (!contours.empty())
+    {
+        double max_area = 0.0;
+        int max_idx = -1;
+        for (size_t i = 0; i < contours.size(); i++)
+        {
+            double area = cv::contourArea(contours[i]);
+            if (area > max_area)
+            {
+                max_area = area;
+                max_idx = static_cast<int>(i);
+            }
+        }
+        if (max_idx >= 0)
+            roi = cv::boundingRect(contours[max_idx]);
+    }
+
+    // If a valid ROI was found (and not trivially small), crop to that region.
+    cv::Mat candidate;
+    if (roi.area() > 0 && roi.width > 10 && roi.height > 10)
+    {
+        candidate = img(roi);
+    }
+    else
+    {
+        // Fall back to the entire image if no valid yellow region is detected.
+        candidate = img;
+    }
+
+    // Resize to a fixed size so that grid cells are comparable across images.
+    cv::Mat resized;
+    cv::resize(candidate, resized, cv::Size(256, 256));
+
+    // Convert to a float image in the range [0, 1] and split into channels.
+    cv::Mat float_img;
+    resized.convertTo(float_img, CV_32F, 1.0 / 255.0);
+    std::vector<cv::Mat> channels;
+    cv::split(float_img, channels);
+
+    // Create a grid (4x4) for each channel.
+    const int grid_size = 4;
+    int cell_height = resized.rows / grid_size;
+    int cell_width = resized.cols / grid_size;
+    std::vector<float> features;
+
+    // For each color channel (B, G, R) in order.
+    for (int c = 0; c < 3; c++)
+    {
+        // For each grid cell
+        for (int i = 0; i < grid_size; i++)
+        {
+            for (int j = 0; j < grid_size; j++)
+            {
+                int x = j * cell_width;
+                int y = i * cell_height;
+                cv::Rect cell_rect(x, y, cell_width, cell_height);
+                cv::Mat cell = channels[c](cell_rect);
+
+                cv::Scalar mean, stddev;
+                cv::meanStdDev(cell, mean, stddev);
+
+                // Append the mean and the variance (stddev^2) for this cell.
+                features.push_back(static_cast<float>(mean[0]));
+                features.push_back(static_cast<float>(stddev[0] * stddev[0]));
+            }
+        }
+    }
+
+    return features;
+}
+
+float calculateSpatialVarianceDistance(const std::vector<float> &feat1, const std::vector<float> &feat2)
+{
+    if (feat1.size() != feat2.size())
+    {
+        return std::numeric_limits<float>::max();
+    }
+
+    float distance = 0.0f;
+    // Weight for differences in variance (tweak this if needed).
+    const float variance_weight = 1.5f;
+
+    // Each grid cell is represented by two consecutive features: (mean, variance)
+    for (size_t i = 0; i < feat1.size(); i += 2)
+    {
+        float mean_diff = feat1[i] - feat2[i];
+        float var_diff = feat1[i + 1] - feat2[i + 1];
+
+        // Sum of squared differences: treat variance differences with extra weight.
+        distance += (mean_diff * mean_diff) + (variance_weight * var_diff * var_diff);
+    }
+
+    return distance;
+}
+
+// -----------------------------------------------------------------------------
+// New DNN and combined feature functions
+// -----------------------------------------------------------------------------
+
+// Function to extract features using a deep neural network.
+// Requires a pretrained model (e.g., an ONNX model). Adjust model path and preprocessing as needed.
+std::vector<float> extractDnnFeatures(const cv::Mat &img)
+{
+    // Load the pretrained network only once.
+    static cv::dnn::Net net = cv::dnn::readNetFromONNX("../resnet18-v2-7.onnx");
+    if (net.empty())
+    {
+        std::cerr << "Error: Unable to load the DNN model." << std::endl;
+        return std::vector<float>();
+    }
+
+    // Preprocess the image: resize to 224x224 and normalize.
+    cv::Mat resized;
+    cv::resize(img, resized, cv::Size(224, 224));
+    cv::Mat blob = cv::dnn::blobFromImage(resized, 1.0 / 255.0, cv::Size(224, 224), cv::Scalar(0, 0, 0), true, false);
+
+    net.setInput(blob);
+    cv::Mat output = net.forward();
+
+    std::vector<float> dnn_features;
+    dnn_features.assign((float *)output.datastart, (float *)output.dataend);
+    return dnn_features;
+}
+
+// Function to extract a combined feature vector from an image by fusing DNN and spatial variance features.
+std::vector<float> extractCombinedDnnSpatialVarianceFeatures(const cv::Mat &img)
+{
+    // Extract DNN features.
+    std::vector<float> dnn_features = extractDnnFeatures(img);
+    // Extract spatial variance features.
+    std::vector<float> spatial_features = extractColorSpatialVariance(img);
+
+    // Fuse the features by simple concatenation.
+    std::vector<float> combined_features;
+    combined_features.reserve(dnn_features.size() + spatial_features.size());
+    combined_features.insert(combined_features.end(), dnn_features.begin(), dnn_features.end());
+    combined_features.insert(combined_features.end(), spatial_features.begin(), spatial_features.end());
+
+    return combined_features;
 }
