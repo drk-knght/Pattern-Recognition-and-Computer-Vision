@@ -34,6 +34,17 @@ add_executable(image_matcher
     src/image_matcher.cpp
     src/csv_util.cpp
     src/feature_utils.cpp
+    src/ssim_extractor.cpp
+)
+
+# Create matching pipeline executable
+add_executable(matching_pipeline 
+    src/matching_pipeline.cpp
+    src/csv_util.cpp
+    src/feature_utils.cpp
+    src/orb_extractor.cpp
+    src/lbp_extractor.cpp
+    src/ssim_extractor.cpp
 )
 
 # Link libraries for feature extractor
@@ -60,13 +71,26 @@ target_link_libraries(image_matcher
     /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib
 )
 
-# Set properties for both executables
-foreach(target feature_extractor image_matcher)
+# Link libraries for matching pipeline
+target_link_libraries(matching_pipeline 
+    PRIVATE
+    ${OpenCV_LIBS}
+    opencv_core
+    opencv_highgui
+    opencv_imgproc
+    opencv_videoio
+    opencv_objdetect
+    /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib
+)
+
+# Link libraries for test depth histogram
+
+# Set properties for executables
+foreach(target feature_extractor image_matcher matching_pipeline)
     target_compile_definitions(${target} 
         PRIVATE
         ENABLE_PRECOMPILED_HEADERS=OFF
     )
-
     set_target_properties(${target} 
         PROPERTIES
         CXX_STANDARD 14

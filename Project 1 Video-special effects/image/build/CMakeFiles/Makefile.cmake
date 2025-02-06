@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
   "/Users/agni/Projects/Pattern-Recognition-and-Computer-Vision/Project 1 Video-special effects/image/CMakeLists.txt"
-  "CMakeFiles/3.31.4/CMakeCCompiler.cmake"
-  "CMakeFiles/3.31.4/CMakeCXXCompiler.cmake"
-  "CMakeFiles/3.31.4/CMakeSystem.cmake"
+  "CMakeFiles/3.31.5/CMakeCCompiler.cmake"
+  "CMakeFiles/3.31.5/CMakeCXXCompiler.cmake"
+  "CMakeFiles/3.31.5/CMakeSystem.cmake"
   "/opt/homebrew/lib/cmake/opencv4/OpenCVConfig-version.cmake"
   "/opt/homebrew/lib/cmake/opencv4/OpenCVConfig.cmake"
   "/opt/homebrew/lib/cmake/opencv4/OpenCVModules-release.cmake"
@@ -134,11 +134,11 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/3.31.4/CMakeSystem.cmake"
-  "CMakeFiles/3.31.4/CMakeCCompiler.cmake"
-  "CMakeFiles/3.31.4/CMakeCXXCompiler.cmake"
-  "CMakeFiles/3.31.4/CMakeCCompiler.cmake"
-  "CMakeFiles/3.31.4/CMakeCXXCompiler.cmake"
+  "CMakeFiles/3.31.5/CMakeSystem.cmake"
+  "CMakeFiles/3.31.5/CMakeCCompiler.cmake"
+  "CMakeFiles/3.31.5/CMakeCXXCompiler.cmake"
+  "CMakeFiles/3.31.5/CMakeCCompiler.cmake"
+  "CMakeFiles/3.31.5/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

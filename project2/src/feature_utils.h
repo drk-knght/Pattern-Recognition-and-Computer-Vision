@@ -11,11 +11,17 @@ std::vector<float> extractColorHistogram(const cv::Mat &img);
 float calculateHistIntersection(const std::vector<float> &hist1, const std::vector<float> &hist2);
 
 std::vector<float> extractSpatialColorHistogram(const cv::Mat &img);
-float calculateSpatialHistIntersection(const std::vector<float>& hist1, const std::vector<float>& hist2);
+float calculateSpatialHistIntersection(const std::vector<float> &hist1, const std::vector<float> &hist2);
 
 std::vector<float> extractTextureHistogram(const cv::Mat &img);
 std::vector<float> extractCombinedFeatures(const cv::Mat &img);
 float calculateCombinedDistance(const std::vector<float> &feat1, const std::vector<float> &feat2);
 
+// New ORB feature extraction function declaration.
+std::vector<float> extractORBFeatures(const cv::Mat &img);
 
+// New LBP feature extraction function declaration.
+std::vector<float> extractLBPFeatures(const cv::Mat &img);
+
+std::vector<float> extractSSIMFeatures(const cv::Mat &img);
 #endif
