@@ -3,7 +3,7 @@
     Om Agarwal
     Feb 8 2025
     CS5330- Pattern Recognition & Computer Vision
-    This file is the entry point for question 6 of the assignment.
+    This file extracts DNN features from a target image using a pre-trained ONNX model, compares them to those from a database of images using SSD, and outputs the top matching images.
 */
 
 #include <iostream>

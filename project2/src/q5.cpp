@@ -3,7 +3,7 @@
     Om Agarwal
     Feb 8 2025
     CS5330- Pattern Recognition & Computer Vision
-    Q5 entry point: Reads image features from a CSV file and identifies top matching images for a target using a specified distance metric.
+    Reads image features from a CSV file and identifies top matching images for a target using a specified distance metric.
 */
 
 #include <iostream>

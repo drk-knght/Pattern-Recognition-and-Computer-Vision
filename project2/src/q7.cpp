@@ -3,7 +3,7 @@
     Om Agarwal
     Feb 8 2025
     CS5330- Pattern Recognition & Computer Vision
-    This file is the entry point for question 7 of the assignment.
+    This file implements image matching using color histograms, DNN embeddings, and custom layers.
 */
 
 #include <opencv2/opencv.hpp>
