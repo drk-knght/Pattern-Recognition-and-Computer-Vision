@@ -2,6 +2,8 @@ Group Members Name-
 Om Agarwal
 Agnibha Chatterjee
 
+This GDrive link has the models used - https://drive.google.com/drive/folders/1iLhaYpw3POhSa1Bfk4kTQBo6jUQZzlm9?usp=sharing
+
 Steps to run the code-
 1. mkdir build
 2. cd build
