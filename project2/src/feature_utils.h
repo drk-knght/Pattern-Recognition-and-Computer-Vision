@@ -1,3 +1,11 @@
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file declares utility functions for feature extraction and distance calculations used in the image matching pipeline.
+*/
+
 #ifndef FEATURE_UTILS_H
 #define FEATURE_UTILS_H
 

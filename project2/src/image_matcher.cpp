@@ -3,7 +3,7 @@
     Om Agarwal
     Feb 8 2025
     CS5330- Pattern Recognition & Computer Vision
-    This file is the entry point for question 5 of the assignment.
+    This file performs image matching by comparing extracted features from a target image with a database of image features and outputs the top matching results.
 */
 
 #include <cstdio>

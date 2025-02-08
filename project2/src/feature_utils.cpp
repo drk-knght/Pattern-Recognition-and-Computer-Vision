@@ -1,3 +1,11 @@
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file implements utility functions for feature extraction and distance calculations used in the image matching pipeline.
+*/
+#include <cstdio>
 #include "feature_utils.h"
 
 #include <opencv2/dnn.hpp> // New: for DNN support

@@ -3,7 +3,7 @@
     Om Agarwal
     Feb 8 2025
     CS5330- Pattern Recognition & Computer Vision
-    This file is the entry point for question 5 of the assignment.
+    This file runs the matching pipeline by evaluating various image matching methods and outputs ranked results.
 */
 
 #include <opencv2/opencv.hpp>

@@ -1,14 +1,9 @@
 /*
-Bruce A. Maxwell
-
-CS 5330 Computer Vision
-Spring 2021
-
-CPP functions for reading CSV files with a specific format
-- first column is a string containing a filename or path
-- every other column is a number
-
-The function returns a std::vector of char* for the filenames and a 2D std::vector of floats for the data
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file implements functions for reading and writing CSV files in a specific format: the first column is a filename and the remaining columns contain numerical feature data.
 */
 
 #include <cstdio>
@@ -21,16 +16,20 @@ The function returns a std::vector of char* for the filenames and a 2D std::vect
 
   The function returns false if it is successfully read. It returns true if it reaches the end of the line or the file.
  */
-int getstring( FILE *fp, char os[] ) {
+int getstring(FILE *fp, char os[])
+{
   int p = 0;
   int eol = 0;
-  
-  for(;;) {
-    char ch = fgetc( fp );
-    if( ch == ',' ) {
+
+  for (;;)
+  {
+    char ch = fgetc(fp);
+    if (ch == ',')
+    {
       break;
     }
-    else if( ch == '\n' || ch == EOF ) {
+    else if (ch == '\n' || ch == EOF)
+    {
       eol = 1;
       break;
     }
@@ -41,31 +40,35 @@ int getstring( FILE *fp, char os[] ) {
   // printf("\n"); // uncomment for debugging
   os[p] = '\0';
 
-  return(eol); // return true if eol
+  return (eol); // return true if eol
 }
 
-int getint(FILE *fp, int *v) {
+int getint(FILE *fp, int *v)
+{
   char s[256];
   int p = 0;
   int eol = 0;
 
-  for(;;) {
-    char ch = fgetc( fp );
-    if( ch == ',') {
+  for (;;)
+  {
+    char ch = fgetc(fp);
+    if (ch == ',')
+    {
       break;
     }
-    else if(ch == '\n' || ch == EOF) {
+    else if (ch == '\n' || ch == EOF)
+    {
       eol = 1;
       break;
     }
-      
+
     s[p] = ch;
     p++;
   }
   s[p] = '\0'; // terminator
   *v = atoi(s);
 
-  return(eol); // return true if eol
+  return (eol); // return true if eol
 }
 
 /*
@@ -75,28 +78,32 @@ int getint(FILE *fp, int *v) {
 
   The function returns true if it reaches the end of a line or the file
  */
-int getfloat(FILE *fp, float *v) {
+int getfloat(FILE *fp, float *v)
+{
   char s[256];
   int p = 0;
   int eol = 0;
 
-  for(;;) {
-    char ch = fgetc( fp );
-    if( ch == ',') {
+  for (;;)
+  {
+    char ch = fgetc(fp);
+    if (ch == ',')
+    {
       break;
     }
-    else if(ch == '\n' || ch == EOF) {
+    else if (ch == '\n' || ch == EOF)
+    {
       eol = 1;
       break;
     }
-      
+
     s[p] = ch;
     p++;
   }
   s[p] = '\0'; // terminator
   *v = atof(s);
 
-  return(eol); // return true if eol
+  return (eol); // return true if eol
 }
 
 /*
@@ -111,37 +118,41 @@ int getfloat(FILE *fp, float *v) {
 
   The function returns a non-zero value in case of an error.
  */
-int append_image_data_csv( char *filename, char *image_filename, std::vector<float> &image_data, int reset_file ) {
+int append_image_data_csv(char *filename, char *image_filename, std::vector<float> &image_data, int reset_file)
+{
   char buffer[256];
   char mode[8];
   FILE *fp;
 
   strcpy(mode, "a");
 
-  if( reset_file ) {
-    strcpy( mode, "w" );
+  if (reset_file)
+  {
+    strcpy(mode, "w");
   }
-  
-  fp = fopen( filename, mode );
-  if(!fp) {
-    printf("Unable to open output file %s\n", filename );
+
+  fp = fopen(filename, mode);
+  if (!fp)
+  {
+    printf("Unable to open output file %s\n", filename);
     exit(-1);
   }
 
   // write the filename and the feature vector to the CSV file
   strcpy(buffer, image_filename);
-  std::fwrite(buffer, sizeof(char), strlen(buffer), fp );
-  for(int i=0;i<image_data.size();i++) {
+  std::fwrite(buffer, sizeof(char), strlen(buffer), fp);
+  for (int i = 0; i < image_data.size(); i++)
+  {
     char tmp[256];
-    sprintf(tmp, ",%.4f", image_data[i] );
-    std::fwrite(tmp, sizeof(char), strlen(tmp), fp );
+    sprintf(tmp, ",%.4f", image_data[i]);
+    std::fwrite(tmp, sizeof(char), strlen(tmp), fp);
   }
-      
+
   std::fwrite("\n", sizeof(char), 1, fp); // EOL
 
   fclose(fp);
-  
-  return(0);
+
+  return (0);
 }
 
 /*
@@ -158,55 +169,63 @@ int append_image_data_csv( char *filename, char *image_filename, std::vector<flo
 
   The function returns a non-zero value if something goes wrong.
  */
-int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::vector<std::vector<float>> &data, int echo_file ) {
+int read_image_data_csv(char *filename, std::vector<char *> &filenames, std::vector<std::vector<float>> &data, int echo_file)
+{
   FILE *fp;
   float fval;
   char img_file[256];
 
   fp = fopen(filename, "r");
-  if( !fp ) {
+  if (!fp)
+  {
     printf("Unable to open feature file\n");
-    return(-1);
+    return (-1);
   }
 
   printf("Reading %s\n", filename);
-  for(;;) {
+  for (;;)
+  {
     std::vector<float> dvec;
-    
-    
+
     // read the filename
-    if( getstring( fp, img_file ) ) {
+    if (getstring(fp, img_file))
+    {
       break;
     }
     // printf("Evaluting %s\n", filename);
 
     // read the whole feature file into memory
-    for(;;) {
+    for (;;)
+    {
       // get next feature
-      float eol = getfloat( fp, &fval );
-      dvec.push_back( fval );
-      if( eol ) break;
+      float eol = getfloat(fp, &fval);
+      dvec.push_back(fval);
+      if (eol)
+        break;
     }
     // printf("read %lu features\n", dvec.size() );
 
     data.push_back(dvec);
 
-    char *fname = new char[strlen(img_file)+1];
+    char *fname = new char[strlen(img_file) + 1];
     strcpy(fname, img_file);
-    filenames.push_back( fname );
+    filenames.push_back(fname);
   }
   fclose(fp);
   printf("Finished reading CSV file\n");
 
-  if(echo_file) {
-    for(int i=0;i<data.size();i++) {
-      for(int j=0;j<data[i].size();j++) {
-	printf("%.4f  ", data[i][j] );
+  if (echo_file)
+  {
+    for (int i = 0; i < data.size(); i++)
+    {
+      for (int j = 0; j < data[i].size(); j++)
+      {
+        printf("%.4f  ", data[i][j]);
       }
       printf("\n");
     }
     printf("\n");
   }
 
-  return(0);
+  return (0);
 }

@@ -3,7 +3,7 @@
     Om Agarwal
     Feb 8 2025
     CS5330- Pattern Recognition & Computer Vision
-    This file is the entry point for question 7 of the assignment.
+    This file extracts structural similarity (SSIM) based features from an input image and computes a histogram representation of the SSIM map.
 */
 
 #include <opencv2/opencv.hpp>

@@ -1,3 +1,10 @@
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file extracts features from images in a directory and writes them to a CSV file using a specified feature extraction method.
+*/
 #include <cstdio>
 #include <cstring>
 #include <dirent.h>
@@ -20,7 +27,8 @@ int main(int argc, char *argv[])
     char *feature_type = argv[3];
 
     DIR *dirp = opendir(dirname);
-    if (!dirp){
+    if (!dirp)
+    {
         printf("Cannot open directory %s\n", dirname);
         exit(-1);
     }
@@ -39,27 +47,33 @@ int main(int argc, char *argv[])
 
             // Read image in color
             cv::Mat img = cv::imread(buffer);
-            if (img.empty()) {
+            if (img.empty())
+            {
                 printf("Failed to read image: %s\n", buffer);
                 continue;
             }
 
             std::vector<float> features;
-            
+
             // Extract features based on type
-            if (strcmp(feature_type, "ssd") == 0) {
+            if (strcmp(feature_type, "ssd") == 0)
+            {
                 features = extractCenterPatch(img);
             }
-            else if (strcmp(feature_type, "hist") == 0) {
+            else if (strcmp(feature_type, "hist") == 0)
+            {
                 features = extractColorHistogram(img);
             }
-            else if (strcmp(feature_type, "spatialhist") == 0) {
+            else if (strcmp(feature_type, "spatialhist") == 0)
+            {
                 features = extractSpatialColorHistogram(img);
             }
-            else if (strcmp(feature_type, "combined") == 0) {
+            else if (strcmp(feature_type, "combined") == 0)
+            {
                 features = extractCombinedFeatures(img);
             }
-            else {
+            else
+            {
                 printf("Unknown feature type: %s\n", feature_type);
                 closedir(dirp);
                 exit(-1);

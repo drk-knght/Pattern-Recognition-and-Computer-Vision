@@ -3,7 +3,7 @@
     Om Agarwal
     Feb 8 2025
     CS5330- Pattern Recognition & Computer Vision
-    This file is the entry point for question 6 of the assignment.
+    This file extracts Local Binary Pattern (LBP) features from an input image and outputs a normalized histogram.
 */
 
 #include <opencv2/opencv.hpp>
