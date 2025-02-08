@@ -1,3 +1,11 @@
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file is the entry point for question 5 of the assignment.
+*/
+
 #include <cstdio>
 #include <cstring>
 #include <vector>
@@ -163,25 +171,29 @@ int main(int argc, char *argv[])
             printf("%d. %s (similarity: %.3f)\n", i + 1, matches[i].filename, matches[i].similarity);
         }
     }
-    else if(strcmp(feature_type, "combined") == 0) {
+    else if (strcmp(feature_type, "combined") == 0)
+    {
         // Extract combined features from target
         std::vector<float> target_features = extractCombinedFeatures(target);
-        if (target_features.empty()) {
+        if (target_features.empty())
+        {
             printf("Failed to extract features from target image\n");
             return -1;
         }
-        
+
         // Read database
         std::vector<char *> filenames;
         std::vector<std::vector<float>> database_features;
-        if (read_image_data_csv(database_file, filenames, database_features) != 0) {
+        if (read_image_data_csv(database_file, filenames, database_features) != 0)
+        {
             printf("Failed to read database file\n");
             return -1;
         }
 
         // Calculate similarities using combined distance
         std::vector<HistogramMatch> matches;
-        for (size_t i = 0; i < filenames.size(); i++) {
+        for (size_t i = 0; i < filenames.size(); i++)
+        {
             float similarity = calculateCombinedDistance(target_features, database_features[i]);
             matches.push_back({filenames[i], similarity});
         }
@@ -191,7 +203,8 @@ int main(int argc, char *argv[])
 
         // Print top N matches
         printf("Top %d matches for %s:\n", num_matches, target_file);
-        for (int i = 0; i < num_matches && i < matches.size(); i++) {
+        for (int i = 0; i < num_matches && i < matches.size(); i++)
+        {
             printf("%d. %s (similarity: %.3f)\n", i + 1, matches[i].filename, matches[i].similarity);
         }
     }

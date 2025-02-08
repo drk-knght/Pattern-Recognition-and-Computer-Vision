@@ -1,4 +1,10 @@
-/** Question 5 */
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file is the entry point for question 5 of the assignment.
+*/
 
 #include <iostream>
 #include <fstream>
@@ -195,6 +201,13 @@ int main(int argc, char *argv[])
         std::cerr << "Error: You must provide a target image filename using --target" << std::endl;
         print_usage(argv[0]);
         return 1;
+    }
+
+    // Extract the base filename if a path is provided (e.g., "../image.jpg" -> "image.jpg").
+    size_t pos = target_filename.find_last_of("/\\");
+    if (pos != std::string::npos)
+    {
+        target_filename = target_filename.substr(pos + 1);
     }
 
     // Load the features from CSV.

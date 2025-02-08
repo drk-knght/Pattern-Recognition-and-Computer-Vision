@@ -1,3 +1,11 @@
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file is the entry point for question 6 of the assignment.
+*/
+
 #include <opencv2/opencv.hpp>
 #include "feature_utils.h"
 
@@ -61,24 +69,3 @@ std::vector<float> extractLBPFeatures(const cv::Mat &img)
 
     return hist;
 }
-
-#ifdef LBP_EXTRACTOR_MAIN
-#include <iostream>
-int main(int argc, char **argv)
-{
-    if (argc < 2)
-    {
-        std::cerr << "Usage: " << argv[0] << " <image_path>" << std::endl;
-        return -1;
-    }
-    cv::Mat image = cv::imread(argv[1], cv::IMREAD_COLOR);
-    if (image.empty())
-    {
-        std::cerr << "Error: Unable to load image." << std::endl;
-        return -1;
-    }
-    std::vector<float> lbpFeature = extractLBPFeatures(image);
-    std::cout << "Extracted LBP feature vector size: " << lbpFeature.size() << std::endl;
-    return 0;
-}
-#endif

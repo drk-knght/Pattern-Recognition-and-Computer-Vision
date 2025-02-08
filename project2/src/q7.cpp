@@ -1,4 +1,11 @@
-// src/q7.cpp
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file is the entry point for question 7 of the assignment.
+*/
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/dnn.hpp>
 #include <iostream>
@@ -198,14 +205,16 @@ std::vector<double> computeColorHistogramWithDepth(const cv::Mat &image, cv::dnn
 void print_usage(const std::string &prog_name)
 {
     std::cout << "Usage: " << prog_name
-              << " --target TARGET_IMAGE --dir IMAGE_DIRECTORY [--dist DISTANCE_METRIC] [--top N]\n"
-              << "       [--depth-threshold THRESHOLD] [--depth-model MODEL_PATH]\n"
-              << "  --target: path to the target image\n"
+              << " --target TARGET_IMAGE [--target2 TARGET_IMAGE2] --dir IMAGE_DIRECTORY [--dist DISTANCE_METRIC] [--top N]\n"
+              << "       [--depth-threshold THRESHOLD] [--depth-model MODEL_PATH] [--embedding-model MODEL_PATH]\n"
+              << "  --target: path to the first target image\n"
+              << "  --target2: path to the second target image (optional)\n"
               << "  --dir   : directory containing database images\n"
               << "  --dist  : distance metric to use ('ssd' or 'cosine'; default: ssd)\n"
-              << "  --top   : number of top matches to return (default: 3)\n"
+              << "  --top   : number of top matches to return (default: 5)\n"
               << "  --depth-threshold: relative depth threshold in [0,1] to filter pixels (optional)\n"
-              << "  --depth-model: path to the ONNX model for depth estimation (default: midas.onnx) (optional)\n";
+              << "  --depth-model: path to the ONNX model for depth estimation (default: midas.onnx) (optional)\n"
+              << "  --embedding-model: path to the ResNet ONNX model for embedding (default: resnet18.onnx) (optional)\n";
 }
 
 // Checks if the given file name has a valid image extension.
@@ -405,119 +414,43 @@ std::vector<double> matToVector(const cv::Mat &mat)
 }
 
 // -----------------------------------------------------------------------------
-// Main function
-//
-// Expected command-line arguments:
-//   --target <target_image_path>
-//   --dir <database_directory>
-//   [--dist <distance_metric> ('ssd' or 'cosine'; default: ssd)]
-//   [--top <N>         (number of top matches; default: 3)]
-//   [--embedding-model <path_to_resnet18_onnx> (default: resnet18.onnx)]
-//
-int main(int argc, char *argv[])
+// New helper function to process a target image,
+// compute its features, compare to the database, and print the top 5
+// most similar as well as top 5 least similar results.
+void processTargetImage(const std::string &targetImagePath,
+                        const std::vector<cv::String> &imageFiles,
+                        cv::dnn::Net &embedNet,
+                        int topN)
 {
-    // *** IMPORTANT: Register the custom layers BEFORE loading any ONNX model ***
-    cv::dnn::LayerFactory::registerLayer(
-        "pkg.depth_anything_v2.depth_anything_v2_dinov2_layers_patch_embed_PatchEmbed_pretrained_patch_embed_1",
-        CustomPatchEmbedLayer::create);
-    cv::dnn::LayerFactory::registerLayer(
-        "pkg.onnxscript.torch_lib.aten_expand",
-        CustomAtenExpandLayer::create);
-    cv::dnn::LayerFactory::registerLayer(
-        "ai.onnx.Neg",
-        CustomNegLayer::create);
-
-    std::string targetImagePath;
-    std::string dbDirectory;
-    std::string distanceMetric = "ssd";
-    int top_n = 3;
-    std::string embeddingModelPath = "resnet18.onnx"; // default embedding model
-
-    if (argc < 5)
-    {
-        std::cerr << "Usage: " << argv[0] << " --target TARGET_IMAGE --dir IMAGE_DIRECTORY [--dist DISTANCE_METRIC] [--top N] [--embedding-model MODEL_PATH]" << std::endl;
-        std::cerr << "  --target: path to the target image" << std::endl;
-        std::cerr << "  --dir   : directory containing database images" << std::endl;
-        std::cerr << "  --dist  : distance metric ('ssd' or 'cosine'; default: ssd)" << std::endl;
-        std::cerr << "  --top   : number of top matches to return (default: 3)" << std::endl;
-        std::cerr << "  --embedding-model: path to the ResNet ONNX model for embedding (default: resnet18.onnx)" << std::endl;
-        return 1;
-    }
-
-    for (int i = 1; i < argc; i++)
-    {
-        std::string arg(argv[i]);
-        if (arg == "--target" && i + 1 < argc)
-        {
-            targetImagePath = argv[++i];
-        }
-        else if (arg == "--dir" && i + 1 < argc)
-        {
-            dbDirectory = argv[++i];
-        }
-        else if (arg == "--dist" && i + 1 < argc)
-        {
-            distanceMetric = argv[++i];
-        }
-        else if (arg == "--top" && i + 1 < argc)
-        {
-            top_n = std::stoi(argv[++i]);
-        }
-        else if (arg == "--embedding-model" && i + 1 < argc)
-        {
-            embeddingModelPath = argv[++i];
-        }
-        else
-        {
-            std::cerr << "Unknown argument: " << arg << std::endl;
-            std::cerr << "Usage: " << argv[0] << " --target TARGET_IMAGE --dir IMAGE_DIRECTORY [--dist DISTANCE_METRIC] [--top N] [--embedding-model MODEL_PATH]" << std::endl;
-            return 1;
-        }
-    }
+    std::cout << "==========================================\n";
+    std::cout << "Results for target image: " << targetImagePath << "\n";
 
     // Load the target image.
     cv::Mat targetImg = cv::imread(targetImagePath);
     if (targetImg.empty())
     {
         std::cerr << "Error: Could not open or find target image " << targetImagePath << std::endl;
-        return 1;
+        return;
     }
 
     // Compute the color histogram for the target image.
     std::vector<double> targetHist = computeColorHistogram(targetImg);
-
-    // Load the embedding network.
-    cv::dnn::Net embedNet = cv::dnn::readNetFromONNX(embeddingModelPath);
-    if (embedNet.empty())
-    {
-        std::cerr << "Error: Could not load embedding model from " << embeddingModelPath << std::endl;
-        return 1;
-    }
 
     // Compute the DNN embedding for the target image.
     cv::Mat targetEmbeddingMat;
     getEmbedding(targetImg, targetEmbeddingMat, embedNet, 0);
     std::vector<double> targetEmbedVec = matToVector(targetEmbeddingMat);
 
-    // Iterate over all images in the provided directory.
-    std::vector<cv::String> imageFiles;
-    cv::glob(dbDirectory + "/*.*", imageFiles, false);
-    if (imageFiles.empty())
-    {
-        std::cerr << "No images found in directory " << dbDirectory << std::endl;
-        return 1;
-    }
-
-    // Extract the basename of the target image to skip it in the comparisons.
+    // Extract the basename of the target image to skip it in comparisons.
     size_t pos = targetImagePath.find_last_of("/\\");
     std::string targetBasename = (pos == std::string::npos) ? targetImagePath : targetImagePath.substr(pos + 1);
 
     std::vector<Match> matches;
-
-    // Weights for the two feature distances.
+    // Weights for the feature distances.
     double weightHist = 1.0;
     double weightEmbed = 1.0;
 
+    // Iterate over all images in the directory.
     for (const auto &path : imageFiles)
     {
         size_t pos2 = path.find_last_of("/\\");
@@ -541,25 +474,148 @@ int main(int argc, char *argv[])
         double dHist = ssd_distance(targetHist, currHist);
         double dEmbed = cosine_distance(targetEmbedVec, currEmbedVec);
         double compositeDistance = weightHist * dHist + weightEmbed * dEmbed;
-
         matches.push_back({path, compositeDistance});
     }
 
     if (matches.empty())
     {
-        std::cerr << "No valid images found or features computed." << std::endl;
-        return 1;
+        std::cerr << "No valid images found for matching with " << targetImagePath << std::endl;
+        return;
     }
 
-    // Sort the matches (smaller composite distance means more similar).
+    // Sort matches: smaller composite distance means more similar.
     std::sort(matches.begin(), matches.end(), [](const Match &a, const Match &b)
               { return a.distance < b.distance; });
 
-    // Print out the top N matches.
-    std::cout << "\nTop " << top_n << " matches for target image '" << targetImagePath << "':\n";
-    for (int i = 0; i < top_n && i < static_cast<int>(matches.size()); i++)
+    int showCount = std::min(topN, static_cast<int>(matches.size()));
+
+    // Display the top N most similar results.
+    std::cout << "\nTop " << showCount << " most similar results:\n";
+    for (int i = 0; i < showCount; i++)
     {
-        std::cout << (i + 1) << ". " << matches[i].filename << " (composite distance: " << matches[i].distance << ")\n";
+        std::cout << (i + 1) << ". " << matches[i].filename
+                  << " (composite distance: " << matches[i].distance << ")\n";
+    }
+
+    // Display the bottom N (least similar) results.
+    std::cout << "\nTop " << showCount << " least similar results:\n";
+    int totalMatches = matches.size();
+    for (int i = totalMatches - showCount; i < totalMatches; i++)
+    {
+        std::cout << (totalMatches - i) << ". " << matches[i].filename
+                  << " (composite distance: " << matches[i].distance << ")\n";
+    }
+    std::cout << "==========================================\n\n";
+}
+
+// -----------------------------------------------------------------------------
+// Main function
+//
+// Expected command-line arguments (now updated):
+//   --target <target_image_path>
+//   [--target2 <target_image_path2>]   (optional)
+//   --dir <database_directory>
+//   [--dist <distance_metric> ('ssd' or 'cosine'; default: ssd)]
+//   [--top <N>         (number of top matches; default: 5)]
+//   [--embedding-model <path_to_resnet18_onnx> (default: resnet18.onnx)]
+//
+int main(int argc, char *argv[])
+{
+    // *** IMPORTANT: Register the custom layers BEFORE loading any ONNX model ***
+    cv::dnn::LayerFactory::registerLayer(
+        "pkg.depth_anything_v2.depth_anything_v2_dinov2_layers_patch_embed_PatchEmbed_pretrained_patch_embed_1",
+        CustomPatchEmbedLayer::create);
+    cv::dnn::LayerFactory::registerLayer(
+        "pkg.onnxscript.torch_lib.aten_expand",
+        CustomAtenExpandLayer::create);
+    cv::dnn::LayerFactory::registerLayer(
+        "ai.onnx.Neg",
+        CustomNegLayer::create);
+
+    std::string targetImagePath;
+    std::string targetImagePath2; // New parameter for a second target image.
+    std::string dbDirectory;
+    std::string distanceMetric = "ssd";
+    int top_n = 5;                                    // Updated default: show top five results.
+    std::string embeddingModelPath = "resnet18.onnx"; // default embedding model
+
+    if (argc < 5)
+    {
+        std::cerr << "Usage: " << argv[0]
+                  << " --target TARGET_IMAGE [--target2 TARGET_IMAGE2] --dir IMAGE_DIRECTORY [--dist DISTANCE_METRIC] [--top N] [--embedding-model MODEL_PATH]\n"
+                  << "  --target: path to the first target image\n"
+                  << "  --target2: path to the second target image (optional)\n"
+                  << "  --dir   : directory containing database images\n"
+                  << "  --dist  : distance metric ('ssd' or 'cosine'; default: ssd)\n"
+                  << "  --top   : number of top matches to return (default: 5)\n"
+                  << "  --embedding-model: path to the ResNet ONNX model for embedding (default: resnet18.onnx)\n";
+        return 1;
+    }
+
+    for (int i = 1; i < argc; i++)
+    {
+        std::string arg(argv[i]);
+        if (arg == "--target" && i + 1 < argc)
+        {
+            targetImagePath = argv[++i];
+        }
+        else if (arg == "--target2" && i + 1 < argc)
+        {
+            targetImagePath2 = argv[++i];
+        }
+        else if (arg == "--dir" && i + 1 < argc)
+        {
+            dbDirectory = argv[++i];
+        }
+        else if (arg == "--dist" && i + 1 < argc)
+        {
+            distanceMetric = argv[++i];
+        }
+        else if (arg == "--top" && i + 1 < argc)
+        {
+            top_n = std::stoi(argv[++i]);
+        }
+        else if (arg == "--embedding-model" && i + 1 < argc)
+        {
+            embeddingModelPath = argv[++i];
+        }
+        else
+        {
+            std::cerr << "Unknown argument: " << arg << std::endl;
+            std::cerr << "Usage: " << argv[0]
+                      << " --target TARGET_IMAGE [--target2 TARGET_IMAGE2] --dir IMAGE_DIRECTORY [--dist DISTANCE_METRIC] [--top N] [--embedding-model MODEL_PATH]\n";
+            return 1;
+        }
+    }
+
+    // Load the embedding network.
+    cv::dnn::Net embedNet = cv::dnn::readNetFromONNX(embeddingModelPath);
+    if (embedNet.empty())
+    {
+        std::cerr << "Error: Could not load embedding model from " << embeddingModelPath << std::endl;
+        return 1;
+    }
+
+    // Get all image files in the provided directory.
+    std::vector<cv::String> imageFiles;
+    cv::glob(dbDirectory + "/*.*", imageFiles, false);
+    if (imageFiles.empty())
+    {
+        std::cerr << "No images found in directory " << dbDirectory << std::endl;
+        return 1;
+    }
+
+    // Process the first target image.
+    processTargetImage(targetImagePath, imageFiles, embedNet, top_n);
+
+    // Process the second target image if provided.
+    if (!targetImagePath2.empty())
+    {
+        processTargetImage(targetImagePath2, imageFiles, embedNet, top_n);
+    }
+    else
+    {
+        std::cout << "Second target image not provided. Only one target image processed.\n";
     }
 
     return 0;

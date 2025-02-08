@@ -1,3 +1,11 @@
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file is the entry point for question 6 of the assignment.
+*/
+
 #include <iostream>
 #include <vector>
 #include <string>

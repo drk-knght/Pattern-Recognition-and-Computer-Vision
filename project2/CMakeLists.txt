@@ -47,6 +47,21 @@ add_executable(matching_pipeline
     src/ssim_extractor.cpp
 )
 
+# Create q5 executable
+add_executable(q5 
+    src/q5.cpp
+)
+
+# Create q6 executable
+add_executable(q6 
+    src/q6.cpp
+)
+
+# Create q7 executable
+add_executable(q7 
+    src/q7.cpp
+)
+
 # Link libraries for feature extractor
 target_link_libraries(feature_extractor 
     PRIVATE
@@ -83,10 +98,44 @@ target_link_libraries(matching_pipeline
     /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib
 )
 
-# Link libraries for test depth histogram
+# Link libraries for q5
+target_link_libraries(q5 
+    PRIVATE
+    ${OpenCV_LIBS}
+    opencv_core
+    opencv_highgui
+    opencv_imgproc
+    opencv_videoio
+    opencv_objdetect
+    /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib
+)
+
+# Link libraries for q6
+target_link_libraries(q6 
+    PRIVATE
+    ${OpenCV_LIBS}
+    opencv_core
+    opencv_highgui
+    opencv_imgproc
+    opencv_videoio
+    opencv_objdetect
+    /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib
+)
+
+# Link libraries for q7
+target_link_libraries(q7 
+    PRIVATE
+    ${OpenCV_LIBS}
+    opencv_core
+    opencv_highgui
+    opencv_imgproc
+    opencv_videoio
+    opencv_objdetect
+    /opt/homebrew/Cellar/onnxruntime/1.20.1_2/lib/libonnxruntime.dylib
+)
 
 # Set properties for executables
-foreach(target feature_extractor image_matcher matching_pipeline)
+foreach(target feature_extractor image_matcher matching_pipeline q5 q6 q7)
     target_compile_definitions(${target} 
         PRIVATE
         ENABLE_PRECOMPILED_HEADERS=OFF

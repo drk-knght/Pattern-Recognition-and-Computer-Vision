@@ -1,12 +1,24 @@
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 8 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file is the entry point for question 5 of the assignment.
+*/
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/dnn.hpp>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <iomanip> // For std::setw and std::left formatting
+#include <iomanip>
 #include "feature_utils.h"
 #include "csv_util.h"
+
+// Forward declaration for the new combined DNN + spatial variance function.
+// (You may also add this to feature_utils.h.)
+std::vector<float> extractCombinedDnnSpatialVarianceFeatures(const cv::Mat &img);
 
 // A simple structure to hold a match result.
 struct Match
@@ -47,18 +59,44 @@ double histogramIntersectionDistance(const std::vector<float> &h1, const std::ve
 
 int main(int argc, char *argv[])
 {
-    if (argc != 5)
+    // Updated usage:
+    // For method "dnndsv", only 3 arguments are required.
+    // Otherwise, the usage is: <target_image> <database_directory> <method> <top_N>
+    if (argc < 4)
     {
         std::cout << "Usage: " << argv[0]
-                  << " <target_image> <database_directory> <method> <top_N>" << std::endl;
+                  << " <target_image> <database_directory> <method> [<top_N>]" << std::endl;
         std::cout << "Methods: baseline, hist, spatialhist, combined, orb, lbp, ssim, spatialvar, dnndsv or '--compare-all'" << std::endl;
+        std::cout << "Note: When using method 'dnndsv', do not pass a top_N parameter; all matches will be returned." << std::endl;
         return -1;
     }
 
     std::string targetImagePath = argv[1];
     std::string dbDir = argv[2];
     std::string methodArg = argv[3];
-    int topN = std::stoi(argv[4]);
+    int topN = 0;
+
+    // If method is "dnndsv", no top_N argument should be provided.
+    if (methodArg == "dnndsv")
+    {
+        if (argc != 4)
+        {
+            std::cerr << "Error: When using method 'dnndsv', do not provide a top_N count." << std::endl;
+            std::cout << "Usage: " << argv[0] << " <target_image> <database_directory> dnndsv" << std::endl;
+            return -1;
+        }
+        topN = -1; // Flag value to indicate no top-N limitation.
+    }
+    else
+    {
+        if (argc != 5)
+        {
+            std::cerr << "Error: Incorrect number of arguments." << std::endl;
+            std::cout << "Usage: " << argv[0] << " <target_image> <database_directory> <method> <top_N>" << std::endl;
+            return -1;
+        }
+        topN = std::stoi(argv[4]);
+    }
 
     // Read the target image.
     cv::Mat targetImg = cv::imread(targetImagePath);
@@ -77,10 +115,10 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    // If the method parameter is "all" (or "--compare-all"), run all techniques and output a table.
+    // If the method parameter is "all" (or "--compare-all"), run all techniques.
     if (methodArg == "all" || methodArg == "--compare-all")
     {
-        // List of supported methods (depth histogram removed).
+        // Add the new dnndsv method to the list.
         std::vector<std::string> methods = {"baseline", "hist", "spatialhist", "combined", "orb", "lbp", "ssim", "spatialvar", "dnndsv"};
 
         // Print table header.
@@ -90,7 +128,7 @@ int main(int argc, char *argv[])
                   << std::setw(12) << "Distance" << std::endl;
         std::cout << std::string(75, '-') << std::endl;
 
-        // For each method, compute matches and output the top N.
+        // For each method, compute matches and output the results.
         for (const auto &m : methods)
         {
             std::vector<float> targetFeatures;
@@ -110,10 +148,11 @@ int main(int argc, char *argv[])
                 targetFeatures = extractSSIMFeatures(targetImg);
             else if (m == "spatialvar")
                 targetFeatures = extractColorSpatialVariance(targetImg);
+            // New branch for the combined DNN + spatial variance method.
             else if (m == "dnndsv")
                 targetFeatures = extractCombinedDnnSpatialVarianceFeatures(targetImg);
 
-            // Loop over all database images and compute features + distance.
+            // Loop over all database images.
             std::vector<Match> matches;
             for (const auto &file : imageFiles)
             {
@@ -145,6 +184,7 @@ int main(int argc, char *argv[])
                     features = extractCombinedDnnSpatialVarianceFeatures(img);
 
                 double d = 0.0;
+                // Use computeSSD for these methods.
                 if (m == "baseline" || m == "orb" || m == "dnndsv")
                     d = computeSSD(targetFeatures, features);
                 else if (m == "spatialvar")
@@ -155,12 +195,18 @@ int main(int argc, char *argv[])
                 matches.push_back({file, d});
             }
 
-            // Sort matches (smaller distance means more similar).
+            // Sort matches (smaller distance indicates higher similarity).
             std::sort(matches.begin(), matches.end(), [](const Match &a, const Match &b)
                       { return a.distance < b.distance; });
 
-            // Output the top N matches for this method.
-            for (int i = 0; i < topN && i < matches.size(); i++)
+            // For methods other than "dnndsv", limit to topN matches.
+            // For dnndsv, we return all matching images.
+            size_t outputCount = matches.size();
+            if (m != "dnndsv" && matches.size() > static_cast<size_t>(topN))
+                outputCount = topN;
+
+            // Output the results for this method.
+            for (size_t i = 0; i < outputCount; i++)
             {
                 std::cout << std::left << std::setw(15) << m
                           << std::setw(6) << (i + 1)
@@ -202,7 +248,6 @@ int main(int argc, char *argv[])
     std::vector<Match> matches;
     for (const auto &file : imageFiles)
     {
-        // Skip the target if in the same directory.
         if (file.find(targetImagePath) != std::string::npos)
             continue;
         cv::Mat img = cv::imread(file);
@@ -244,9 +289,14 @@ int main(int argc, char *argv[])
     std::sort(matches.begin(), matches.end(), [](const Match &a, const Match &b)
               { return a.distance < b.distance; });
 
-    // Print the top N results.
-    std::cout << "Top " << topN << " matches using method '" << methodArg << "':" << std::endl;
-    for (int i = 0; i < topN && i < matches.size(); i++)
+    // For methods other than dnndsv, limit to topN.
+    size_t outputCount = matches.size();
+    if (methodArg != "dnndsv" && matches.size() > static_cast<size_t>(topN))
+        outputCount = topN;
+
+    // Print the results.
+    std::cout << "Top " << outputCount << " matches using method '" << methodArg << "':" << std::endl;
+    for (size_t i = 0; i < outputCount; i++)
     {
         std::cout << (i + 1) << ". " << matches[i].filename
                   << " (distance = " << matches[i].distance << ")" << std::endl;
