@@ -3,7 +3,7 @@
     Om Agarwal
     Feb 8 2025
     CS5330- Pattern Recognition & Computer Vision
-    This file is the entry point for question 5 of the assignment.
+    Q5 entry point: Reads image features from a CSV file and identifies top matching images for a target using a specified distance metric.
 */
 
 #include <iostream>
@@ -16,7 +16,6 @@
 #include <algorithm>
 #include <cstdlib>
 
-// Type alias for clarity.
 using FeatureVector = std::vector<double>;
 using FeatureMap = std::unordered_map<std::string, FeatureVector>;
 
