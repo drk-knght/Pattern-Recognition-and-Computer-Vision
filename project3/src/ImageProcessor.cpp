@@ -4,6 +4,10 @@
 #include "filter.h"
 #include "morphology.h"
 #include "RegionAnalyzer.h"
+
+#include <fstream>
+#include <iostream>
+
 using namespace cv;
 using namespace std;
 
@@ -76,19 +80,21 @@ void ImageProcessor::process_frame(const Mat &frame, Mat &threshold_frame)
     // Use our custom Thresholder instead of cv::threshold
     threshold_frame = Thresholder::apply(processed, threshold_value);
 
-     // First apply closing with larger kernel to fill holes
-    threshold_frame = Morphology::closing(threshold_frame, 7);  // Increased kernel size
-    threshold_frame = Morphology::closing(threshold_frame, 7);  // Second pass
-    
-    // Then apply opening to remove any noise
+    // Apply morphological filtering
+    threshold_frame = Morphology::closing(threshold_frame, 7); // Increased kernel size
+    threshold_frame = Morphology::closing(threshold_frame, 7); // Second pass
     threshold_frame = Morphology::opening(threshold_frame, 3);
 
-    // After getting the threshold frame, analyze regions
-    threshold_frame = regionAnalyzer.analyzeAndVisualize(threshold_frame);
+    // Save the single-channel binary image for training data extraction
+    // (This image is 1-channel and is suitable for connectedComponentsWithStats)
+    regions_frame = threshold_frame.clone();
+
+    // Generate and display a colored visualization using region analysis
+    Mat visualization = regionAnalyzer.analyzeAndVisualize(threshold_frame);
+    threshold_frame = visualization;
 
     imshow(WINDOW_ORIGINAL, frame);
     imshow(WINDOW_PROCESSED, threshold_frame);
-    // imshow("Regions", regions_frame);
 }
 
 void ImageProcessor::create_windows()
@@ -100,4 +106,75 @@ void ImageProcessor::create_windows()
 void ImageProcessor::destroy_windows()
 {
     destroyAllWindows();
+}
+
+Mat ImageProcessor::get_threshold_frame()
+{
+    return regions_frame;
+}
+
+void ImageProcessor::collect_training_data(const Mat &binaryFrame)
+{
+    // Ensure the input image is single-channel.
+    Mat gray;
+    if (binaryFrame.channels() > 1)
+    {
+        cvtColor(binaryFrame, gray, COLOR_BGR2GRAY);
+    }
+    else
+    {
+        gray = binaryFrame;
+    }
+
+    Mat labels, stats, centroids;
+    int numLabels = connectedComponentsWithStats(gray, labels, stats, centroids, 8, CV_32S);
+    int bestLabel = -1;
+    int bestArea = 0;
+    for (int i = 1; i < numLabels; i++)
+    {
+        int area = stats.at<int>(i, CC_STAT_AREA);
+        if (area > bestArea)
+        {
+            bestArea = area;
+            bestLabel = i;
+        }
+    }
+
+    if (bestLabel == -1)
+    {
+        cerr << "No valid object found for training data." << endl;
+        return;
+    }
+
+    int left = stats.at<int>(bestLabel, CC_STAT_LEFT);
+    int top = stats.at<int>(bestLabel, CC_STAT_TOP);
+    int width = stats.at<int>(bestLabel, CC_STAT_WIDTH);
+    int height = stats.at<int>(bestLabel, CC_STAT_HEIGHT);
+    double boundingBoxArea = static_cast<double>(width * height);
+    double percentFilled = bestArea / boundingBoxArea;
+    double heightWidthRatio = static_cast<double>(height) / width;
+
+    Mat mask = (labels == bestLabel);
+    Moments m = moments(mask, true);
+    double centroidX = (m.m00 != 0) ? (m.m10 / m.m00) : 0;
+    double centroidY = (m.m00 != 0) ? (m.m01 / m.m00) : 0;
+
+    // Prompt the user for the object's label
+    string objectLabel;
+    cout << "Enter label for the detected object: ";
+    cin >> objectLabel;
+
+    // Append the feature vector (and label) to a CSV file
+    ofstream outFile("training_data.csv", ios::app);
+    if (!outFile.is_open())
+    {
+        cerr << "Error opening training_data.csv for writing." << endl;
+        return;
+    }
+    // CSV columns: label, area, percent_filled, height_width_ratio, centroid_x, centroid_y, left, top, width, height
+    outFile << objectLabel << "," << bestArea << "," << percentFilled << "," << heightWidthRatio << ","
+            << centroidX << "," << centroidY << "," << left << "," << top << "," << width << "," << height << "\n";
+    outFile.close();
+
+    cout << "Training data saved for object: " << objectLabel << endl;
 }
