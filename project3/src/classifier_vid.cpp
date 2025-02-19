@@ -9,6 +9,7 @@
 #include <string>
 #include <cmath>
 #include <limits>
+#include <algorithm>
 
 // Structure to hold a training sample with its label and feature vector.
 struct TrainingSample
@@ -18,7 +19,9 @@ struct TrainingSample
 };
 
 // Function to load training data from a CSV file.
-// Expected CSV format per line: label,feature1,feature2
+// Expected CSV format per line:
+//    label,bestArea,percentFilled,heightWidthRatio,centroid_x,centroid_y,left,top,width,height
+// This function uses only two features (percentFilled and heightWidthRatio).
 std::vector<TrainingSample> loadTrainingData(const std::string &filename)
 {
     std::vector<TrainingSample> samples;
@@ -28,7 +31,6 @@ std::vector<TrainingSample> loadTrainingData(const std::string &filename)
         std::cerr << "Could not open training data file: " << filename << std::endl;
         return samples;
     }
-
     std::string line;
     while (std::getline(file, line))
     {
@@ -42,16 +44,15 @@ std::vector<TrainingSample> loadTrainingData(const std::string &filename)
         {
             sample.label = token;
         }
-        // Read the full row into a temporary vector
+        // Read remaining features
         std::vector<double> allFeatures;
         while (std::getline(ss, token, ','))
         {
             allFeatures.push_back(std::stod(token));
         }
-        // Adjust to keep only percentFilled and heightWidthRatio
+        // Keep only percentFilled and heightWidthRatio (assumed to be at indices 1 and 2)
         if (allFeatures.size() >= 3)
         {
-            // Remove bestArea (at index 0) and keep indices 1 and 2.
             sample.features.push_back(allFeatures[1]); // percentFilled
             sample.features.push_back(allFeatures[2]); // heightWidthRatio
         }
@@ -60,34 +61,23 @@ std::vector<TrainingSample> loadTrainingData(const std::string &filename)
     return samples;
 }
 
-// Compute features from the input image.
-// The method mimics the processing in ImageProcessor by first preprocessing,
-// dynamically selecting a threshold, thresholding and cleaning up the binary image,
-// and then performing connected components analysis to extract features (percentFilled and heightWidthRatio)
-// for the largest object found.
+// Compute features from the input frame.
+// This mimics the processing in ImageProcessor and classifier.cpp.
 std::vector<double> computeFeatures(const cv::Mat &image)
 {
     ImageProcessor ip;
-
-    // Preprocess the image (convert to grayscale, blur, and adjust based on saturation, etc.)
     cv::Mat processed = ip.preprocess_image(image);
-
-    // Compute a dynamic threshold using a k-means based method
     int threshold_value = ip.get_dynamic_threshold(processed);
-
-    // Apply custom thresholding
     cv::Mat binary = Thresholder::apply(processed, threshold_value);
-
-    // Clean up the binary image using morphological filtering
+    // Apply morphological filtering as in your classifier
     binary = Morphology::closing(binary, 7);
     binary = Morphology::closing(binary, 7);
     binary = Morphology::opening(binary, 3);
 
-    // Compute connected components to extract regions
+    // Use connected components to extract features from the largest object.
     cv::Mat labels, stats, centroids;
     int numLabels = cv::connectedComponentsWithStats(binary, labels, stats, centroids, 8, CV_32S);
 
-    // Find the largest region (ignoring background, label 0)
     int bestLabel = -1;
     int bestArea = 0;
     for (int i = 1; i < numLabels; i++)
@@ -102,29 +92,22 @@ std::vector<double> computeFeatures(const cv::Mat &image)
 
     if (bestLabel == -1)
     {
-        std::cerr << "No valid object region found in the image." << std::endl;
+        std::cerr << "No valid object region found in frame." << std::endl;
         return {};
     }
 
-    // Get bounding box info for the selected region
     int left = stats.at<int>(bestLabel, cv::CC_STAT_LEFT);
     int top = stats.at<int>(bestLabel, cv::CC_STAT_TOP);
     int width = stats.at<int>(bestLabel, cv::CC_STAT_WIDTH);
     int height = stats.at<int>(bestLabel, cv::CC_STAT_HEIGHT);
     double boundingBoxArea = static_cast<double>(width * height);
-
-    // Compute features:
-    // 1. Percent filled = region area divided by the area of its bounding box
     double percentFilled = static_cast<double>(bestArea) / boundingBoxArea;
-    // 2. Height/Width ratio
     double heightWidthRatio = static_cast<double>(height) / width;
 
-    std::vector<double> features = {percentFilled, heightWidthRatio};
-    return features;
+    return {percentFilled, heightWidthRatio};
 }
 
 // Compute the scaled Euclidean distance between two feature vectors.
-// Each difference is normalized by the standard deviation for that feature.
 double computeScaledDistance(const std::vector<double> &features1,
                              const std::vector<double> &features2,
                              const std::vector<double> &stdDevs)
@@ -142,27 +125,19 @@ int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        std::cerr << "Usage: " << argv[0] << " <image_path>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <video_path>" << std::endl;
         return -1;
     }
 
-    std::string imagePath = argv[1];
-    cv::Mat image = cv::imread(imagePath);
-    if (image.empty())
+    std::string videoPath = argv[1];
+    cv::VideoCapture cap(videoPath);
+    if (!cap.isOpened())
     {
-        std::cerr << "Could not load image: " << imagePath << std::endl;
+        std::cerr << "Error opening video: " << videoPath << std::endl;
         return -1;
     }
 
-    // Compute feature vector for the input image
-    std::vector<double> testFeatures = computeFeatures(image);
-    if (testFeatures.empty())
-    {
-        std::cerr << "Failed to compute features from the image." << std::endl;
-        return -1;
-    }
-
-    // Load training data from CSV file (assumed to be named "training_data.csv" in the working directory)
+    // Load training data from the CSV file.
     std::vector<TrainingSample> trainingSamples = loadTrainingData("training_data.csv");
     if (trainingSamples.empty())
     {
@@ -170,8 +145,8 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    size_t featureDim = testFeatures.size();
-    // Compute the mean and standard deviation for each feature across the training data.
+    // Compute standard deviations for each feature based on the training data.
+    size_t featureDim = trainingSamples[0].features.size();
     std::vector<double> means(featureDim, 0.0), stdDevs(featureDim, 0.0);
     for (const auto &sample : trainingSamples)
     {
@@ -199,24 +174,76 @@ int main(int argc, char *argv[])
             stdDevs[i] = 1; // Avoid division by zero.
     }
 
-    // Classify the test image using a nearest-neighbor approach based on scaled Euclidean distance.
-    double minDistance = std::numeric_limits<double>::max();
-    std::string predictedLabel = "Unknown";
-    for (const auto &sample : trainingSamples)
+    // Retrieve video properties for logging.
+    double totalFrames = cap.get(cv::CAP_PROP_FRAME_COUNT);
+    double fps = cap.get(cv::CAP_PROP_FPS);
+    double totalDuration = totalFrames / fps;
+    std::cout << "Video details: " << totalFrames << " frames, FPS: " << fps
+              << ", Duration: " << totalDuration << " seconds." << std::endl;
+
+    // Create video window with fixed size 600x400.
+    cv::namedWindow("Video Classification", cv::WINDOW_NORMAL);
+    cv::resizeWindow("Video Classification", 600, 400);
+
+    // Process the video stream frame by frame.
+    while (true)
     {
-        double distance = computeScaledDistance(testFeatures, sample.features, stdDevs);
-        if (distance < minDistance)
+        cv::Mat frame;
+        bool ret = cap.read(frame);
+        if (!ret)
         {
-            minDistance = distance;
-            predictedLabel = sample.label;
+            break; // End of video.
+        }
+
+        // Log details about the video progress.
+        double currentFrame = cap.get(cv::CAP_PROP_POS_FRAMES);
+        double currentTime = currentFrame / fps;
+        double remainingFrames = totalFrames - currentFrame;
+        double remainingTime = totalDuration - currentTime;
+        std::cout << "Progress: Played " << currentFrame << " / "
+                  << totalFrames << " frames (" << currentTime << "s / "
+                  << totalDuration << "s); Remaining: " << remainingFrames
+                  << " frames (" << remainingTime << "s)." << std::endl;
+
+        // Compute feature vector for the current frame.
+        std::vector<double> testFeatures = computeFeatures(frame);
+        std::string predictedLabel = "Unknown";
+        double minDistance = std::numeric_limits<double>::max();
+
+        if (!testFeatures.empty())
+        {
+            // Classify using a nearest-neighbor approach.
+            for (const auto &sample : trainingSamples)
+            {
+                double distance = computeScaledDistance(testFeatures, sample.features, stdDevs);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    predictedLabel = sample.label;
+                }
+            }
+        }
+
+        // Overlay the predicted label on the video frame at the top left.
+        int fontFace = cv::FONT_HERSHEY_SIMPLEX;
+        double fontScale = 1.0;
+        int thickness = 2;
+        int baseline = 0;
+        cv::Size textSize = cv::getTextSize(predictedLabel, fontFace, fontScale, thickness, &baseline);
+        cv::Point textOrg(10, textSize.height + 10); // Position at top left.
+        cv::putText(frame, predictedLabel, textOrg, fontFace, fontScale, cv::Scalar(255, 0, 0), thickness);
+
+        cv::imshow("Video Classification", frame);
+
+        // Reduced waitKey delay to speed up frame processing.
+        char c = (char)cv::waitKey(1);
+        if (c == 27 || c == 'q' || c == 'Q')
+        { // Exit if ESC or q is pressed.
+            break;
         }
     }
 
-    // Display the image with the predicted label at the top left corner with increased font size.
-    cv::putText(image, predictedLabel, cv::Point(15, 75),
-                cv::FONT_HERSHEY_SIMPLEX, 3.0, cv::Scalar(0, 0, 255), 4);
-    cv::imshow("Classified Image", image);
-    cv::waitKey(0);
-
+    cap.release();
+    cv::destroyAllWindows();
     return 0;
 }

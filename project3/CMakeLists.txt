@@ -29,3 +29,6 @@ target_link_libraries(object_recognition core ${OpenCV_LIBS})
 # Create the classifier executable using classifier.cpp and link with the core library.
 add_executable(classifier src/classifier.cpp)
 target_link_libraries(classifier core ${OpenCV_LIBS})
+
+add_executable(classifier_vid src/classifier_vid.cpp)
+target_link_libraries(classifier_vid core ${OpenCV_LIBS})
