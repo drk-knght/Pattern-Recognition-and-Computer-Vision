@@ -4,6 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <random>
+#include "RegionFeatures.h"
 
 class RegionAnalyzer
 {
@@ -53,6 +54,7 @@ private:
     int minRegionSize;
     int maxRegions;
     std::vector<cv::Vec3b> colorPalette;
+    std::vector<RegionFeatureData> regionFeatures;
 
     // Generate random color palette
     void generateColorPalette(int numColors = 256);

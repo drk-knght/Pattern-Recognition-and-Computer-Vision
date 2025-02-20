@@ -21,6 +21,7 @@ set(SOURCES
     src/KMeans.cpp
     src/morphology.cpp
     src/RegionAnalyzer.cpp
+    src/RegionFeatures.cpp
 )
 
 # Create executable
