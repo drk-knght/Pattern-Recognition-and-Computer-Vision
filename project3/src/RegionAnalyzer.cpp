@@ -1,4 +1,5 @@
 #include "RegionAnalyzer.h"
+#include "RegionFeatures.h"
 
 RegionAnalyzer::RegionAnalyzer(int minRegionSize, int maxRegions)
     : minRegionSize(minRegionSize), maxRegions(maxRegions)
@@ -75,5 +76,14 @@ cv::Mat RegionAnalyzer::analyzeAndVisualize(const cv::Mat &binaryImage)
         binaryImage, labels, stats, centroids, 8, CV_32S);
 
     std::vector<int> validRegions = filterRegions(labels, stats);
-    return createVisualization(labels, validRegions);
+    cv::Mat visualization = createVisualization(labels, validRegions);
+
+    // Compute and draw features for each valid region
+    for (int label : validRegions)
+    {
+        RegionFeatureData features = RegionFeatures::computeFeatures(labels, label);
+        RegionFeatures::drawFeatures(visualization, features);
+    }
+
+    return visualization;
 }

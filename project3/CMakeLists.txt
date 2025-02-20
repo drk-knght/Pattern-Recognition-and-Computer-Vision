@@ -20,6 +20,7 @@ add_library(core
     src/KMeans.cpp
     src/morphology.cpp
     src/RegionAnalyzer.cpp
+    src/RegionFeatures.cpp
 )
 
 # Create the main executable using main.cpp and link with the core library.
