@@ -289,6 +289,8 @@ int main(int argc, char **argv)
     std::string imageDir = "";
     bool trainingMode = false;
     bool classifyMode = false;
+    int kValue = 2; // Default value of k
+
     for (int i = 1; i < argc; ++i)
     {
         std::string arg(argv[i]);
@@ -304,6 +306,11 @@ int main(int argc, char **argv)
         else if (arg == "--classify")
         {
             classifyMode = true;
+        }
+        else if (arg == "--k" && i + 1 < argc)
+        {
+            kValue = std::stoi(argv[i + 1]);
+            ++i;
         }
     }
 
@@ -501,7 +508,7 @@ int main(int argc, char **argv)
         }
 
         // ------------------------------------------------------------------
-        // Updated classification code using the new KNN classifier (K=3):
+        // Updated classification code using the new KNN classifier (with kValue)
 
         if (classifyMode)
         {
@@ -542,8 +549,7 @@ int main(int argc, char **argv)
             if (candidateLabel != -1)
             {
                 std::vector<double> candidateFeatures = computeFeatures(labels, stats, centroids, candidateLabel, dst);
-                const int k = 3; // You can adjust K as desired
-                std::string predictedLabel = classifyKNN(candidateFeatures, trainingExamples, stdev, k);
+                std::string predictedLabel = classifyKNN(candidateFeatures, trainingExamples, stdev, kValue);
 
                 // Overlay the predicted label (in blue) at the candidate region's centroid.
                 cv::Point centroidPoint(static_cast<int>(centroids.at<double>(candidateLabel, 0)),
