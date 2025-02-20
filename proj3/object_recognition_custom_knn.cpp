@@ -289,7 +289,7 @@ int main(int argc, char **argv)
     std::string imageDir = "";
     bool trainingMode = false;
     bool classifyMode = false;
-    int kValue = 2; // Default value of k
+    int kValue = 2; // Fixed value of k
 
     for (int i = 1; i < argc; ++i)
     {
@@ -306,11 +306,6 @@ int main(int argc, char **argv)
         else if (arg == "--classify")
         {
             classifyMode = true;
-        }
-        else if (arg == "--k" && i + 1 < argc)
-        {
-            kValue = std::stoi(argv[i + 1]);
-            ++i;
         }
     }
 
