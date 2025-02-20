@@ -627,15 +627,12 @@ int main(int argc, char **argv)
                         predictedLabel = entry.first;
                     }
                 }
-                // Set a threshold for classification -- if bestDistance is too large,
-                // it indicates that no training example is similar enough.
-                double maxAcceptableDistance = 1.0; // adjust this threshold as needed
+                double maxAcceptableDistance = 1.0;
                 if (bestDistance > maxAcceptableDistance)
                 {
                     predictedLabel = "UNKNOWN";
                 }
 
-                // Overlay the predicted label (in blue) at the candidate region's centroid.
                 cv::Point centroidPoint(static_cast<int>(centroids.at<double>(candidateLabel, 0)),
                                         static_cast<int>(centroids.at<double>(candidateLabel, 1)));
                 cv::putText(dst, predictedLabel, centroidPoint, cv::FONT_HERSHEY_SIMPLEX, 1,
@@ -647,17 +644,12 @@ int main(int argc, char **argv)
                 std::cout << "[LOG] No candidate region found for classification in " << filePath << std::endl;
             }
             cv::imshow("Region", dst);
-            cv::waitKey(0); // wait for a key press to move to the next image
+            cv::waitKey(0);
             cv::destroyWindow("Region");
         }
 
-        // Example: Integrating custom connected components for segmentation.
-        // You can replace this part of your main loop if you choose to use the custom segmentation.
-
         cv::Mat labelsCustom = connectedComponentsCustom(cleanedFrame);
 
-        // For demonstration, we create a simple color visualization of the components.
-        // (Note: you'll need to compute region stats and centroids separately for feature extraction.)
         cv::Mat dstCustom(cleanedFrame.size(), CV_8UC3, cv::Scalar::all(0));
         std::map<int, cv::Scalar> labelColors; // assign a unique color for each label
         for (int i = 0; i < labelsCustom.rows; ++i)

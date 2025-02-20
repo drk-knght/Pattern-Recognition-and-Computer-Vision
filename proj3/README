@@ -1,0 +1,22 @@
+Group Members:
+
+- Agnibha Chatterjee
+- Om Agarwal
+
+Video for part 8 of the assignment: https://drive.google.com/drive/folders/1R7njl5rT5P7OmF3yYo_B6Oci6Cst0pdv?usp=sharing
+
+Operation System: macOS 15.3.1
+Code Editor: VS Code
+
+Instruction to compile and run the project (and extensions):
+
+1. Open terminal and navigate to the directory containing the code.
+2. Run the command: `mkdir build`
+3. Run the command: `cd build`
+4. Run the command: `cmake ..`
+5. Run the command: `make`
+6. Run the command: `./<executable_name> --dir <path_to_image_directory> [--train] [--classify]`
+
+Example: `./object_recognition --dir ./images --train`
+
+Note: The executable name is `object_recognition` for the first eight parts and multi object detection, `object_recognition_custom_knn` for the ninth part (we implemented KNN classifier with k=2), and `object_recognition_ext` has custom logic for three of the 1-4 tasks of the assignment (custom threshold algorithm, custom erosion algorithm, and segmentation algorithm).
