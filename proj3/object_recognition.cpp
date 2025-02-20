@@ -1,40 +1,5 @@
 /*
-CS 5330 Pattern Recognition & Computer Vision
-
-Project 3 - 2-D Object Recognition
-
-Purpose : To implement a real-time 2D object recognition system using OpenCV and C++.
-Now extended to process still images if a directory is provided via the --dir CLI argument.
-Also extended with classification mode (flag --classify) to label new objects using stored training data.
-
-Description:
-1. Thresholding
-2. Cleaning the Image (ERODE)
-3. Segmentation
-4. Feature Extraction
-5. Training (if --train flag is passed)
-6. Classification (if --classify flag is passed)
-
-For training mode, the program prompts you for a label (and appends the features to training_data.csv).
-For classification mode, the program loads training_data.csv, computes a scaled Euclidean distance metric for each
-candidate region, selects the nearest match, and then displays the image with the predicted label.
-
-Basics of the program:
-For still images mode:
-Pass the directory containing images using the command-line argument --dir
-(e.g., ./object_recognition --dir /path/to/images)
-For each image, the program will generate three files:
-    - originalfilename_threshold.ext
-    - originalfilename_cleaned.ext
-    - originalfilename_region.ext
-
-Extensions Implemented:
-1. Classifies multiple objects in the frame
-2. Displays the label "Unknown" if the object is not in the training data
-3. Classifies the "Unknown" object and stores it in the training data
-4. User Interaction
-5. No limit on the number of objects in the training data
-
+    ADD HEADER
 */
 
 #include <opencv2/opencv.hpp>
