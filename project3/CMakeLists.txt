@@ -12,9 +12,8 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# Add source files
-set(SOURCES
-    src/main.cpp
+# Create a library for the common code used by both executables.
+add_library(core
     src/ImageProcessor.cpp
     src/Thresholder.cpp
     src/filter.cpp
@@ -23,8 +22,13 @@ set(SOURCES
     src/RegionAnalyzer.cpp
 )
 
-# Create executable
-add_executable(object_recognition ${SOURCES})
+# Create the main executable using main.cpp and link with the core library.
+add_executable(object_recognition src/main.cpp)
+target_link_libraries(object_recognition core ${OpenCV_LIBS})
 
-# Link libraries
-target_link_libraries(object_recognition ${OpenCV_LIBS})
+# Create the classifier executable using classifier.cpp and link with the core library.
+add_executable(classifier src/classifier.cpp)
+target_link_libraries(classifier core ${OpenCV_LIBS})
+
+add_executable(classifier_vid src/classifier_vid.cpp)
+target_link_libraries(classifier_vid core ${OpenCV_LIBS})
