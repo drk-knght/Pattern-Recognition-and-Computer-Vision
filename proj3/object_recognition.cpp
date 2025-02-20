@@ -555,7 +555,7 @@ int main(int argc, char **argv)
                 // Overlay the predicted label (in blue) at the candidate region's centroid.
                 cv::Point centroidPoint(static_cast<int>(centroids.at<double>(candidateLabel, 0)),
                                         static_cast<int>(centroids.at<double>(candidateLabel, 1)));
-                cv::putText(dst, "UNKNOWN", centroidPoint, cv::FONT_HERSHEY_SIMPLEX, 1,
+                cv::putText(dst, predictedLabel, centroidPoint, cv::FONT_HERSHEY_SIMPLEX, 1,
                             cv::Scalar(0, 0, 255), 2);
                 std::cout << "[LOG] Classified object in " << filePath << " as: " << predictedLabel << std::endl;
             }
