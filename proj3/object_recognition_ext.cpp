@@ -291,7 +291,7 @@ std::vector<std::pair<std::string, std::vector<double>>> loadTrainingData(const 
     std::ifstream file(filename);
     if (!file.is_open())
     {
-        std::cerr << "[ERROR] Could not open training data file: " << filename << std::endl;
+        std::cerr << "[Error] Could not open training data file: " << filename << std::endl;
         return dataset;
     }
     std::string line;
