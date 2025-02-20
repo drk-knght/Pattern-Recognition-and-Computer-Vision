@@ -533,7 +533,7 @@ int main(int argc, char **argv)
             if (candidateLabel != -1)
             {
                 std::vector<double> candidateFeatures = computeFeatures(labels, stats, centroids, candidateLabel, dst);
-                std::string predictedLabel = "Unknown";
+                std::string predictedLabel = "UNKNOWN";
                 double bestDistance = std::numeric_limits<double>::max();
                 for (const auto &entry : trainingExamples)
                 {
@@ -544,11 +544,19 @@ int main(int argc, char **argv)
                         predictedLabel = entry.first;
                     }
                 }
+                // Set a threshold for classification -- if bestDistance is too large,
+                // it indicates that no training example is similar enough.
+                double maxAcceptableDistance = 1.0; // adjust this threshold as needed
+                if (bestDistance > maxAcceptableDistance)
+                {
+                    predictedLabel = "UNKNOWN";
+                }
+
                 // Overlay the predicted label (in blue) at the candidate region's centroid.
                 cv::Point centroidPoint(static_cast<int>(centroids.at<double>(candidateLabel, 0)),
                                         static_cast<int>(centroids.at<double>(candidateLabel, 1)));
-                cv::putText(dst, predictedLabel, centroidPoint, cv::FONT_HERSHEY_SIMPLEX, 1,
-                            cv::Scalar(255, 0, 0), 2);
+                cv::putText(dst, "UNKNOWN", centroidPoint, cv::FONT_HERSHEY_SIMPLEX, 1,
+                            cv::Scalar(0, 0, 255), 2);
                 std::cout << "[LOG] Classified object in " << filePath << " as: " << predictedLabel << std::endl;
             }
             else
