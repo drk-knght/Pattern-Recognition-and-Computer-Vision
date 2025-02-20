@@ -5,16 +5,19 @@ Project 3 - 2-D Object Recognition
 
 Purpose : To implement a real-time 2D object recognition system using OpenCV and C++.
 Now extended to process still images if a directory is provided via the --dir CLI argument.
+Also extended with classification mode (flag --classify) to label new objects using stored training data.
 
-Description: The following program implements functionalities to perform the following:
+Description:
 1. Thresholding
 2. Cleaning the Image (ERODE)
 3. Segmentation
 4. Feature Extraction
-5. Classification
-6. Training
-7. Classification
-8. Second Classification using K-Nearest Neighbours (present in Threshold2.cpp)
+5. Training (if --train flag is passed)
+6. Classification (if --classify flag is passed)
+
+For training mode, the program prompts you for a label (and appends the features to training_data.csv).
+For classification mode, the program loads training_data.csv, computes a scaled Euclidean distance metric for each
+candidate region, selects the nearest match, and then displays the image with the predicted label.
 
 Basics of the program:
 For still images mode:
@@ -46,6 +49,8 @@ Extensions Implemented:
 #include <filesystem>
 #include <algorithm>
 #include <string>
+#include <sstream>
+#include <vector>
 
 // Comparator for the map
 struct Point2dComparator
@@ -192,11 +197,88 @@ cv::Mat erode(const cv::Mat &src, int erosion_size)
     return dst;
 }
 
+// ----------------------------------------------------------------------
+// New helper functions for classification mode
+// ----------------------------------------------------------------------
+
+// Loads training data from CSV ("training_data.csv") and returns a vector of pairs (label, feature vector).
+std::vector<std::pair<std::string, std::vector<double>>> loadTrainingData(const std::string &filename)
+{
+    std::vector<std::pair<std::string, std::vector<double>>> dataset;
+    std::ifstream file(filename);
+    if (!file.is_open())
+    {
+        std::cerr << "[ERROR] Could not open training data file: " << filename << std::endl;
+        return dataset;
+    }
+    std::string line;
+    // Skip header line.
+    std::getline(file, line);
+    while (std::getline(file, line))
+    {
+        std::stringstream ss(line);
+        std::string token;
+        std::vector<std::string> tokens;
+        while (std::getline(ss, token, ','))
+            tokens.push_back(token);
+        if (tokens.size() != 10)
+            continue; // label + 9 features expected
+        std::string label = tokens[0];
+        std::vector<double> features;
+        for (int i = 1; i < 10; i++)
+            features.push_back(std::stod(tokens[i]));
+        dataset.push_back({label, features});
+    }
+    file.close();
+    return dataset;
+}
+
+// Computes the standard deviation of each feature over the training data.
+// This is used to "scale" differences in the Euclidean metric.
+std::vector<double> computeTrainingFeatureStdev(const std::vector<std::pair<std::string, std::vector<double>>> &dataset)
+{
+    if (dataset.empty())
+        return std::vector<double>();
+    size_t featureSize = dataset[0].second.size();
+    std::vector<double> mean(featureSize, 0.0), var(featureSize, 0.0);
+    size_t n = dataset.size();
+    for (const auto &entry : dataset)
+    {
+        const std::vector<double> &features = entry.second;
+        for (size_t i = 0; i < featureSize; ++i)
+            mean[i] += features[i];
+    }
+    for (size_t i = 0; i < featureSize; ++i)
+        mean[i] /= n;
+    for (const auto &entry : dataset)
+    {
+        const std::vector<double> &features = entry.second;
+        for (size_t i = 0; i < featureSize; ++i)
+        {
+            double diff = features[i] - mean[i];
+            var[i] += diff * diff;
+        }
+    }
+    for (size_t i = 0; i < featureSize; ++i)
+        var[i] /= n;
+    std::vector<double> stdev(featureSize, 0.0);
+    for (size_t i = 0; i < featureSize; ++i)
+    {
+        stdev[i] = sqrt(var[i]);
+        if (stdev[i] == 0)
+            stdev[i] = 1.0;
+    }
+    return stdev;
+}
+
+// ----------------------------------------------------------------------
+
 int main(int argc, char **argv)
 {
     // --- Parse Command-Line Arguments ---
     std::string imageDir = "";
     bool trainingMode = false;
+    bool classifyMode = false;
     for (int i = 1; i < argc; ++i)
     {
         std::string arg(argv[i]);
@@ -209,11 +291,21 @@ int main(int argc, char **argv)
         {
             trainingMode = true;
         }
+        else if (arg == "--classify")
+        {
+            classifyMode = true;
+        }
     }
 
     if (imageDir.empty())
     {
         std::cerr << "[Error] No directory provided. Please provide a directory using the '--dir' flag." << std::endl;
+        return -1;
+    }
+
+    if (trainingMode && classifyMode)
+    {
+        std::cerr << "[Error] Cannot use both --train and --classify modes simultaneously." << std::endl;
         return -1;
     }
 
@@ -227,6 +319,20 @@ int main(int argc, char **argv)
         {
             trainingFile << "Label,Hu1,Hu2,Hu3,Hu4,Hu5,Hu6,Hu7,PercentFilled,HWRatio\n";
         }
+    }
+
+    // In classification mode, load the training data.
+    std::vector<std::pair<std::string, std::vector<double>>> trainingExamples;
+    std::vector<double> stdev;
+    if (classifyMode)
+    {
+        trainingExamples = loadTrainingData("training_data.csv");
+        if (trainingExamples.empty())
+        {
+            std::cerr << "[Error] No training data found in training_data.csv" << std::endl;
+            return -1;
+        }
+        stdev = computeTrainingFeatureStdev(trainingExamples);
     }
 
     namespace fs = std::filesystem;
@@ -382,6 +488,76 @@ int main(int argc, char **argv)
             {
                 std::cout << "[LOG] No candidate region found for training in " << filePath << std::endl;
             }
+        }
+
+        // ------------------------------------------------------------------
+        // In classification mode, find the candidate region, compute its feature vector,
+        // and then classify it using the nearest neighbor (scaled Euclidean distance) from the training data.
+        // ------------------------------------------------------------------
+        if (classifyMode)
+        {
+            int candidateLabel = -1;
+            int candidateArea = 0;
+            int imgWidth = cleanedFrame.cols;
+            int imgHeight = cleanedFrame.rows;
+            for (int i = 1; i < numberOfLabels; ++i)
+            {
+                int area = stats.at<int>(i, cv::CC_STAT_AREA);
+                if (area > 100)
+                {
+                    int x = stats.at<int>(i, cv::CC_STAT_LEFT);
+                    int y = stats.at<int>(i, cv::CC_STAT_TOP);
+                    int w = stats.at<int>(i, cv::CC_STAT_WIDTH);
+                    int h = stats.at<int>(i, cv::CC_STAT_HEIGHT);
+                    if (x == 0 || y == 0 || (x + w) >= imgWidth || (y + h) >= imgHeight)
+                        continue;
+                    if (area > candidateArea)
+                    {
+                        candidateArea = area;
+                        candidateLabel = i;
+                    }
+                }
+            }
+            if (candidateLabel == -1)
+            {
+                for (int i = 1; i < numberOfLabels; ++i)
+                {
+                    int area = stats.at<int>(i, cv::CC_STAT_AREA);
+                    if (area > candidateArea)
+                    {
+                        candidateArea = area;
+                        candidateLabel = i;
+                    }
+                }
+            }
+            if (candidateLabel != -1)
+            {
+                std::vector<double> candidateFeatures = computeFeatures(labels, stats, centroids, candidateLabel, dst);
+                std::string predictedLabel = "Unknown";
+                double bestDistance = std::numeric_limits<double>::max();
+                for (const auto &entry : trainingExamples)
+                {
+                    double distance = computeScaledEuclideanDistance(candidateFeatures, entry.second, stdev);
+                    if (distance < bestDistance)
+                    {
+                        bestDistance = distance;
+                        predictedLabel = entry.first;
+                    }
+                }
+                // Overlay the predicted label (in blue) at the candidate region's centroid.
+                cv::Point centroidPoint(static_cast<int>(centroids.at<double>(candidateLabel, 0)),
+                                        static_cast<int>(centroids.at<double>(candidateLabel, 1)));
+                cv::putText(dst, predictedLabel, centroidPoint, cv::FONT_HERSHEY_SIMPLEX, 1,
+                            cv::Scalar(255, 0, 0), 2);
+                std::cout << "[LOG] Classified object in " << filePath << " as: " << predictedLabel << std::endl;
+            }
+            else
+            {
+                std::cout << "[LOG] No candidate region found for classification in " << filePath << std::endl;
+            }
+            cv::imshow("Region", dst);
+            cv::waitKey(0); // wait for a key press to move to the next image
+            cv::destroyWindow("Region");
         }
     }
 
