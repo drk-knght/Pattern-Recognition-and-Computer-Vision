@@ -124,7 +124,7 @@ double computeScaledEuclideanDistance(const std::vector<double> &v1, const std::
 // This function takes a grayscale image and a threshold value.
 // Pixels with intensity below the threshold become 255 (object),
 // while pixels equal to or above the threshold become 0 (background).
-cv::Mat manualThreshold(const cv::Mat &src, int thresh)
+cv::Mat threshold(const cv::Mat &src, int thresh)
 {
     // Ensure the input image is a grayscale image.
     CV_Assert(src.type() == CV_8UC1);
@@ -144,7 +144,7 @@ cv::Mat manualThreshold(const cv::Mat &src, int thresh)
     return binary;
 }
 
-cv::Mat customErode(const cv::Mat &src, int erosion_size)
+cv::Mat erode(const cv::Mat &src, int erosion_size)
 {
     // Ensure the input is a binary image where foreground pixels are 255.
     CV_Assert(src.type() == CV_8UC1);
@@ -224,14 +224,14 @@ int main(int argc, char **argv)
         // Here, we use a constant threshold value (e.g. 128).
         // Since the objects are dark, pixels below 128 become foreground (255).
         int thresholdValue = 128; // Adjust this based on your scene conditions.
-        cv::Mat thresholdedFrame = manualThreshold(frame, thresholdValue);
+        cv::Mat thresholdedFrame = threshold(frame, thresholdValue);
 
         // Instead of using cv::threshold and cv::bitwise_not, we now get a binary image directly.
         // The rest of the code can then work on thresholdedFrame, for example applying morphological operations.
 
         // Create a structuring element and apply erosion for cleaning up the binary image.
         int erosion_size = 1;
-        cv::Mat cleanedFrame = customErode(thresholdedFrame, erosion_size);
+        cv::Mat cleanedFrame = erode(thresholdedFrame, erosion_size);
 
         // Perform connected components analysis
         cv::Mat labels, stats, centroids;
