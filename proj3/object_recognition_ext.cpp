@@ -1,5 +1,9 @@
 /*
-    ADD HEADER
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 20 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file implements a comprehensive image recognition system that extracts features from target images and classifies objects using a K-Nearest Neighbor (KNN) classifier with K > 1. It includes robust functionality for managing and updating a training database, preprocessing images through techniques like thresholding and erosion, and visualizing classification results. The system supports both training and classification modes, allowing for dynamic interaction with image data and providing detailed feedback on object recognition performance.
 */
 
 #include <opencv2/opencv.hpp>
