@@ -1,5 +1,9 @@
 /*
-    ADD HEADER
+    Agnibha Chatterjee
+    Om Agarwal
+    Feb 20 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file implements image recognition using a K-Nearest Neighbor (KNN) classifier with K > 1, comparing extracted features from target images against a database of training features to classify objects.
 */
 
 #include <opencv2/opencv.hpp>
@@ -163,9 +167,6 @@ cv::Mat erode(const cv::Mat &src, int erosion_size)
     return dst;
 }
 
-// ----------------------------------------------------------------------
-// New helper functions for classification mode
-// ----------------------------------------------------------------------
 
 // Loads training data from CSV ("training_data.csv") and returns a vector of pairs (label, feature vector).
 std::vector<std::pair<std::string, std::vector<double>>> loadTrainingData(const std::string &filename)
@@ -178,7 +179,6 @@ std::vector<std::pair<std::string, std::vector<double>>> loadTrainingData(const 
         return dataset;
     }
     std::string line;
-    // Skip header line.
     std::getline(file, line);
     while (std::getline(file, line))
     {
@@ -237,7 +237,7 @@ std::vector<double> computeTrainingFeatureStdev(const std::vector<std::pair<std:
     return stdev;
 }
 
-// ----------------------------------------------------------------------
+
 
 // New classifier: K-Nearest Neighbor (KNN) classifier (K > 1)
 // Instead of voting, this function computes the average scaled distance for each class
