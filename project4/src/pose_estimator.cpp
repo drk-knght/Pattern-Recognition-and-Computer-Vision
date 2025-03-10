@@ -173,7 +173,7 @@ void drawVirtualHouse(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat
     cv::line(image, imagePoints[13], imagePoints[14], chimneyColor, thickness);
 }
 
-int main()
+int main(int argc, char **argv)
 {
     // Load calibration data
     cv::Mat cameraMatrix, distCoeffs;
@@ -187,12 +187,33 @@ int main()
         return -1;
     }
 
-    // Initialize video capture
-    cv::VideoCapture cap(0);
-    if (!cap.isOpened())
+    // Check if an image file was provided as a command-line argument
+    bool useStaticImage = (argc > 1);
+    std::string imagePath = "";
+    cv::Mat staticImage;
+    cv::Mat originalStaticImage; // Store the original image without any drawings
+
+    if (useStaticImage)
     {
-        std::cerr << "Error: Could not open camera." << std::endl;
-        return -1;
+        imagePath = argv[1];
+        staticImage = cv::imread(imagePath);
+        if (staticImage.empty())
+        {
+            std::cerr << "Error: Could not open image file: " << imagePath << std::endl;
+            return -1;
+        }
+        originalStaticImage = staticImage.clone(); // Keep a clean copy
+        std::cout << "Using static image: " << imagePath << std::endl;
+    }
+    else
+    {
+        // Initialize video capture for live camera
+        cv::VideoCapture cap(0);
+        if (!cap.isOpened())
+        {
+            std::cerr << "Error: Could not open camera." << std::endl;
+            return -1;
+        }
     }
 
     // Initialize target detector
@@ -209,81 +230,138 @@ int main()
     }
 
     bool showVirtualHouse = true;
+    bool showVirtualCube = false;
     bool showCornerNumbers = false;
+    bool showAxes = true;
 
     std::cout << "\nControls:" << std::endl;
     std::cout << "  q - Quit" << std::endl;
     std::cout << "  r - Reset coordinate display" << std::endl;
     std::cout << "  n - Toggle corner numbers" << std::endl;
     std::cout << "  h - Toggle virtual house" << std::endl;
+    std::cout << "  c - Toggle virtual cube" << std::endl;
+    std::cout << "  a - Toggle coordinate axes" << std::endl;
     std::cout << "\nStarting pose estimation..." << std::endl;
+
+    cv::VideoCapture cap;
+    if (!useStaticImage)
+    {
+        cap.open(0);
+        if (!cap.isOpened())
+        {
+            std::cerr << "Error: Could not open camera." << std::endl;
+            return -1;
+        }
+    }
+
+    // Store the last detected corners and pose
+    std::vector<cv::Point2f> lastCorners;
+    cv::Mat lastRvec, lastTvec;
+    bool lastFound = false;
 
     while (true)
     {
         cv::Mat frame;
-        cap >> frame;
-        if (frame.empty())
-            break;
+
+        if (useStaticImage)
+        {
+            // Start with a clean copy of the original image
+            frame = originalStaticImage.clone();
+        }
+        else
+        {
+            // Get frame from camera
+            cap >> frame;
+            if (frame.empty())
+                break;
+        }
 
         std::vector<cv::Point2f> corners;
         bool found = detector.detectCorners(frame, corners);
 
+        // If corners are found, update the last successful detection
         if (found)
         {
-            // Estimate pose
-            cv::Mat rvec, tvec;
-            cv::solvePnP(objectPoints, corners, cameraMatrix, distCoeffs, rvec, tvec);
+            lastCorners = corners;
+            cv::solvePnP(objectPoints, corners, cameraMatrix, distCoeffs, lastRvec, lastTvec);
+            lastFound = true;
 
-            // Draw the coordinate axes (make them longer: 3 units)
-            cv::drawFrameAxes(frame, cameraMatrix, distCoeffs, rvec, tvec, 3.0);
+            // Always draw the detected corners
+            detector.drawCorners(frame, corners);
+        }
+
+        // If we have a valid pose (either from this frame or previous), draw virtual objects
+        if (lastFound)
+        {
+            // Draw coordinate axes if enabled
+            if (showAxes)
+            {
+                cv::drawFrameAxes(frame, cameraMatrix, distCoeffs, lastRvec, lastTvec, 3.0);
+            }
 
             // Draw virtual house if enabled
             if (showVirtualHouse)
             {
-                drawVirtualHouse(frame, cameraMatrix, distCoeffs, rvec, tvec);
+                drawVirtualHouse(frame, cameraMatrix, distCoeffs, lastRvec, lastTvec, 3.0);
             }
 
-            // Draw corners and their numbers if enabled
-            detector.drawCorners(frame, corners);
+            // Draw virtual cube if enabled
+            if (showVirtualCube)
+            {
+                drawVirtualCube(frame, cameraMatrix, distCoeffs, lastRvec, lastTvec, 3.0);
+            }
+
+            // Draw corner numbers if enabled
             if (showCornerNumbers)
             {
-                drawCornerNumbers(frame, corners);
+                drawCornerNumbers(frame, lastCorners);
             }
 
-            // Print pose information
-            printPose(rvec, tvec);
+            // Display pose information
+            printPose(lastRvec, lastTvec);
         }
 
-        // Add status text
-        cv::putText(frame, "Press 'n' to toggle corner numbers",
-                    cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.5,
-                    cv::Scalar(0, 255, 0), 2);
-        cv::putText(frame, "Press 'h' to toggle virtual house",
-                    cv::Point(10, 60), cv::FONT_HERSHEY_SIMPLEX, 0.5,
-                    cv::Scalar(0, 255, 0), 2);
-
-        // Display the frame
+        // Display the result
         cv::imshow("Pose Estimation", frame);
 
-        // Handle keyboard input
-        char key = cv::waitKey(1);
+        // Handle keyboard input with different wait times for static vs. live
+        char key = cv::waitKey(useStaticImage ? 10 : 1); // Short wait for static images to allow UI updates
+
         if (key == 'q')
-            break;
-        if (key == 'r')
         {
-            std::cout << std::endl; // Reset coordinate display position
+            break;
         }
-        if (key == 'n')
+        else if (key == 'r')
+        {
+            // Reset coordinate display
+            lastFound = false;
+        }
+        else if (key == 'n')
         {
             showCornerNumbers = !showCornerNumbers;
+            std::cout << "\nCorner numbers: " << (showCornerNumbers ? "ON" : "OFF") << std::endl;
         }
-        if (key == 'h')
+        else if (key == 'h')
         {
             showVirtualHouse = !showVirtualHouse;
+            std::cout << "\nVirtual house: " << (showVirtualHouse ? "ON" : "OFF") << std::endl;
+        }
+        else if (key == 'c')
+        {
+            showVirtualCube = !showVirtualCube;
+            std::cout << "\nVirtual cube: " << (showVirtualCube ? "ON" : "OFF") << std::endl;
+        }
+        else if (key == 'a')
+        {
+            showAxes = !showAxes;
+            std::cout << "\nCoordinate axes: " << (showAxes ? "ON" : "OFF") << std::endl;
         }
     }
 
-    cap.release();
+    if (!useStaticImage)
+    {
+        cap.release();
+    }
     cv::destroyAllWindows();
     return 0;
 }

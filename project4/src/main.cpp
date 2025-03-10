@@ -1,5 +1,6 @@
 #include "target_detector.h"
 #include <iostream>
+#include <string>
 
 // Add these functions at the top of the file, before main()
 void saveCalibrationData(const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
@@ -20,13 +21,133 @@ void printCalibrationParams(const cv::Mat &cameraMatrix, const cv::Mat &distCoef
               << distCoeffs << std::endl;
 }
 
-int main()
+// Function to draw a virtual cube on the image
+void drawVirtualCube(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
+                     const cv::Mat &rvec, const cv::Mat &tvec, float size = 2.0f)
 {
-    cv::VideoCapture cap(0); // Open default camera
-    if (!cap.isOpened())
+    // Define cube 3D coordinates (centered at origin)
+    std::vector<cv::Point3f> cubePoints = {
+        // Bottom face
+        {0.0f, 0.0f, 0.0f},
+        {size, 0.0f, 0.0f},
+        {size, -size, 0.0f},
+        {0.0f, -size, 0.0f},
+        // Top face
+        {0.0f, 0.0f, size},
+        {size, 0.0f, size},
+        {size, -size, size},
+        {0.0f, -size, size}};
+
+    // Project 3D points to image plane
+    std::vector<cv::Point2f> imagePoints;
+    cv::projectPoints(cubePoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints);
+
+    // Draw cube edges
+    cv::Scalar color(0, 255, 0); // Green color
+    int thickness = 2;
+
+    // Draw bottom face
+    for (int i = 0; i < 4; i++)
     {
-        std::cerr << "Error: Could not open camera." << std::endl;
-        return -1;
+        cv::line(image, imagePoints[i], imagePoints[(i + 1) % 4], color, thickness);
+    }
+    // Draw top face
+    for (int i = 0; i < 4; i++)
+    {
+        cv::line(image, imagePoints[i + 4], imagePoints[((i + 1) % 4) + 4], color, thickness);
+    }
+    // Draw vertical edges
+    for (int i = 0; i < 4; i++)
+    {
+        cv::line(image, imagePoints[i], imagePoints[i + 4], color, thickness);
+    }
+}
+
+// Function to draw a virtual pyramid on the image
+void drawVirtualPyramid(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
+                        const cv::Mat &rvec, const cv::Mat &tvec, float size = 2.0f)
+{
+    // Define pyramid 3D coordinates
+    std::vector<cv::Point3f> pyramidPoints = {
+        // Base points
+        {0.0f, 0.0f, 0.0f},
+        {size, 0.0f, 0.0f},
+        {size, -size, 0.0f},
+        {0.0f, -size, 0.0f},
+        // Apex point
+        {size / 2, -size / 2, size * 1.5f}};
+
+    // Project 3D points to image plane
+    std::vector<cv::Point2f> imagePoints;
+    cv::projectPoints(pyramidPoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints);
+
+    // Draw pyramid edges
+    cv::Scalar baseColor(255, 0, 0); // Blue color for base
+    cv::Scalar edgeColor(0, 0, 255); // Red color for edges to apex
+    int thickness = 2;
+
+    // Draw base
+    for (int i = 0; i < 4; i++)
+    {
+        cv::line(image, imagePoints[i], imagePoints[(i + 1) % 4], baseColor, thickness);
+    }
+
+    // Draw edges to apex
+    for (int i = 0; i < 4; i++)
+    {
+        cv::line(image, imagePoints[i], imagePoints[4], edgeColor, thickness);
+    }
+}
+
+int main(int argc, char **argv)
+{
+    // Parse command line arguments
+    bool useCamera = true;
+    std::string inputPath = "";
+
+    if (argc > 1)
+    {
+        inputPath = argv[1];
+        useCamera = false;
+    }
+
+    // Initialize video capture
+    cv::VideoCapture cap;
+    cv::Mat staticImage;
+    bool isStaticImage = false;
+
+    if (useCamera)
+    {
+        // Open default camera
+        cap.open(0);
+        if (!cap.isOpened())
+        {
+            std::cerr << "Error: Could not open camera." << std::endl;
+            return -1;
+        }
+        std::cout << "Using live camera feed" << std::endl;
+    }
+    else
+    {
+        // Check if input is an image or video
+        staticImage = cv::imread(inputPath);
+        if (!staticImage.empty())
+        {
+            // Input is a static image
+            isStaticImage = true;
+            std::cout << "Using static image: " << inputPath << std::endl;
+        }
+        else
+        {
+            // Try to open as video
+            cap.open(inputPath);
+            if (!cap.isOpened())
+            {
+                std::cerr << "Error: Could not open input file: " << inputPath << std::endl;
+                return -1;
+            }
+            std::cout << "Using video file: " << inputPath << std::endl;
+        }
     }
 
     TargetDetector detector(9, 6); // 9x6 internal corners
@@ -40,8 +161,16 @@ int main()
 
     // Initialize calibration parameters
     cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
-    cameraMatrix.at<double>(0, 2) = cap.get(cv::CAP_PROP_FRAME_WIDTH) / 2.0;  // cx
-    cameraMatrix.at<double>(1, 2) = cap.get(cv::CAP_PROP_FRAME_HEIGHT) / 2.0; // cy
+    if (!isStaticImage && cap.isOpened())
+    {
+        cameraMatrix.at<double>(0, 2) = cap.get(cv::CAP_PROP_FRAME_WIDTH) / 2.0;  // cx
+        cameraMatrix.at<double>(1, 2) = cap.get(cv::CAP_PROP_FRAME_HEIGHT) / 2.0; // cy
+    }
+    else if (isStaticImage)
+    {
+        cameraMatrix.at<double>(0, 2) = staticImage.cols / 2.0; // cx
+        cameraMatrix.at<double>(1, 2) = staticImage.rows / 2.0; // cy
+    }
 
     cv::Mat distCoeffs = cv::Mat::zeros(8, 1, CV_64F);
     std::vector<cv::Mat> rvecs, tvecs;
@@ -61,12 +190,25 @@ int main()
         }
     }
 
+    // For static image mode, we'll use this to toggle between virtual objects
+    int virtualObjectType = 0; // 0 = axes, 1 = cube, 2 = pyramid
+
     while (true)
     {
         cv::Mat frame;
-        cap >> frame;
-        if (frame.empty())
-            break;
+
+        if (isStaticImage)
+        {
+            // Use the static image
+            frame = staticImage.clone();
+        }
+        else
+        {
+            // Get frame from video or camera
+            cap >> frame;
+            if (frame.empty())
+                break;
+        }
 
         bool found = detector.detectCorners(frame, corners);
 
@@ -77,13 +219,28 @@ int main()
             lastSuccessfulCorners = corners;
             detector.drawCorners(frame, corners);
 
-            // If calibrated, draw 3D axes
+            // If calibrated, draw 3D virtual objects
             if (isCalibrated)
             {
                 cv::Mat rvec, tvec;
                 cv::solvePnP(point_set, corners, cameraMatrix, distCoeffs, rvec, tvec);
-                // Draw coordinate axes (length = 3 squares)
-                cv::drawFrameAxes(frame, cameraMatrix, distCoeffs, rvec, tvec, 3.0);
+
+                // Draw different virtual objects based on mode or key press
+                if (virtualObjectType == 0)
+                {
+                    // Draw coordinate axes (length = 3 squares)
+                    cv::drawFrameAxes(frame, cameraMatrix, distCoeffs, rvec, tvec, 3.0);
+                }
+                else if (virtualObjectType == 1)
+                {
+                    // Draw virtual cube
+                    drawVirtualCube(frame, cameraMatrix, distCoeffs, rvec, tvec, 3.0);
+                }
+                else if (virtualObjectType == 2)
+                {
+                    // Draw virtual pyramid
+                    drawVirtualPyramid(frame, cameraMatrix, distCoeffs, rvec, tvec, 3.0);
+                }
             }
 
             // Print number of corners and first corner coordinates
@@ -99,7 +256,7 @@ int main()
         cv::imshow("Chessboard Detection", frame);
 
         // Handle keyboard input
-        char key = cv::waitKey(1);
+        char key = cv::waitKey(isStaticImage ? 0 : 1); // Wait indefinitely for static images
         if (key == 'q')
         {
             break;
@@ -148,6 +305,14 @@ int main()
             // TODO: Add visualization of camera positions using rvecs and tvecs
             cv::imshow("Camera Positions", vis);
         }
+        else if (key == 'o' && isCalibrated)
+        {
+            // Toggle between virtual object types
+            virtualObjectType = (virtualObjectType + 1) % 3;
+            std::cout << "Switched to virtual object type: " << (virtualObjectType == 0 ? "Axes" : virtualObjectType == 1 ? "Cube"
+                                                                                                                          : "Pyramid")
+                      << std::endl;
+        }
 
         // Display calibration status
         cv::putText(frame,
@@ -157,8 +322,30 @@ int main()
                     isCalibrated ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 0, 255),
                     2);
 
+        // Display virtual object type
+        if (isCalibrated)
+        {
+            std::string objTypeText = "Object: ";
+            if (virtualObjectType == 0)
+                objTypeText += "Axes";
+            else if (virtualObjectType == 1)
+                objTypeText += "Cube";
+            else
+                objTypeText += "Pyramid";
+
+            cv::putText(frame, objTypeText, cv::Point(10, 60),
+                        cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0, 255, 255), 2);
+        }
+
         // Display the result
         cv::imshow("Chessboard Detection", frame);
+
+        // For static images, we need to keep refreshing the window
+        if (isStaticImage)
+        {
+            // Reset the frame to the original image for the next iteration
+            staticImage = lastSuccessfulFrame.clone();
+        }
     }
 
     // Final statistics
@@ -169,7 +356,10 @@ int main()
         printCalibrationParams(cameraMatrix, distCoeffs);
     }
 
-    cap.release();
+    if (cap.isOpened())
+    {
+        cap.release();
+    }
     cv::destroyAllWindows();
     return 0;
 }
