@@ -224,6 +224,78 @@ void drawVirtualStar(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat 
     }
 }
 
+// Add this function to draw a virtual wireframe torus
+void drawVirtualTorus(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
+                      const cv::Mat &rvec, const cv::Mat &tvec, float size = 2.0f)
+{
+    // Torus parameters
+    const float R = size * 0.6f;  // Major radius (distance from center to center of tube)
+    const float r = size * 0.2f;  // Minor radius (radius of the tube)
+    const int majorSegments = 16; // Number of segments around the major circle
+    const int minorSegments = 8;  // Number of segments around the minor circle
+
+    // Generate torus points
+    std::vector<cv::Point3f> torusPoints;
+    std::vector<std::vector<int>> torusIndices(majorSegments, std::vector<int>(minorSegments));
+
+    int pointIndex = 0;
+    for (int i = 0; i < majorSegments; i++)
+    {
+        float theta = i * 2 * CV_PI / majorSegments;
+        float cosTheta = cos(theta);
+        float sinTheta = sin(theta);
+
+        for (int j = 0; j < minorSegments; j++)
+        {
+            float phi = j * 2 * CV_PI / minorSegments;
+            float cosPhi = cos(phi);
+            float sinPhi = sin(phi);
+
+            // Calculate point on torus
+            float x = (R + r * cosPhi) * cosTheta + size / 2;
+            float y = -((R + r * cosPhi) * sinTheta + size / 2); // Flip y for OpenCV
+            float z = r * sinPhi + size / 2;                     // Raise above ground
+
+            torusPoints.push_back(cv::Point3f(x, y, z));
+            torusIndices[i][j] = pointIndex++;
+        }
+    }
+
+    // Project 3D points to image plane
+    std::vector<cv::Point2f> imagePoints;
+    cv::projectPoints(torusPoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints);
+
+    // Draw torus edges
+    cv::Scalar torusColor(255, 165, 0); // Orange color
+    int thickness = 2;
+
+    // Draw circles around the minor radius
+    for (int i = 0; i < majorSegments; i++)
+    {
+        for (int j = 0; j < minorSegments; j++)
+        {
+            int nextJ = (j + 1) % minorSegments;
+            cv::line(image,
+                     imagePoints[torusIndices[i][j]],
+                     imagePoints[torusIndices[i][nextJ]],
+                     torusColor, thickness);
+        }
+    }
+
+    // Draw circles around the major radius
+    for (int j = 0; j < minorSegments; j++)
+    {
+        for (int i = 0; i < majorSegments; i++)
+        {
+            int nextI = (i + 1) % majorSegments;
+            cv::line(image,
+                     imagePoints[torusIndices[i][j]],
+                     imagePoints[torusIndices[nextI][j]],
+                     torusColor, thickness);
+        }
+    }
+}
+
 int main(int argc, char **argv)
 {
     // Load calibration data
@@ -285,6 +357,7 @@ int main(int argc, char **argv)
     bool showCornerNumbers = false;
     bool showAxes = true;
     bool showVirtualStar = false;
+    bool showVirtualTorus = false;
 
     std::cout << "\nControls:" << std::endl;
     std::cout << "  q - Quit" << std::endl;
@@ -294,6 +367,7 @@ int main(int argc, char **argv)
     std::cout << "  c - Toggle virtual cube" << std::endl;
     std::cout << "  a - Toggle coordinate axes" << std::endl;
     std::cout << "  s - Toggle virtual star" << std::endl;
+    std::cout << "  t - Toggle virtual torus" << std::endl;
     std::cout << "\nStarting pose estimation..." << std::endl;
 
     cv::VideoCapture cap;
@@ -370,6 +444,12 @@ int main(int argc, char **argv)
                 drawVirtualStar(frame, cameraMatrix, distCoeffs, lastRvec, lastTvec, 3.0);
             }
 
+            // Draw virtual torus if enabled
+            if (showVirtualTorus)
+            {
+                drawVirtualTorus(frame, cameraMatrix, distCoeffs, lastRvec, lastTvec, 3.0);
+            }
+
             // Draw corner numbers if enabled
             if (showCornerNumbers)
             {
@@ -393,7 +473,7 @@ int main(int argc, char **argv)
         // Create a semi-transparent overlay for the controls
         cv::Mat overlay;
         frame.copyTo(overlay);
-        cv::rectangle(overlay, cv::Point(5, 5), cv::Point(250, startY + 8 * lineHeight), bgColor, -1);
+        cv::rectangle(overlay, cv::Point(5, 5), cv::Point(250, startY + 9 * lineHeight), bgColor, -1);
         cv::addWeighted(overlay, 0.7, frame, 0.3, 0, frame);
 
         // Draw the controls text
@@ -427,9 +507,14 @@ int main(int argc, char **argv)
                     cv::Point(startX, startY + 6 * lineHeight),
                     cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
 
+        std::string torusStatus = showVirtualTorus ? "ON" : "OFF";
+        cv::putText(frame, "t - Virtual torus: " + torusStatus,
+                    cv::Point(startX, startY + 7 * lineHeight),
+                    cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
+
         std::string axesStatus = showAxes ? "ON" : "OFF";
         cv::putText(frame, "a - Coordinate axes: " + axesStatus,
-                    cv::Point(startX, startY + 7 * lineHeight),
+                    cv::Point(startX, startY + 8 * lineHeight),
                     cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
 
         // Display the result
@@ -471,6 +556,11 @@ int main(int argc, char **argv)
         {
             showVirtualStar = !showVirtualStar;
             std::cout << "\nVirtual star: " << (showVirtualStar ? "ON" : "OFF") << std::endl;
+        }
+        else if (key == 't')
+        {
+            showVirtualTorus = !showVirtualTorus;
+            std::cout << "\nVirtual torus: " << (showVirtualTorus ? "ON" : "OFF") << std::endl;
         }
     }
 
