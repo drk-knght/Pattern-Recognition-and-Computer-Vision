@@ -173,6 +173,57 @@ void drawVirtualHouse(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat
     cv::line(image, imagePoints[13], imagePoints[14], chimneyColor, thickness);
 }
 
+// Add this function to draw a virtual star
+void drawVirtualStar(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
+                     const cv::Mat &rvec, const cv::Mat &tvec, float size = 2.0f)
+{
+    // Define star points in 3D space
+    const int numPoints = 10; // 5 outer points + 5 inner points
+    std::vector<cv::Point3f> starPoints;
+
+    float innerRadius = size * 0.4f; // Inner radius of the star
+    float outerRadius = size;        // Outer radius of the star
+
+    for (int i = 0; i < numPoints; i++)
+    {
+        float angle = i * 2 * CV_PI / numPoints;
+        float radius = (i % 2 == 0) ? outerRadius : innerRadius;
+
+        // Calculate x, y coordinates on the horizontal plane
+        float x = radius * cos(angle) + size / 2;  // Center the star
+        float y = -radius * sin(angle) - size / 2; // Center and flip y (OpenCV convention)
+        float z = size / 2;                        // Raise above the ground
+
+        starPoints.push_back(cv::Point3f(x, y, z));
+    }
+
+    // Project 3D points to image plane
+    std::vector<cv::Point2f> imagePoints;
+    cv::projectPoints(starPoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints);
+
+    // Draw star edges
+    cv::Scalar starColor(255, 255, 0); // Yellow color
+    int thickness = 2;
+
+    // Connect the points to form the star
+    for (int i = 0; i < numPoints; i++)
+    {
+        cv::line(image, imagePoints[i], imagePoints[(i + 1) % numPoints], starColor, thickness);
+    }
+
+    // Optional: Draw lines from center to each point for a more detailed star
+    cv::Point2f centerPoint;
+    cv::Point3f center3D(size / 2, -size / 2, size / 2); // Center of the star
+    std::vector<cv::Point3f> centerVec = {center3D};
+    std::vector<cv::Point2f> centerImagePoint;
+    cv::projectPoints(centerVec, rvec, tvec, cameraMatrix, distCoeffs, centerImagePoint);
+
+    for (int i = 0; i < numPoints; i += 2)
+    { // Connect only to outer points
+        cv::line(image, centerImagePoint[0], imagePoints[i], starColor, thickness);
+    }
+}
+
 int main(int argc, char **argv)
 {
     // Load calibration data
@@ -233,6 +284,7 @@ int main(int argc, char **argv)
     bool showVirtualCube = false;
     bool showCornerNumbers = false;
     bool showAxes = true;
+    bool showVirtualStar = false;
 
     std::cout << "\nControls:" << std::endl;
     std::cout << "  q - Quit" << std::endl;
@@ -241,6 +293,7 @@ int main(int argc, char **argv)
     std::cout << "  h - Toggle virtual house" << std::endl;
     std::cout << "  c - Toggle virtual cube" << std::endl;
     std::cout << "  a - Toggle coordinate axes" << std::endl;
+    std::cout << "  s - Toggle virtual star" << std::endl;
     std::cout << "\nStarting pose estimation..." << std::endl;
 
     cv::VideoCapture cap;
@@ -311,6 +364,12 @@ int main(int argc, char **argv)
                 drawVirtualCube(frame, cameraMatrix, distCoeffs, lastRvec, lastTvec, 3.0);
             }
 
+            // Draw virtual star if enabled
+            if (showVirtualStar)
+            {
+                drawVirtualStar(frame, cameraMatrix, distCoeffs, lastRvec, lastTvec, 3.0);
+            }
+
             // Draw corner numbers if enabled
             if (showCornerNumbers)
             {
@@ -334,7 +393,7 @@ int main(int argc, char **argv)
         // Create a semi-transparent overlay for the controls
         cv::Mat overlay;
         frame.copyTo(overlay);
-        cv::rectangle(overlay, cv::Point(5, 5), cv::Point(250, startY + 7 * lineHeight), bgColor, -1);
+        cv::rectangle(overlay, cv::Point(5, 5), cv::Point(250, startY + 8 * lineHeight), bgColor, -1);
         cv::addWeighted(overlay, 0.7, frame, 0.3, 0, frame);
 
         // Draw the controls text
@@ -363,9 +422,14 @@ int main(int argc, char **argv)
                     cv::Point(startX, startY + 5 * lineHeight),
                     cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
 
+        std::string starStatus = showVirtualStar ? "ON" : "OFF";
+        cv::putText(frame, "s - Virtual star: " + starStatus,
+                    cv::Point(startX, startY + 6 * lineHeight),
+                    cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
+
         std::string axesStatus = showAxes ? "ON" : "OFF";
         cv::putText(frame, "a - Coordinate axes: " + axesStatus,
-                    cv::Point(startX, startY + 6 * lineHeight),
+                    cv::Point(startX, startY + 7 * lineHeight),
                     cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
 
         // Display the result
@@ -402,6 +466,11 @@ int main(int argc, char **argv)
         {
             showAxes = !showAxes;
             std::cout << "\nCoordinate axes: " << (showAxes ? "ON" : "OFF") << std::endl;
+        }
+        else if (key == 's')
+        {
+            showVirtualStar = !showVirtualStar;
+            std::cout << "\nVirtual star: " << (showVirtualStar ? "ON" : "OFF") << std::endl;
         }
     }
 
