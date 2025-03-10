@@ -321,6 +321,53 @@ int main(int argc, char **argv)
             printPose(lastRvec, lastTvec);
         }
 
+        // Add on-screen controls display
+        int lineHeight = 20;
+        int startY = 30;
+        int startX = 10;
+        double fontSize = 0.5;
+        int thickness = 1;
+        cv::Scalar textColor(0, 255, 255); // Yellow text
+        cv::Scalar statusColor(0, 255, 0); // Green for ON status
+        cv::Scalar bgColor(0, 0, 0, 150);  // Semi-transparent black background
+
+        // Create a semi-transparent overlay for the controls
+        cv::Mat overlay;
+        frame.copyTo(overlay);
+        cv::rectangle(overlay, cv::Point(5, 5), cv::Point(250, startY + 7 * lineHeight), bgColor, -1);
+        cv::addWeighted(overlay, 0.7, frame, 0.3, 0, frame);
+
+        // Draw the controls text
+        cv::putText(frame, "CONTROLS:", cv::Point(startX, startY),
+                    cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
+
+        cv::putText(frame, "q - Quit", cv::Point(startX, startY + lineHeight),
+                    cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
+
+        cv::putText(frame, "r - Reset display", cv::Point(startX, startY + 2 * lineHeight),
+                    cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
+
+        // Show toggle states with ON/OFF indicators
+        std::string cornerStatus = showCornerNumbers ? "ON" : "OFF";
+        cv::putText(frame, "n - Corner numbers: " + cornerStatus,
+                    cv::Point(startX, startY + 3 * lineHeight),
+                    cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
+
+        std::string houseStatus = showVirtualHouse ? "ON" : "OFF";
+        cv::putText(frame, "h - Virtual house: " + houseStatus,
+                    cv::Point(startX, startY + 4 * lineHeight),
+                    cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
+
+        std::string cubeStatus = showVirtualCube ? "ON" : "OFF";
+        cv::putText(frame, "c - Virtual cube: " + cubeStatus,
+                    cv::Point(startX, startY + 5 * lineHeight),
+                    cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
+
+        std::string axesStatus = showAxes ? "ON" : "OFF";
+        cv::putText(frame, "a - Coordinate axes: " + axesStatus,
+                    cv::Point(startX, startY + 6 * lineHeight),
+                    cv::FONT_HERSHEY_SIMPLEX, fontSize, textColor, thickness);
+
         // Display the result
         cv::imshow("Pose Estimation", frame);
 
