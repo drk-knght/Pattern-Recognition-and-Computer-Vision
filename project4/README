@@ -1,0 +1,41 @@
+Group Members:
+
+- Agnibha Chatterjee
+- Om Agarwal
+
+Operation System: macOS 15.3.1
+Code Editor: VS Code
+
+Instructions to compile and run the project:
+
+1. Open terminal and navigate to the directory containing the code.
+2. Run the command: `mkdir build`
+3. Run the command: `cd build`
+4. Run the command: `cmake ..`
+5. Run the command: `make`
+
+The build process will create three executables:
+
+1. Camera Calibration:
+
+   ```bash
+   ./calibration [path_to_image_or_video]
+   ```
+
+   If no path is provided, it will use the default camera (webcam).
+
+2. Pose Estimation:
+
+   ```bash
+   ./pose_estimator [path_to_image_or_video]
+   ```
+
+   If no path is provided, it will use the default camera (webcam).
+
+3. Feature Detection:
+   ```bash
+   ./feature_detector
+   ```
+   This uses the default camera for real-time feature detection.
+
+Note: For calibration and pose estimation, the program expects a 9x6 checkerboard pattern. The pose estimator requires calibration data to be present before running.
