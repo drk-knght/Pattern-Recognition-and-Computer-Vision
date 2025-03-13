@@ -2,7 +2,6 @@
 #include <iostream>
 #include <string>
 
-// Add these functions at the top of the file, before main()
 void saveCalibrationData(const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
                          const std::string &filename)
 {

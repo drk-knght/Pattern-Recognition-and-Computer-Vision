@@ -33,25 +33,6 @@ void printPose(const cv::Mat &rvec, const cv::Mat &tvec)
               << std::setw(7) << tvec.at<double>(0) << " "
               << std::setw(7) << tvec.at<double>(1) << " "
               << std::setw(7) << tvec.at<double>(2) << "]" << std::flush;
-
-    // Optional: If you still want Euler angles, add them on a new line
-    /*
-    cv::Mat rotMat;
-    cv::Rodrigues(rvec, rotMat);
-    cv::Vec3d eulerAngles;
-    cv::Mat_<double> rotMatrix(rotMat);
-
-    eulerAngles[0] = atan2(rotMatrix(2,1), rotMatrix(2,2)) * 180/CV_PI;
-    eulerAngles[1] = atan2(-rotMatrix(2,0),
-                          sqrt(rotMatrix(2,1)*rotMatrix(2,1) +
-                               rotMatrix(2,2)*rotMatrix(2,2))) * 180/CV_PI;
-    eulerAngles[2] = atan2(rotMatrix(1,0), rotMatrix(0,0)) * 180/CV_PI;
-
-    std::cout << "\nEuler (deg) [Roll Pitch Yaw]: ["
-              << std::setw(7) << eulerAngles[0] << " "
-              << std::setw(7) << eulerAngles[1] << " "
-              << std::setw(7) << eulerAngles[2] << "]" << std::flush;
-    */
 }
 
 // Add this new function to draw a virtual cube

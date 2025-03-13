@@ -38,6 +38,6 @@ The build process will create three executables:
    ```
    This uses the default camera for real-time feature detection.
 
-Note: For calibration and pose estimation, the program expects a 9x6 checkerboard pattern. The pose estimator requires calibration data to be present before running.
+Note: The pose estimator requires calibration data to be present before running.
 
 - No. of time travel days used - 0
