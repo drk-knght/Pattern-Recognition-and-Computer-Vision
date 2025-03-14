@@ -1,7 +1,15 @@
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    March 13 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file implements a pose estimation system using OpenCV to detect and visualize 3D virtual objects on a checkerboard pattern.
+*/
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include "target_detector.h"
 
+// Function to load camera calibration data from a file
 void loadCalibrationData(cv::Mat &cameraMatrix, cv::Mat &distCoeffs,
                          const std::string &filename)
 {
@@ -11,16 +19,19 @@ void loadCalibrationData(cv::Mat &cameraMatrix, cv::Mat &distCoeffs,
         throw std::runtime_error("Could not open calibration file: " + filename);
     }
 
+    // Read camera matrix and distortion coefficients
     fs["camera_matrix"] >> cameraMatrix;
     fs["distortion_coefficients"] >> distCoeffs;
     fs.release();
 
+    // Print loaded calibration data
     std::cout << "Loaded camera matrix:\n"
               << cameraMatrix << std::endl;
     std::cout << "Loaded distortion coefficients:\n"
               << distCoeffs << std::endl;
 }
 
+// Function to print the pose (rotation and translation vectors)
 void printPose(const cv::Mat &rvec, const cv::Mat &tvec)
 {
     // Print raw rotation and translation vectors
@@ -35,7 +46,7 @@ void printPose(const cv::Mat &rvec, const cv::Mat &tvec)
               << std::setw(7) << tvec.at<double>(2) << "]" << std::flush;
 }
 
-// Add this new function to draw a virtual cube
+// Function to draw a virtual cube on the image
 void drawVirtualCube(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
                      const cv::Mat &rvec, const cv::Mat &tvec, float size = 2.0f)
 {
@@ -77,7 +88,7 @@ void drawVirtualCube(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat 
     }
 }
 
-// Add this function to draw corner numbers
+// Function to draw corner numbers on the image
 void drawCornerNumbers(cv::Mat &image, const std::vector<cv::Point2f> &corners)
 {
     for (size_t i = 0; i < corners.size(); i++)
@@ -88,6 +99,7 @@ void drawCornerNumbers(cv::Mat &image, const std::vector<cv::Point2f> &corners)
     }
 }
 
+// Function to draw a virtual house on the image
 void drawVirtualHouse(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
                       const cv::Mat &rvec, const cv::Mat &tvec, float size = 2.0f)
 {
@@ -123,7 +135,7 @@ void drawVirtualHouse(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat
     std::vector<cv::Point2f> imagePoints;
     cv::projectPoints(housePoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints);
 
-    // Define colors
+    // Define colors for different parts of the house
     cv::Scalar wallColor(0, 255, 0);        // Green for walls
     cv::Scalar roofColor(0, 0, 255);        // Red for roof
     cv::Scalar doorColor(255, 165, 0);      // Orange for door
@@ -154,7 +166,7 @@ void drawVirtualHouse(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat
     cv::line(image, imagePoints[13], imagePoints[14], chimneyColor, thickness);
 }
 
-// Add this function to draw a virtual star
+// Function to draw a virtual star on the image
 void drawVirtualStar(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
                      const cv::Mat &rvec, const cv::Mat &tvec, float size = 2.0f)
 {
@@ -205,7 +217,7 @@ void drawVirtualStar(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat 
     }
 }
 
-// Add this function to draw a virtual wireframe torus
+// Function to draw a virtual wireframe torus on the image
 void drawVirtualTorus(cv::Mat &image, const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
                       const cv::Mat &rvec, const cv::Mat &tvec, float size = 2.0f)
 {
@@ -333,6 +345,7 @@ int main(int argc, char **argv)
         }
     }
 
+    // Flags to control which virtual objects to display
     bool showVirtualHouse = true;
     bool showVirtualCube = false;
     bool showCornerNumbers = false;
@@ -340,6 +353,7 @@ int main(int argc, char **argv)
     bool showVirtualStar = false;
     bool showVirtualTorus = false;
 
+    // Print controls for the user
     std::cout << "\nControls:" << std::endl;
     std::cout << "  q - Quit" << std::endl;
     std::cout << "  r - Reset coordinate display" << std::endl;

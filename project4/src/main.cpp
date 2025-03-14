@@ -1,7 +1,15 @@
+/*
+    Agnibha Chatterjee
+    Om Agarwal
+    March 13 2025
+    CS5330- Pattern Recognition & Computer Vision
+    This file implements a pose estimation system using OpenCV to detect and visualize 3D virtual objects on a checkerboard pattern.
+*/
 #include "target_detector.h"
 #include <iostream>
 #include <string>
 
+// Function to save calibration data to a file
 void saveCalibrationData(const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
                          const std::string &filename)
 {
@@ -12,6 +20,7 @@ void saveCalibrationData(const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs,
     std::cout << "Calibration data saved to " << filename << std::endl;
 }
 
+// Function to print calibration parameters
 void printCalibrationParams(const cv::Mat &cameraMatrix, const cv::Mat &distCoeffs)
 {
     std::cout << "\nCamera Matrix:\n"
